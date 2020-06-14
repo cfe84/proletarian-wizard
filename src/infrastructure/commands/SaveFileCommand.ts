@@ -2,28 +2,27 @@ import * as vscode from 'vscode';
 import { ICommand } from './ICommand';
 import { IDependencies } from '../../contract/IDependencies';
 import { FolderSelector } from '../selectors/FolderSelector';
+import { FileNameAssembler } from '../../domain/FileNameAssembler';
 
 export class SaveFileCommand implements ICommand {
-  constructor(private deps: IDependencies) { }
+  private fileNameAssembler: FileNameAssembler;
+  constructor(private deps: IDependencies) {
+    this.fileNameAssembler = new FileNameAssembler(deps)
+  }
   get Id(): string { return "pw.saveFile" }
 
-  private fixFilename(filename: string) {
-
-
-    return filename
-  }
-
   executeAsync = async () => {
-    const typeSelector = new FolderSelector()
+    const typeSelector = new FolderSelector(this.deps)
     const folder = await typeSelector.selectFolderAsync()
     if (!folder) {
       return;
     }
-    let filename = await vscode.window.showInputBox({ prompt: "File name" })
-    if (!filename) {
+    const initalValue = this.deps.date.todayAsYMDString() + " - "
+    let fileName = await vscode.window.showInputBox({ prompt: "File name", value: initalValue })
+    if (!fileName) {
       return
     }
-    filename = this.fixFilename(filename)
-    vscode.window.showInformationMessage('Saving as ' + folder + filename);
+    const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder, fixDate: false })
+    vscode.window.showInformationMessage('Saving as ' + path);
   }
 }

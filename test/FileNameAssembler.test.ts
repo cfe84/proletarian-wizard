@@ -44,9 +44,39 @@ describe("FileNameAssembler", () => {
 
     it("doesn't add extension if setting is turned off", () => {
       // when
-      const filename = fileNameAssembler.assembleFileName({ fileName: "2020-01-10 - something", path: "", fixFileName: false })
+      const filename = fileNameAssembler.assembleFileName({ fileName: "2020-01-10 - something", path: "", fixExtension: false })
       // then
       should(filename).endWith("2020-01-10 - something")
+    })
+  })
+
+  context("Default name", () => {
+    it("adds default name if none is specified", () => {
+      // when
+      const filename1 = fileNameAssembler.assembleFileName({ fileName: "", path: "" })
+      // then
+      should(filename1).endWith("notes.md")
+    })
+
+    it("adds specified default name if none is specified", () => {
+      // when
+      const filename1 = fileNameAssembler.assembleFileName({ fileName: "2020-01-02 - ", path: "", defaultName: "DEFAULT" })
+      // then
+      should(filename1).endWith("2020-01-02 - DEFAULT.md")
+    })
+
+    it("does not add default name if only date is specified", () => {
+      // when
+      const filename1 = fileNameAssembler.assembleFileName({ fileName: "2020-01-02", path: "", defaultName: "DEFAULT" })
+      // then
+      should(filename1).endWith("2020-01-02.md")
+    })
+
+    it("does not add default name if setting is turned off", () => {
+      // when
+      const filename1 = fileNameAssembler.assembleFileName({ fileName: "2020-01-02 - ", path: "", fixFilename: false })
+      // then
+      should(filename1).endWith("2020-01-02 - .md")
     })
   })
 
@@ -67,7 +97,7 @@ describe("FileNameAssembler", () => {
     })
     it("doesn't add date if setting is turned off", () => {
       // when
-      const filename = fileNameAssembler.assembleFileName({ fileName: "something.md", path: "", fixFileName: false })
+      const filename = fileNameAssembler.assembleFileName({ fileName: "something.md", path: "", fixDate: false })
       // then
       should(filename).endWith("something.md")
       should(filename).not.endWith("_DATE_ - something.md")
