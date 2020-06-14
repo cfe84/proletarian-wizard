@@ -24,6 +24,11 @@ export class FileNameAssembler {
   }
 
   assembleFileName = (props: FileNameProps) => {
-    return this.fixFileName(props.fileName)
+    let filename = props.fileName
+    if (props.fixFileName === undefined || props.fixFileName) {
+      filename = this.fixFileName(filename)
+    }
+    const filepath = this.deps.path.join(props.path, filename)
+    return filepath
   }
 }

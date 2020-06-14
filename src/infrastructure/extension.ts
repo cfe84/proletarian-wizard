@@ -1,7 +1,9 @@
-import * as vscode from 'vscode';
-import { SaveFileCommand } from './commands/SaveFileCommand';
-import { ConsoleLogger } from './ConsoleLogger';
-import { StdDate } from './StdDate';
+import * as vscode from 'vscode'
+import * as fs from "fs"
+import * as path from "path"
+import { SaveFileCommand } from './commands/SaveFileCommand'
+import { ConsoleLogger } from './ConsoleLogger'
+import { StdDate } from './StdDate'
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -9,7 +11,9 @@ export function activate(context: vscode.ExtensionContext) {
 	const date = new StdDate()
 	const deps = {
 		logger,
-		date
+		date,
+		fs,
+		path
 	}
 	logger.log("Loaded")
 
