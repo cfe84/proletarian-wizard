@@ -7,6 +7,8 @@ import { StdDate } from './StdDate'
 import { VSUiSelector } from './selectors/VSUiSelector'
 import { IDependencies } from '../contract/IDependencies'
 import { IContext } from '../contract/IContext'
+import { OpenFileCommand } from './commands/OpenFileCommand'
+import { ICommand } from './commands/ICommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -29,9 +31,14 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	}
 	logger.log("Loaded")
 
-	const saveFileCommand = new SaveFileCommand(deps, context)
-	let disposable = vscode.commands.registerCommand("pw.saveFile", saveFileCommand.executeAsync);
-	vscontext.subscriptions.push(disposable);
+	const commands: ICommand[] = [
+		new SaveFileCommand(deps, context),
+		new OpenFileCommand(deps, context)
+	]
+	commands.forEach(command => {
+		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);
+		vscontext.subscriptions.push(disposable);
+	})
 }
 
 export function deactivate() { }
