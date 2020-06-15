@@ -12,6 +12,16 @@ export class SaveFileCommand implements ICommand {
   get Id(): string { return "pw.saveFile" }
 
   executeAsync = async () => {
+    if (!vscode.window.activeTextEditor) {
+      vscode.window.showErrorMessage("No editor is open")
+      return
+    }
+    if (!vscode.window.activeTextEditor.document.isUntitled) {
+      const res = await vscode.window.showQuickPick(["File already saved, don't save", "Make a copy"], { canPickMany: false })
+      if (res !== "Make a copy") {
+        return
+      }
+    }
     const typeSelector = new FolderSelector(this.deps)
     const folder = await typeSelector.selectFolderAsync()
     if (!folder) {
@@ -24,5 +34,13 @@ export class SaveFileCommand implements ICommand {
     }
     const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder, fixDate: false })
     vscode.window.showInformationMessage('Saving as ' + path);
+    const editor = vscode.window.activeTextEditor
+    const content = editor.document.getText()
+    this.deps.fs.writeFileSync(path, content)
+    await editor.edit((edit) => {
+      edit.delete(new vscode.Range(editor.document.positionAt(0), editor.document.positionAt(content.length)))
+    })
+    vscode.commands.executeCommand("workbench.action.closeActiveEditor", true)
+    vscode.window.showTextDocument(vscode.Uri.file(path))
   }
 }

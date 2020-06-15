@@ -17,7 +17,7 @@
 		"commands": [
 			{
 				"command": "pw.saveFile",
-				"title": "PW: Save File"
+				"title": "Proletarian Wizard: Save File"
 			}
 		]
 	},

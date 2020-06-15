@@ -14,7 +14,7 @@ function makeFakeDate(): IDate {
 }
 
 function makeFakeFs(): IFs {
-  return td.object(["readdirSync", "existsSync", "lstatSync"])
+  return td.object(["readdirSync", "existsSync", "lstatSync", "writeFileSync"])
 }
 
 function makeFakePath(): IPath {
