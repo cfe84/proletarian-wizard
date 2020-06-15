@@ -4,20 +4,23 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 
 ## Features
 
-Save files in the correct place in few keystrokes
+- [x] Save files in the correct place in few keystrokes
+- [ ] Open files with a few keystrokes
+- [ ] Create files from templates
+- [ ] Create projects
+- [ ] Archive projects
+- [ ] Define custom paths for directories
+- [ ] List files from tags
 
 ## Extension Settings
 
-_nothing yet_
+App requires the folder structure to be the following:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+- 10 - Inbox
+- 20 - Current Projects
+- 21 - Recurrence
+- 30 - Reference
+- 40 - Archive
 
 ## Known Issues
 

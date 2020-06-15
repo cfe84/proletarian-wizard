@@ -1,7 +1,7 @@
 {
 	"name": "proletarian-wizard",
 	"displayName": "proletarian-wizard",
-	"description": "",
+	"description": "Manage notes within a GTD-like directory",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.44.0"
@@ -43,5 +43,9 @@
 		"ts-node": "^8.10.2",
 		"typescript": "^3.8.3",
 		"vscode-test": "^1.3.0"
+	},
+	"publisher": "cfe",
+	"repository": {
+		"url": "https://github.com/cfe84/proletarian-wizard"
 	}
 }
