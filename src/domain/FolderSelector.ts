@@ -1,12 +1,15 @@
-import * as vscode from 'vscode';
-import { IDependencies } from '../../contract/IDependencies';
-import { IDictionary } from '../../domain/IDictionary';
+import { IDependencies } from '../contract/IDependencies';
+import { IDictionary } from './IDictionary';
 
 const defaultInboxFolder: string = "10 - Inbox"
 const defaultProjectsFolder: string = "20 - Current Projects"
 const defaultRecurrenceFolder: string = "21 - Recurrence"
 const defaultReferenceFolder: string = "30 - Reference"
 const defaultArchiveFolder: string = "40 - Archive"
+
+export interface SelectFolderProps {
+  allowCreateFolder?: boolean
+}
 
 export class FolderSelector {
 
@@ -18,7 +21,7 @@ export class FolderSelector {
     "Archive": defaultArchiveFolder
   }
 
-  constructor(private deps: IDependencies) { }
+  constructor(private deps: IDependencies, private root: string) { }
 
   private selectSubfolderAsync = async (folder: string): Promise<string | null> => {
     const folders = this.deps.fs
@@ -28,7 +31,7 @@ export class FolderSelector {
         name: f
       }))
       .filter(f => this.deps.fs.lstatSync(f.fullpath).isDirectory())
-    const pick = await vscode.window.showQuickPick(folders.map(f => f.name));
+    const pick = await this.deps.uiSelector.selectSingleOptionAsync(folders.map(f => f.name));
     if (!pick) {
       return null
     }
@@ -37,15 +40,10 @@ export class FolderSelector {
   }
 
   selectFolderAsync = async (): Promise<string | null> => {
-    if (!vscode.workspace.workspaceFolders || vscode.workspace.workspaceFolders.length > 1) {
-      this.deps.logger.error(`No folder is open, or more than one folder is open`)
-      return null
-    }
-    const root = vscode.workspace.workspaceFolders[0].uri.path
-    const result = await vscode.window.showQuickPick(["Project", "Recurrence", "Inbox", "Reference"],
-      { canPickMany: false })
+
+    const result = await this.deps.uiSelector.selectSingleOptionAsync(["Project", "Recurrence", "Inbox", "Reference"])
     if (result) {
-      const folder = this.deps.path.join(root, this.folders[result])
+      const folder = this.deps.path.join(this.root, this.folders[result])
       switch (result) {
         case "Project":
         case "Recurrence":

@@ -4,6 +4,7 @@ import { ILogger } from "../src/contract/ILogger";
 import { IDate } from "../src/contract/IDate";
 import { IFs } from "../src/contract/IFs";
 import { IPath } from "../src/contract/IPath";
+import { IUISelector } from "../src/contract/IUISelector";
 
 function makeFakeLogger(): ILogger {
   return td.object(["log", "warn", "error"])
@@ -23,11 +24,16 @@ function makeFakePath(): IPath {
   }
 }
 
+function makeFakeUiSelector(): IUISelector {
+  return td.object(["selectSingleOptionAsync", "inputStringAsync"])
+}
+
 export const makeFakeDeps = (): IDependencies => {
   return {
     logger: makeFakeLogger(),
     date: makeFakeDate(),
     fs: makeFakeFs(),
-    path: makeFakePath()
+    path: makeFakePath(),
+    uiSelector: makeFakeUiSelector()
   }
 }

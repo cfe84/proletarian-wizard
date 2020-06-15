@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { ICommand } from './ICommand';
 import { IDependencies } from '../../contract/IDependencies';
-import { FolderSelector } from '../selectors/FolderSelector';
+import { FolderSelector } from '../../domain/FolderSelector';
 import { FileNameAssembler } from '../../domain/FileNameAssembler';
+import { IContext } from '../../contract/IContext';
 
 export class SaveFileCommand implements ICommand {
   private fileNameAssembler: FileNameAssembler;
-  constructor(private deps: IDependencies) {
+  constructor(private deps: IDependencies, private context: IContext) {
     this.fileNameAssembler = new FileNameAssembler(deps)
   }
   get Id(): string { return "pw.saveFile" }
@@ -22,7 +23,7 @@ export class SaveFileCommand implements ICommand {
         return
       }
     }
-    const typeSelector = new FolderSelector(this.deps)
+    const typeSelector = new FolderSelector(this.deps, this.context.rootFolder)
     const folder = await typeSelector.selectFolderAsync()
     if (!folder) {
       return;
