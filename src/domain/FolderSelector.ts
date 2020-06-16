@@ -1,11 +1,14 @@
 import { IDependencies } from '../contract/IDependencies';
 import { IDictionary } from './IDictionary';
+import { get } from 'https';
 
 const defaultInboxFolder: string = "10 - Inbox"
 const defaultProjectsFolder: string = "20 - Current Projects"
 const defaultRecurrenceFolder: string = "21 - Recurrence"
 const defaultReferenceFolder: string = "30 - Reference"
-const defaultArchiveFolder: string = "40 - Archive"
+const defaultArchiveFolder: string = "40 - Archived Projects"
+
+export type SpecialFolder = "Inbox" | "Project" | "Recurrence" | "Reference" | "Archive";
 
 export interface SelectFolderProps {
   allowCreateFolder?: boolean
@@ -39,12 +42,15 @@ export class FolderSelector {
     return pickFolder?.fullpath || null
   }
 
-  selectFolderAsync = async (): Promise<string | null> => {
+  getSpecialFolder = (specialFolder: SpecialFolder) => this.deps.path.join(this.root, this.folders[specialFolder])
 
-    const result = await this.deps.uiSelector.selectSingleOptionAsync(["Project", "Recurrence", "Inbox", "Reference"])
-    if (result) {
-      const folder = this.deps.path.join(this.root, this.folders[result])
-      switch (result) {
+  selectFolderAsync = async (baseFolder?: SpecialFolder): Promise<string | null> => {
+    if (!baseFolder) {
+      baseFolder = await this.deps.uiSelector.selectSingleOptionAsync(["Project", "Recurrence", "Inbox", "Reference"]) as SpecialFolder
+    }
+    if (baseFolder) {
+      const folder = this.getSpecialFolder(baseFolder)
+      switch (baseFolder) {
         case "Project":
         case "Recurrence":
         case "Reference":

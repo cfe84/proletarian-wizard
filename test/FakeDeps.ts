@@ -11,15 +11,16 @@ function makeFakeLogger(): ILogger {
 }
 
 function makeFakeDate(): IDate {
-  return td.object(["todayAsYMDString"])
+  return td.object(["todayAsYMDString", "thisYearAsYString"])
 }
 
 function makeFakeFs(): IFs {
-  return td.object(["readdirSync", "existsSync", "lstatSync", "writeFileSync"])
+  return td.object(["readdirSync", "existsSync", "lstatSync", "mkdirSync", "renameSync", "writeFileSync"])
 }
 
 function makeFakePath(): IPath {
   return {
+    basename: (name: string) => `BASENAME(${name})`,
     join: (...segments: string[]) => segments.join("|")
   }
 }

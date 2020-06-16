@@ -11,7 +11,8 @@
 	],
 	"activationEvents": [
 		"onCommand:pw.saveFile",
-		"onCommand:pw.openFile"
+		"onCommand:pw.saveFile",
+		"onCommand:pw.archiveProject"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
@@ -23,6 +24,10 @@
 			{
 				"command": "pw.openFile",
 				"title": "Proletarian Wizard: Open File"
+			},
+			{
+				"command": "pw.archiveProject",
+				"title": "Proletarian Wizard: Archive Project"
 			}
 		]
 	},

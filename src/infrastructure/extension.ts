@@ -9,6 +9,7 @@ import { IDependencies } from '../contract/IDependencies'
 import { IContext } from '../contract/IContext'
 import { OpenFileCommand } from './commands/OpenFileCommand'
 import { ICommand } from './commands/ICommand'
+import { ArchiveProjectCommand } from './commands/ArchiveProjectCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -33,7 +34,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 
 	const commands: ICommand[] = [
 		new SaveFileCommand(deps, context),
-		new OpenFileCommand(deps, context)
+		new OpenFileCommand(deps, context),
+		new ArchiveProjectCommand(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

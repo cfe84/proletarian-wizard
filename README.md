@@ -9,7 +9,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Open files with a few keystrokes
 - [ ] Create files from templates
 - [ ] Create projects
-- [ ] Archive projects
+- [x] Archive projects
 - [ ] Define custom paths for directories
 - [ ] List files from tags
 
@@ -21,7 +21,7 @@ App requires the folder structure to be the following:
 - 20 - Current Projects
 - 21 - Recurrence
 - 30 - Reference
-- 40 - Archive
+- 40 - Archived Projects
 
 ## Known Issues
 
