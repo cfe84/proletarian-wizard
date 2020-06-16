@@ -3,16 +3,15 @@ import { ICommand } from "./ICommand";
 import { IDependencies } from "../../contract/IDependencies";
 import { IContext } from "../../contract/IContext";
 import { FolderSelector } from "../../domain/FolderSelector";
-import { FileSelector } from "../../domain/FileSelector";
 
-export class ArchiveProjectCommand implements ICommand {
+export class ArchiveProjectCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext) {
   }
-  executeAsync = async (): Promise<void> => {
+  executeAsync = async (): Promise<string | null> => {
     const folderSelector = new FolderSelector(this.deps, this.context.rootFolder);
     const projectFolder = await folderSelector.selectFolderAsync("Project")
     if (!projectFolder) {
-      return
+      return null
     }
     const archiveFolder = folderSelector.getSpecialFolder("Archive")
     const yearlyFolder = this.deps.path.join(archiveFolder, this.deps.date.thisYearAsYString())
@@ -23,6 +22,7 @@ export class ArchiveProjectCommand implements ICommand {
     }
     vscode.window.showInformationMessage(`Archived project ${projectFolderName}`)
     this.deps.fs.renameSync(projectFolder, destination)
+    return projectFolderName
   }
   get Id(): string { return "pw.archiveProject" };
 

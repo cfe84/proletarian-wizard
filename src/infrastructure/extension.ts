@@ -10,6 +10,7 @@ import { IContext } from '../contract/IContext'
 import { OpenFileCommand } from './commands/OpenFileCommand'
 import { ICommand } from './commands/ICommand'
 import { ArchiveProjectCommand } from './commands/ArchiveProjectCommand'
+import { CreateProjectCommand } from './commands/CreateProjectCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -32,10 +33,11 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	}
 	logger.log("Loaded")
 
-	const commands: ICommand[] = [
+	const commands: ICommand<string | null>[] = [
 		new SaveFileCommand(deps, context),
 		new OpenFileCommand(deps, context),
-		new ArchiveProjectCommand(deps, context)
+		new ArchiveProjectCommand(deps, context),
+		new CreateProjectCommand(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

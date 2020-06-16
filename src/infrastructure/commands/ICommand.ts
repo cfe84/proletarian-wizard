@@ -1,4 +1,4 @@
-export interface ICommand {
+export interface ICommand<T> {
   Id: string;
-  executeAsync(): Promise<void>
+  executeAsync(): Promise<T>
 }
