@@ -13,6 +13,7 @@
 		"onCommand:pw.saveFile",
 		"onCommand:pw.openFile",
 		"onCommand:pw.archiveProject",
+		"onCommand:pw.createNoteFromTemplate",
 		"onCommand:pw.createProject"
 	],
 	"main": "./out/infrastructure/extension.js",
@@ -33,6 +34,10 @@
 			{
 				"command": "pw.createProject",
 				"title": "Proletarian Wizard: Create Project"
+			},
+			{
+				"command": "pw.createNoteFromTemplate",
+				"title": "Proletarian Wizard: Create Note from Template"
 			}
 		]
 	},

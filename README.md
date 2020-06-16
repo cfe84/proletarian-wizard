@@ -7,7 +7,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Save files in the correct place in few keystrokes
 - [ ] Support several layers of folders
 - [x] Open files with a few keystrokes
-- [ ] Create files from templates
+- [x] Create files from templates
 - [x] Create projects
 - [x] Archive projects
 - [ ] Define custom paths for directories
@@ -22,6 +22,8 @@ App requires the folder structure to be the following:
 - 21 - Recurrence
 - 30 - Reference
 - 40 - Archived Projects
+
+**Templates**: To use templates, create a folder `.pw/templates` in your root folder, and put templates there.
 
 ## Known Issues
 
