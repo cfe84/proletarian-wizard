@@ -2,13 +2,10 @@ import * as vscode from 'vscode';
 import { ICommand } from './ICommand';
 import { IDependencies } from '../../contract/IDependencies';
 import { FolderSelector } from '../../domain/FolderSelector';
-import { FileNameAssembler } from '../../domain/FileNameAssembler';
 import { IContext } from '../../contract/IContext';
 
 export class CreateProjectCommand implements ICommand<string | null> {
-  private fileNameAssembler: FileNameAssembler;
   constructor(private deps: IDependencies, private context: IContext) {
-    this.fileNameAssembler = new FileNameAssembler(deps)
   }
   get Id(): string { return "pw.createProject" }
 
