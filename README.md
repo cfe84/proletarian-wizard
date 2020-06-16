@@ -6,7 +6,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 
 - [x] Save files in the correct place in few keystrokes
 - [ ] Support several layers of folders
-- [ ] Open files with a few keystrokes
+- [x] Open files with a few keystrokes
 - [ ] Create files from templates
 - [ ] Create projects
 - [ ] Archive projects

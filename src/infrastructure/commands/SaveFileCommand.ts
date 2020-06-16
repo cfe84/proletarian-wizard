@@ -34,7 +34,6 @@ export class SaveFileCommand implements ICommand {
       return
     }
     const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder, fixDate: false })
-    vscode.window.showInformationMessage('Saving as ' + path);
     const editor = vscode.window.activeTextEditor
     const content = editor.document.getText()
     this.deps.fs.writeFileSync(path, content)
