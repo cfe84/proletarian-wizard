@@ -12,6 +12,7 @@ import { ICommand } from './commands/ICommand'
 import { ArchiveProjectCommand } from './commands/ArchiveProjectCommand'
 import { CreateProjectCommand } from './commands/CreateProjectCommand'
 import { CreateNoteFromTemplate } from './commands/CreateNoteFromTemplate'
+import { ConfigFileLoader } from '../domain/ConfigFileLoader'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -29,8 +30,13 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		return null
 	}
 	const rootFolder = vscode.workspace.workspaceFolders[0].uri.path
+	const configFile = deps.path.join(rootFolder, ".pw", "config.yml")
+	const configLoader = new ConfigFileLoader(deps)
+	const config = configLoader.loadConfig(configFile)
+
 	const context: IContext = {
-		rootFolder
+		rootFolder,
+		config: config || undefined
 	}
 	logger.log("Loaded")
 

@@ -1,3 +1,7 @@
+import { path } from "./IPath";
+import { IConfig } from "./IConfig";
+
 export interface IContext {
-  rootFolder: string
+  rootFolder: path
+  config?: IConfig
 }

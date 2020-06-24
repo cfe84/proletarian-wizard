@@ -8,7 +8,7 @@ export class ArchiveProjectCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext) {
   }
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context.rootFolder);
+    const folderSelector = new FolderSelector(this.deps, this.context);
     const projectFolder = await folderSelector.selectFolderAsync("Project")
     if (!projectFolder) {
       return null

@@ -10,7 +10,7 @@ export class CreateProjectCommand implements ICommand<string | null> {
   get Id(): string { return "pw.createProject" }
 
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context.rootFolder)
+    const folderSelector = new FolderSelector(this.deps, this.context)
     const initalValue = this.deps.date.todayAsYMDString() + " - "
     let projectName = await vscode.window.showInputBox({ prompt: "Project name", value: initalValue })
     if (!projectName) {

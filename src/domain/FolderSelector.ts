@@ -1,6 +1,6 @@
 import { IDependencies } from '../contract/IDependencies';
 import { IDictionary } from './IDictionary';
-import { get } from 'https';
+import { IContext } from '../contract/IContext';
 
 const defaultInboxFolder: string = "10 - Inbox"
 const defaultProjectsFolder: string = "20 - Current Projects"
@@ -16,15 +16,17 @@ export interface SelectFolderProps {
 
 export class FolderSelector {
 
-  private folders: IDictionary<string> = {
-    "Project": defaultProjectsFolder,
-    "Inbox": defaultInboxFolder,
-    "Recurrence": defaultRecurrenceFolder,
-    "Reference": defaultReferenceFolder,
-    "Archive": defaultArchiveFolder
-  }
+  private folders: IDictionary<string>;
 
-  constructor(private deps: IDependencies, private root: string) { }
+  constructor(private deps: IDependencies, private context: IContext) {
+    this.folders = {
+      "Project": context.config?.folders.projects || defaultProjectsFolder,
+      "Inbox": context.config?.folders.inbox || defaultInboxFolder,
+      "Recurrence": context.config?.folders.recurrences || defaultRecurrenceFolder,
+      "Reference": context.config?.folders.reference || defaultReferenceFolder,
+      "Archive": context.config?.folders.archive || defaultArchiveFolder
+    }
+  }
 
   private selectSubfolderAsync = async (folder: string): Promise<string | null> => {
     const folders = this.deps.fs
@@ -42,7 +44,7 @@ export class FolderSelector {
     return pickFolder?.fullpath || null
   }
 
-  getSpecialFolder = (specialFolder: SpecialFolder) => this.deps.path.join(this.root, this.folders[specialFolder])
+  getSpecialFolder = (specialFolder: SpecialFolder) => this.deps.path.join(this.context.rootFolder, this.folders[specialFolder])
 
   selectFolderAsync = async (baseFolder?: SpecialFolder): Promise<string | null> => {
     if (!baseFolder) {

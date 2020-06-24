@@ -67,5 +67,8 @@
 	"publisher": "cfe",
 	"repository": {
 		"url": "https://github.com/cfe84/proletarian-wizard"
+	},
+	"dependencies": {
+		"yaml": "^1.10.0"
 	}
 }

@@ -1,11 +1,13 @@
 import { Stats } from "fs";
+import { path, filename } from "./IPath";
+
 
 export interface IFs {
-  readdirSync(folder: string): string[]
-  existsSync(file: string): boolean
-  lstatSync(file: string): Stats
-  mkdirSync(folder: string): void
-  readFileSync(file: string): Buffer
-  renameSync(from: string, to: string): void
-  writeFileSync(file: string, data: string): void
+  readdirSync(folder: path): filename[]
+  existsSync(file: path): boolean
+  lstatSync(file: path): Stats
+  mkdirSync(folder: path): void
+  readFileSync(file: path): Buffer
+  renameSync(from: path, to: path): void
+  writeFileSync(file: path, data: string): void
 }

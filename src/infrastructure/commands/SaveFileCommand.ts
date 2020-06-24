@@ -23,7 +23,7 @@ export class SaveFileCommand implements ICommand<string | null> {
         return null
       }
     }
-    const typeSelector = new FolderSelector(this.deps, this.context.rootFolder)
+    const typeSelector = new FolderSelector(this.deps, this.context)
     const folder = await typeSelector.selectFolderAsync()
     if (!folder) {
       return null;

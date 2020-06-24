@@ -1,4 +1,7 @@
+export type path = string;
+export type filename = string;
+
 export interface IPath {
-  basename(name: string): string
-  join(...segments: string[]): string
+  basename(name: path): filename
+  join(...segments: path[] | filename[]): path
 }
