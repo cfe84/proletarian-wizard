@@ -48,7 +48,7 @@ _Nothing yet_
 
 Users appreciate release notes as you update your extension.
 
-### 0.0.5
+### 0.1.0
 
 - Create recurrence folder
 - Create reference folder
