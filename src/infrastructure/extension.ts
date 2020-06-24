@@ -13,6 +13,7 @@ import { ArchiveProjectCommand } from './commands/ArchiveProjectCommand'
 import { CreateProjectCommand } from './commands/CreateProjectCommand'
 import { CreateNoteFromTemplate } from './commands/CreateNoteFromTemplate'
 import { ConfigFileLoader } from '../domain/ConfigFileLoader'
+import { CreateRecurrenceCommand } from './commands/CreateRecurrenceCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -45,7 +46,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new OpenFileCommand(deps, context),
 		new ArchiveProjectCommand(deps, context),
 		new CreateProjectCommand(deps, context),
-		new CreateNoteFromTemplate(deps, context)
+		new CreateRecurrenceCommand(deps, context),
+		new CreateNoteFromTemplate(deps, context),
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

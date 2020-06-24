@@ -21,23 +21,33 @@
 		"commands": [
 			{
 				"command": "pw.saveFile",
-				"title": "Proletarian Wizard: Save File"
+				"title": "Save File",
+				"category": "Proletarian Wizard"
 			},
 			{
 				"command": "pw.openFile",
-				"title": "Proletarian Wizard: Open File"
+				"title": "Open File",
+				"category": "Proletarian Wizard"
 			},
 			{
 				"command": "pw.archiveProject",
-				"title": "Proletarian Wizard: Archive Project"
+				"title": "Archive Project",
+				"category": "Proletarian Wizard"
 			},
 			{
 				"command": "pw.createProject",
-				"title": "Proletarian Wizard: Create Project"
+				"title": "Create Project",
+				"category": "Proletarian Wizard"
 			},
 			{
 				"command": "pw.createNoteFromTemplate",
-				"title": "Proletarian Wizard: Create Note from Template"
+				"title": "Create Note from Template",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.createRecurrence",
+				"title": "Create Recurrence",
+				"category": "Proletarian Wizard"
 			}
 		]
 	},

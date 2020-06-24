@@ -12,7 +12,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Archive projects
 - [x] Define custom paths for directories
 - [ ] List files from tags
-- [ ] Create recurrences
+- [x] Create recurrences
 - [ ] Create reference folders
 - [ ] Prompt variables in templates
 
@@ -22,7 +22,7 @@ App requires the folder structure to be the following:
 
 - 10 - Inbox - All files you create in a hurry and didn't sort yet
 - 20 - Current Projects - Groups of files related to a given project
-- 21 - Recurrence - Groups of files for recurring meetings
+- 21 - Recurrence - Notes from recurring meetings
 - 30 - Reference - Reference files
 - 40 - Archived Projects - Projects that are no longer active
 
