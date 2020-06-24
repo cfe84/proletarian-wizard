@@ -14,7 +14,9 @@
 		"onCommand:pw.openFile",
 		"onCommand:pw.archiveProject",
 		"onCommand:pw.createNoteFromTemplate",
-		"onCommand:pw.createProject"
+		"onCommand:pw.createProject",
+		"onCommand:pw.createRecurrence",
+		"onCommand:pw.createReference"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
@@ -47,6 +49,11 @@
 			{
 				"command": "pw.createRecurrence",
 				"title": "Create Recurrence",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.createReference",
+				"title": "Create Reference Folder",
 				"category": "Proletarian Wizard"
 			}
 		]
