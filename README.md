@@ -14,7 +14,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [ ] List files from tags
 - [x] Create recurrences
 - [x] Create reference folders
-- [ ] Prompt variables in templates
+- [x] Prompt variables in templates
 
 ## Extension Settings
 
@@ -38,7 +38,7 @@ config:
     archive: ARCHIVED_PROJECTS_FOLDER_NAME
 ```
 
-**Templates**: To use templates, create a folder `.pw/templates` in your root folder, and put templates there.
+**Templates**: To use templates, create a folder `.pw/templates` in your root folder, and put templates there. They can embed variables using the format `${Variable name}` which will be prompted upon creation of a note from the template. To use templates, use the command `Proletarian Wizard: Create Note from Template`
 
 ## Known Issues
 
@@ -47,6 +47,13 @@ _Nothing yet_
 ## Release Notes
 
 Users appreciate release notes as you update your extension.
+
+### 0.0.5
+
+- Create recurrence folder
+- Create reference folder
+- Define custom path for folders in config file
+- Prompt for variables when loading a template.
 
 ### 0.0.1
 
