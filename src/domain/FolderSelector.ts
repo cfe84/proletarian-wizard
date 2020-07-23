@@ -12,13 +12,14 @@ export type SpecialFolder = "Inbox" | "Project" | "Recurrence" | "Reference" | "
 
 export interface SelectFolderProps {
   allowCreateFolder?: boolean
+  allowThisFolder?: boolean
 }
 
 export class FolderSelector {
 
   private folders: IDictionary<string>;
 
-  constructor(private deps: IDependencies, private context: IContext) {
+  constructor(private props: SelectFolderProps, private deps: IDependencies, private context: IContext) {
     this.folders = {
       "Project": context.config?.folders.projects || defaultProjectsFolder,
       "Inbox": context.config?.folders.inbox || defaultInboxFolder,
@@ -28,14 +29,20 @@ export class FolderSelector {
     }
   }
 
-  private selectSubfolderAsync = async (folder: string): Promise<string | null> => {
-    const folders = this.deps.fs
-      .readdirSync(folder)
-      .map(f => ({
-        fullpath: this.deps.path.join(folder, f),
-        name: f
-      }))
-      .filter(f => this.deps.fs.lstatSync(f.fullpath).isDirectory())
+  private selectSubfolderAsync = async (folder: string, folderName: string): Promise<string | null> => {
+    const thisFolder = {
+      fullpath: folder,
+      name: `<Select ${folderName}>`
+    }
+    let folders = this.props.allowThisFolder ? [thisFolder] : []
+    folders = folders.concat(
+      this.deps.fs
+        .readdirSync(folder)
+        .map(f => ({
+          fullpath: this.deps.path.join(folder, f),
+          name: f
+        }))
+        .filter(f => this.deps.fs.lstatSync(f.fullpath).isDirectory()))
     const pick = await this.deps.uiSelector.selectSingleOptionAsync(folders.map(f => f.name));
     if (!pick) {
       return null
@@ -56,7 +63,7 @@ export class FolderSelector {
         case "Project":
         case "Recurrence":
         case "Reference":
-          return await this.selectSubfolderAsync(folder) || null;
+          return await this.selectSubfolderAsync(folder, baseFolder) || null;
         case "Inbox":
         default:
           return folder

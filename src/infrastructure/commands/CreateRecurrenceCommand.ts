@@ -10,7 +10,7 @@ export class CreateRecurrenceCommand implements ICommand<string | null> {
   get Id(): string { return "pw.createRecurrence" }
 
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context)
+    const folderSelector = new FolderSelector({}, this.deps, this.context)
     const initalValue = ""
     let recurrenceName = await vscode.window.showInputBox({ prompt: "Recurrence name", value: initalValue })
     if (!recurrenceName) {

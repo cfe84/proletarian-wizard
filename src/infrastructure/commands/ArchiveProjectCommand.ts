@@ -3,13 +3,21 @@ import { ICommand } from "./ICommand";
 import { IDependencies } from "../../contract/IDependencies";
 import { IContext } from "../../contract/IContext";
 import { FolderSelector } from "../../domain/FolderSelector";
+import { FileSelector } from '../../domain/FileSelector';
 
 export class ArchiveProjectCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext) {
   }
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context);
-    const projectFolder = await folderSelector.selectFolderAsync("Project")
+    const folderSelector = new FolderSelector({ allowThisFolder: true }, this.deps, this.context);
+    let projectFolder = await folderSelector.selectFolderAsync("Project")
+    if (!projectFolder) {
+      return null
+    }
+    if (projectFolder === folderSelector.getSpecialFolder("Project")) {
+      const fileSelector = new FileSelector(this.deps)
+      projectFolder = await fileSelector.selectFileAsync(projectFolder)
+    }
     if (!projectFolder) {
       return null
     }

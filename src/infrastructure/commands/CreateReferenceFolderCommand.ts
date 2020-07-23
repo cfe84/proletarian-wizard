@@ -10,7 +10,7 @@ export class CreateReferenceFolderCommand implements ICommand<string | null> {
   get Id(): string { return "pw.createReference" }
 
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context)
+    const folderSelector = new FolderSelector({}, this.deps, this.context)
     const initalValue = ""
     let referenceName = await vscode.window.showInputBox({ prompt: "Reference folder name", value: initalValue })
     if (!referenceName) {

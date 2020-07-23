@@ -9,7 +9,7 @@ export class OpenFileCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext) {
   }
   executeAsync = async (): Promise<string | null> => {
-    const folderSelector = new FolderSelector(this.deps, this.context);
+    const folderSelector = new FolderSelector({ allowThisFolder: true }, this.deps, this.context);
     const fileSelector = new FileSelector(this.deps);
     let folder: string | null = null;
     let file: string | null = null;

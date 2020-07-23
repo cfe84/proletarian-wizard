@@ -15,6 +15,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Create recurrences
 - [x] Create reference folders
 - [x] Prompt variables in templates
+- [x] Use "this folder"
 
 ## Extension Settings
 
