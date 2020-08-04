@@ -14,22 +14,23 @@ export class ArchiveProjectCommand implements ICommand<string | null> {
     if (!projectFolder) {
       return null
     }
-    if (projectFolder === folderSelector.getSpecialFolder("Project")) {
+    let objectToArchive: string | null = projectFolder.path
+    if (projectFolder.isSpecialFolder) {
       const fileSelector = new FileSelector(this.deps)
-      projectFolder = await fileSelector.selectFileAsync(projectFolder)
+      objectToArchive = await fileSelector.selectFileAsync(projectFolder.path)
     }
-    if (!projectFolder) {
+    if (!objectToArchive) {
       return null
     }
     const archiveFolder = folderSelector.getSpecialFolder("Archive")
     const yearlyFolder = this.deps.path.join(archiveFolder, this.deps.date.thisYearAsYString())
-    const projectFolderName = this.deps.path.basename(projectFolder)
+    const projectFolderName = this.deps.path.basename(objectToArchive)
     const destination = this.deps.path.join(yearlyFolder, projectFolderName)
     if (!this.deps.fs.existsSync(yearlyFolder)) {
       this.deps.fs.mkdirSync(yearlyFolder)
     }
     vscode.window.showInformationMessage(`Archived project ${projectFolderName}`)
-    this.deps.fs.renameSync(projectFolder, destination)
+    this.deps.fs.renameSync(objectToArchive, destination)
     return projectFolderName
   }
   get Id(): string { return "pw.archiveProject" };

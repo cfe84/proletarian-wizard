@@ -1,6 +1,7 @@
 import { IDependencies } from '../contract/IDependencies';
 import { IDictionary } from './IDictionary';
 import { IContext } from '../contract/IContext';
+import { SpecialFolder, IFolder } from '../contract/IFolder';
 
 const defaultInboxFolder: string = "10 - Inbox"
 const defaultProjectsFolder: string = "20 - Current Projects"
@@ -8,7 +9,6 @@ const defaultRecurrenceFolder: string = "21 - Recurrence"
 const defaultReferenceFolder: string = "30 - Reference"
 const defaultArchiveFolder: string = "40 - Archived Projects"
 
-export type SpecialFolder = "Inbox" | "Project" | "Recurrence" | "Reference" | "Archive";
 
 export interface SelectFolderProps {
   allowCreateFolder?: boolean
@@ -29,17 +29,17 @@ export class FolderSelector {
     }
   }
 
-  private selectSubfolderAsync = async (folder: string, folderName: string): Promise<string | null> => {
+  private selectSubfolderAsync = async (parentFolder: IFolder): Promise<IFolder | null> => {
     const thisFolder = {
-      fullpath: folder,
-      name: `<Select ${folderName}>`
+      fullpath: parentFolder.path,
+      name: `<Select ${parentFolder.name}>`
     }
     let folders = this.props.allowThisFolder ? [thisFolder] : []
     folders = folders.concat(
       this.deps.fs
-        .readdirSync(folder)
+        .readdirSync(parentFolder.path)
         .map(f => ({
-          fullpath: this.deps.path.join(folder, f),
+          fullpath: this.deps.path.join(parentFolder.path, f),
           name: f
         }))
         .filter(f => this.deps.fs.lstatSync(f.fullpath).isDirectory()))
@@ -48,12 +48,20 @@ export class FolderSelector {
       return null
     }
     const pickFolder = folders.find(f => f.name === pick)
-    return pickFolder?.fullpath || null
+    if (!pickFolder) {
+      return null
+    }
+    return {
+      path: pickFolder.fullpath,
+      name: pickFolder.name,
+      underSpecialFolder: parentFolder.underSpecialFolder,
+      isSpecialFolder: pickFolder === thisFolder && parentFolder.isSpecialFolder
+    }
   }
 
   getSpecialFolder = (specialFolder: SpecialFolder) => this.deps.path.join(this.context.rootFolder, this.folders[specialFolder])
 
-  selectFolderAsync = async (baseFolder?: SpecialFolder): Promise<string | null> => {
+  selectFolderAsync = async (baseFolder?: SpecialFolder): Promise<IFolder | null> => {
     if (!baseFolder) {
       baseFolder = await this.deps.uiSelector.selectSingleOptionAsync(["Project", "Recurrence", "Inbox", "Reference"]) as SpecialFolder
     }
@@ -63,10 +71,10 @@ export class FolderSelector {
         case "Project":
         case "Recurrence":
         case "Reference":
-          return await this.selectSubfolderAsync(folder, baseFolder) || null;
+          return await this.selectSubfolderAsync({ path: folder, name: baseFolder, underSpecialFolder: baseFolder, isSpecialFolder: true }) || null;
         case "Inbox":
         default:
-          return folder
+          return { path: folder, name: baseFolder, underSpecialFolder: baseFolder, isSpecialFolder: true }
       }
     } else {
       return null

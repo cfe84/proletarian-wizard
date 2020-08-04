@@ -28,19 +28,22 @@ export class SaveFileCommand implements ICommand<string | null> {
     if (!folder) {
       return null;
     }
-    const initalValue = this.deps.date.todayAsYMDString() + " - "
-    let fileName = await vscode.window.showInputBox({ prompt: "File name", value: initalValue })
+    let initialValue = this.deps.date.todayAsYMDString() + " - "
+    if (folder.underSpecialFolder === "Recurrence") {
+      initialValue += folder.name
+    }
+    let fileName = await vscode.window.showInputBox({ prompt: "File name", value: initialValue })
     if (!fileName) {
       return null
     }
-    const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder, fixDate: false })
+    const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder.path, fixDate: false })
     const editor = vscode.window.activeTextEditor
     const content = editor.document.getText()
     this.deps.fs.writeFileSync(path, content)
     await editor.edit((edit) => {
       edit.delete(new vscode.Range(editor.document.positionAt(0), editor.document.positionAt(content.length)))
     })
-    vscode.commands.executeCommand("workbench.action.closeActiveEditor", true)
+    vscode.commands.executeCommand("workbench.action.closeActiveEditor", true, false)
     vscode.window.showTextDocument(vscode.Uri.file(path))
     return path
   }

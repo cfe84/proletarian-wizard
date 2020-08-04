@@ -16,6 +16,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Create reference folders
 - [x] Prompt variables in templates
 - [x] Use "this folder"
+- [ ] Include recurrence name in new note by default
 
 ## Extension Settings
 
@@ -47,7 +48,13 @@ _Nothing yet_
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.3.0
+
+- For recurrence, default file name includes the name of the recurrence.
+
+### 0.2.0
+
+- Support `<this folder>` as a choice for save, archive, ... Also support archiving files.
 
 ### 0.1.0
 
