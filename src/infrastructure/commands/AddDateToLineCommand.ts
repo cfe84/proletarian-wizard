@@ -18,6 +18,7 @@ export class AddDateToLineCommand implements ICommand<string | null> {
       return "ERROR"
     }
     const updatedLine = lineOperations.addDate(lineText)
+    vscode.window.showInformationMessage(`${lineText} -> ${updatedLine}`)
     vscode.window.activeTextEditor?.edit((editor) => editor.replace(range, updatedLine))
     return ""
   }
