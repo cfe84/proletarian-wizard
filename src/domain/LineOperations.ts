@@ -12,7 +12,7 @@ export class LineOperations {
   constructor(private deps: IDependencies) { }
 
   private parseLine(line: string): ILineStructure {
-    const regexp = /^(\s*)?(?:([*-])\s*)?(?:(\[.\])\s*)?(?:((?:\d\d\d\d-)?\d\d-\d\d):\s*)?(.+)/
+    const regexp = /^(\s*)?(?:([*-])\s*)?(?:(\[\])\s*)?(?:((?:\d\d\d\d-)?\d\d-\d\d):\s*)?(.+)/
     const parsed = regexp.exec(line)
     if (!parsed) {
       return {

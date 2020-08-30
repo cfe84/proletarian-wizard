@@ -17,7 +17,7 @@ describe("LineOperations", () => {
       { description: "adds date to line with star and indent", input: "  * this just tells something", expected: "  * TODAY: this just tells something" },
       { description: "adds date to line with checkmark", input: "[ ] this just tells something", expected: "[ ] TODAY: this just tells something" },
       { description: "adds date to line with checkmark and dash", input: "  - [ ] this just tells something", expected: "  - [ ] TODAY: this just tells something" },
-      { description: "replace date with today", input: "  - [ ] 2020-01-01: this just tells something", expected: "  - [ ] TODAY: this just tells something" },
+      { description: "replace date with today", input: "  - [x] 2020-01-01: this just tells something", expected: "  - [x] TODAY: this just tells something" },
       { description: "replace partial date with today", input: "  - [ ] 01-01: this just tells something", expected: "  - [ ] TODAY: this just tells something" },
 
     ]
