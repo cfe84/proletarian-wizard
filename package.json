@@ -16,7 +16,8 @@
 		"onCommand:pw.createNoteFromTemplate",
 		"onCommand:pw.createProject",
 		"onCommand:pw.createRecurrence",
-		"onCommand:pw.createReference"
+		"onCommand:pw.createReference",
+		"onCommand:pw.addDateToLine"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
@@ -54,6 +55,11 @@
 			{
 				"command": "pw.createReference",
 				"title": "Create Reference Folder",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.addDateToLine",
+				"title": "Add date to line",
 				"category": "Proletarian Wizard"
 			}
 		]

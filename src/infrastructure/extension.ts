@@ -15,6 +15,7 @@ import { CreateNoteFromTemplate } from './commands/CreateNoteFromTemplate'
 import { ConfigFileLoader } from '../domain/ConfigFileLoader'
 import { CreateRecurrenceCommand } from './commands/CreateRecurrenceCommand'
 import { CreateReferenceFolderCommand } from './commands/CreateReferenceFolderCommand'
+import { AddDateToLineCommand } from './commands/AddDateToLineCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -50,6 +51,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new CreateRecurrenceCommand(deps, context),
 		new CreateReferenceFolderCommand(deps, context),
 		new CreateNoteFromTemplate(deps, context),
+		new AddDateToLineCommand(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);
