@@ -18,7 +18,13 @@
 		"onCommand:pw.createRecurrence",
 		"onCommand:pw.createReference",
 		"onCommand:pw.addDateToLine",
-		"onCommand:pw.toggleTodo"
+		"onCommand:pw.toggleTodo",
+		"onCommand:pw.markTodoAsTodo",
+		"onCommand:pw.markTodoAsComplete",
+		"onCommand:pw.markTodoAsCancelled",
+		"onCommand:pw.markTodoAsInProgress",
+		"onCommand:pw.markTodoAsDelegated",
+		"onCommand:pw.markTodoAsAttentionRequired"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
@@ -92,6 +98,43 @@
 				"command": "pw.markTodoAsInProgress",
 				"title": "Mark todo as in progress",
 				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsTodo",
+				"title": "Mark todo as todo",
+				"category": "Proletarian Wizard"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "pw.toggleTodo",
+				"key": "Alt+Enter",
+				"mac": "Alt+Enter"
+			},
+			{
+				"command": "pw.markTodoAsComplete",
+				"key": "Alt+c",
+				"mac": "Alt+c"
+			},
+			{
+				"command": "pw.markTodoAsAttentionRequired",
+				"key": "Alt+Shift+1",
+				"mac": "Alt+Shift+1"
+			},
+			{
+				"command": "pw.markTodoAsInProgress",
+				"key": "Alt+-",
+				"mac": "Alt+-"
+			},
+			{
+				"command": "pw.markTodoAsDelegated",
+				"key": "Alt+d",
+				"mac": "Alt+d"
+			},
+			{
+				"command": "pw.markTodoAsTodo",
+				"key": "Alt+Shift+Enter",
+				"mac": "Alt+Shift+Enter"
 			}
 		]
 	},

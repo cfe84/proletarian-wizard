@@ -22,6 +22,7 @@ import { MarkTodoAsCompleteCommand } from './commands/MarkTodoAsCompleteCommand'
 import { MarkTodoAsDelegatedCommand } from './commands/MarkTodoAsDelegatedCommand'
 import { MarkTodoAsAttentionRequiredCommand } from './commands/MarkTodoAsAttentionRequiredCommand'
 import { MarkTodoAsInProgressCommand } from './commands/MarkTodoAsInProgressCommand'
+import { MarkTodoAsTodoCommand } from './commands/MarkTodoAsTodoCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -64,6 +65,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new MarkTodoAsDelegatedCommand(deps, context),
 		new MarkTodoAsAttentionRequiredCommand(deps, context),
 		new MarkTodoAsInProgressCommand(deps, context),
+		new MarkTodoAsTodoCommand(deps, context),
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);
