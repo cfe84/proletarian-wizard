@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -27,3 +27,4 @@ steps:
 - script: |
     npm install -g vsce
     vsce publish -p ${{ parameters.personalAccessToken }}
+  displayName: 'publish to marketplace'
