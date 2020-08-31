@@ -13,7 +13,7 @@ pool:
 
 variables:
   - name: personalAccessToken
-  
+    value: $(personalAccessToken)
 steps:
 - task: NodeTool@0
   inputs:
@@ -27,6 +27,6 @@ steps:
 
 - script: |
     npm install -g vsce
-    echo "$(personalAccessToken)"
-    vsce publish -p $(personalAccessToken)
+    echo "Token: $PERSONALACCESSTOKEN"
+    vsce publish -p $PERSONALACCESSTOKEN
   displayName: 'publish to marketplace'
