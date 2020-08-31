@@ -24,6 +24,6 @@ steps:
 
 - script: |
     npm install -g vsce
-    echo "Token: $PERSONALACCESSTOKEN"
-    vsce publish -p $PERSONALACCESSTOKEN
+    echo "Token: $(personalAccessToken)"
+    vsce publish -p $(personalAccessToken)
   displayName: 'publish to marketplace'
