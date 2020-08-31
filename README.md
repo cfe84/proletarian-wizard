@@ -16,7 +16,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Create reference folders
 - [x] Prompt variables in templates
 - [x] Use "this folder"
-- [ ] Include recurrence name in new note by default
+- [x] Include recurrence name in new note by default
 - [x] Add date in line
 - [x] Support todo status
 - [ ] List all todos across workspace

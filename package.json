@@ -10,21 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:pw.saveFile",
-		"onCommand:pw.openFile",
-		"onCommand:pw.archiveProject",
-		"onCommand:pw.createNoteFromTemplate",
-		"onCommand:pw.createProject",
-		"onCommand:pw.createRecurrence",
-		"onCommand:pw.createReference",
-		"onCommand:pw.addDateToLine",
-		"onCommand:pw.toggleTodo",
-		"onCommand:pw.markTodoAsTodo",
-		"onCommand:pw.markTodoAsComplete",
-		"onCommand:pw.markTodoAsCancelled",
-		"onCommand:pw.markTodoAsInProgress",
-		"onCommand:pw.markTodoAsDelegated",
-		"onCommand:pw.markTodoAsAttentionRequired"
+		"onStartupFinished"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
