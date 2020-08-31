@@ -23,6 +23,7 @@ import { MarkTodoAsDelegatedCommand } from './commands/MarkTodoAsDelegatedComman
 import { MarkTodoAsAttentionRequiredCommand } from './commands/MarkTodoAsAttentionRequiredCommand'
 import { MarkTodoAsInProgressCommand } from './commands/MarkTodoAsInProgressCommand'
 import { MarkTodoAsTodoCommand } from './commands/MarkTodoAsTodoCommand'
+import { TodoItemFsEventListener } from './eventListeners.ts/TodoItemFsEventListener'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -71,6 +72,13 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);
 		vscontext.subscriptions.push(disposable);
 	})
+
+	const todoItemFsEventListener = new TodoItemFsEventListener(deps, context)
+
+	vscontext.subscriptions.push(
+		vscode.workspace.onDidChangeTextDocument((event) => todoItemFsEventListener.onFileChanged(event)),
+		vscode.workspace.onDidRenameFiles((event) => todoItemFsEventListener.onFileRenamed(event))
+	)
 }
 
 export function deactivate() { }

@@ -2,6 +2,7 @@ import * as should from "should"
 import { LineOperations } from "../src/domain/LineOperations"
 import { makeFakeDeps } from "./FakeDeps"
 import * as td from "testdouble"
+import { TodoItem, TodoStatus } from "../src/domain/TodoItem"
 
 interface ITestCase {
   description: string
@@ -59,5 +60,29 @@ describe("LineOperations", () => {
       { description: "keeps mark in date", input: " - [X] 2020-01-02: this just tells something", expected: " - [X] 2020-01-02: this just tells something" },
     ]
     runTestCases(testCases, (line) => lineOperations.setCheckmark(line, "X"))
+  })
+
+  interface TodoParsingTestCase {
+    description: string,
+    input: string,
+    expected: TodoItem | null
+  }
+
+  describe("Parses todo:", () => {
+    const testCases: TodoParsingTestCase[] = [
+      { description: "not a todo", input: "this is not a todo", expected: null },
+      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do" } },
+      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo" } },
+      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo" } },
+      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo" } },
+      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo" } },
+    ]
+
+    testCases.forEach((testCase) => {
+      it(testCase.description, () => {
+        const parsed = lineOperations.toTodo(testCase.input)
+        should(parsed).deepEqual(testCase.expected)
+      })
+    })
   })
 })

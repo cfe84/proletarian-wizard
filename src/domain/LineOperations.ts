@@ -1,4 +1,5 @@
 import { IDependencies } from "../contract/IDependencies";
+import { TodoItem, TodoStatus } from "./TodoItem";
 
 interface ILineStructure {
   indentation: string
@@ -58,5 +59,24 @@ export class LineOperations {
     const parsedLine = this.parseLine(line)
     parsedLine.checkbox = `[${checkMark}]`
     return this.lineToString(parsedLine)
+  }
+
+  private markToStatus = (mark: string) =>
+    mark === "]" ? TodoStatus.Cancelled
+      : mark === "-" ? TodoStatus.InProgress
+        : mark === "!" ? TodoStatus.AttentionRequired
+          : mark === "x" ? TodoStatus.Complete
+            : mark === " " ? TodoStatus.Todo
+              : mark === "d" ? TodoStatus.Delegated
+                : TodoStatus.Todo
+
+  toTodo(line: string): TodoItem | null {
+    const parsedLine = this.parseLine(line)
+    if (!parsedLine.checkbox)
+      return null
+    return {
+      status: this.markToStatus(parsedLine.checkbox[1]),
+      text: parsedLine.line
+    }
   }
 }
