@@ -11,9 +11,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  - name: personalAccessToken
-    value: $(personalAccessToken)
 steps:
 - task: NodeTool@0
   inputs:
