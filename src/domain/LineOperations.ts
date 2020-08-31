@@ -43,4 +43,20 @@ export class LineOperations {
     parsedLine.date = todaysDate
     return this.lineToString(parsedLine)
   }
+
+  toggleTodo(line: string): string {
+    const parsedLine = this.parseLine(line)
+    if (parsedLine.checkbox) {
+      parsedLine.checkbox = ""
+    } else {
+      parsedLine.checkbox = "[ ]"
+    }
+    return this.lineToString(parsedLine)
+  }
+
+  setCheckmark(line: string, checkMark: string): string {
+    const parsedLine = this.parseLine(line)
+    parsedLine.checkbox = `[${checkMark}]`
+    return this.lineToString(parsedLine)
+  }
 }

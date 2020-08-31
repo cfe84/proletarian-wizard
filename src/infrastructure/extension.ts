@@ -16,6 +16,12 @@ import { ConfigFileLoader } from '../domain/ConfigFileLoader'
 import { CreateRecurrenceCommand } from './commands/CreateRecurrenceCommand'
 import { CreateReferenceFolderCommand } from './commands/CreateReferenceFolderCommand'
 import { AddDateToLineCommand } from './commands/AddDateToLineCommand'
+import { ToggleTodoCommand } from './commands/ToggleTodoCommand'
+import { MarkTodoAsCancelledCommand } from './commands/MarkTodoAsCancelledCommand'
+import { MarkTodoAsCompleteCommand } from './commands/MarkTodoAsCompleteCommand'
+import { MarkTodoAsDelegatedCommand } from './commands/MarkTodoAsDelegatedCommand'
+import { MarkTodoAsAttentionRequiredCommand } from './commands/MarkTodoAsAttentionRequiredCommand'
+import { MarkTodoAsInProgressCommand } from './commands/MarkTodoAsInProgressCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -51,7 +57,13 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new CreateRecurrenceCommand(deps, context),
 		new CreateReferenceFolderCommand(deps, context),
 		new CreateNoteFromTemplate(deps, context),
-		new AddDateToLineCommand(deps, context)
+		new AddDateToLineCommand(deps, context),
+		new ToggleTodoCommand(deps, context),
+		new MarkTodoAsCancelledCommand(deps, context),
+		new MarkTodoAsCompleteCommand(deps, context),
+		new MarkTodoAsDelegatedCommand(deps, context),
+		new MarkTodoAsAttentionRequiredCommand(deps, context),
+		new MarkTodoAsInProgressCommand(deps, context),
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

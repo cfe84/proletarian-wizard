@@ -17,7 +17,8 @@
 		"onCommand:pw.createProject",
 		"onCommand:pw.createRecurrence",
 		"onCommand:pw.createReference",
-		"onCommand:pw.addDateToLine"
+		"onCommand:pw.addDateToLine",
+		"onCommand:pw.toggleTodo"
 	],
 	"main": "./out/infrastructure/extension.js",
 	"contributes": {
@@ -60,6 +61,36 @@
 			{
 				"command": "pw.addDateToLine",
 				"title": "Add date to line",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.toggleTodo",
+				"title": "Toggle todo",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsCancelled",
+				"title": "Mark todo as cancelled",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsComplete",
+				"title": "Mark todo as complete",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsDelegated",
+				"title": "Mark todo as delegated",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsAttentionRequired",
+				"title": "Mark todo as attention-required",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.markTodoAsInProgress",
+				"title": "Mark todo as in progress",
 				"category": "Proletarian Wizard"
 			}
 		]
