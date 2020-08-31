@@ -52,7 +52,7 @@ _Nothing yet_
 
 ## Release Notes
 
-### 0.6.1
+### 0.7.0
 
 - Add keyboard shortcuts for todo management
 
