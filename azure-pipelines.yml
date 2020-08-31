@@ -9,10 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-parameters:
+variables:
   - name: personalAccessToken
-    displayName: "Personal access token"
-    type: string
+  
 steps:
 - task: NodeTool@0
   inputs:
@@ -26,5 +25,5 @@ steps:
 
 - script: |
     npm install -g vsce
-    vsce publish -p ${{ parameters.personalAccessToken }}
+    vsce publish -p $PERSONALACCESSTOKEN
   displayName: 'publish to marketplace'
