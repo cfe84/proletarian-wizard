@@ -76,7 +76,8 @@ export class LineOperations {
       return null
     return {
       status: this.markToStatus(parsedLine.checkbox[1]),
-      text: parsedLine.line
+      text: parsedLine.line,
+      file: ""
     }
   }
 }

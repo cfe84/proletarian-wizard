@@ -10,4 +10,5 @@ export enum TodoStatus {
 export interface TodoItem {
   status: TodoStatus
   text: string
+  file: string
 }

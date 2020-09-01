@@ -71,11 +71,11 @@ describe("LineOperations", () => {
   describe("Parses todo:", () => {
     const testCases: TodoParsingTestCase[] = [
       { description: "not a todo", input: "this is not a todo", expected: null },
-      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do" } },
-      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo" } },
-      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo" } },
-      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo" } },
-      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo" } },
+      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "" } },
+      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "" } },
+      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "" } },
+      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "" } },
+      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo", file: "" } },
     ]
 
     testCases.forEach((testCase) => {

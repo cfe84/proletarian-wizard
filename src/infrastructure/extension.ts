@@ -24,6 +24,7 @@ import { MarkTodoAsAttentionRequiredCommand } from './commands/MarkTodoAsAttenti
 import { MarkTodoAsInProgressCommand } from './commands/MarkTodoAsInProgressCommand'
 import { MarkTodoAsTodoCommand } from './commands/MarkTodoAsTodoCommand'
 import { TodoItemFsEventListener } from './eventListeners.ts/TodoItemFsEventListener'
+import { FolderTodoParser } from '../domain/FolderTodoParser'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -40,14 +41,15 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		logger.error(`No folder is open, or more than one folder is open`)
 		return null
 	}
-	const rootFolder = vscode.workspace.workspaceFolders[0].uri.path
+	const rootFolder = vscode.workspace.workspaceFolders[0].uri.fsPath
 	const configFile = deps.path.join(rootFolder, ".pw", "config.yml")
 	const configLoader = new ConfigFileLoader(deps)
 	const config = configLoader.loadConfig(configFile)
 
 	const context: IContext = {
 		rootFolder,
-		config: config || undefined
+		config: config || undefined,
+		todos: []
 	}
 	logger.log("Loaded")
 
@@ -73,12 +75,16 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		vscontext.subscriptions.push(disposable);
 	})
 
-	const todoItemFsEventListener = new TodoItemFsEventListener(deps, context)
+	const folderParser = new FolderTodoParser(deps)
+	const todoItemFsEventListener = new TodoItemFsEventListener(deps, context, folderParser)
 
 	vscontext.subscriptions.push(
 		vscode.workspace.onDidChangeTextDocument((event) => todoItemFsEventListener.onFileChanged(event)),
-		vscode.workspace.onDidRenameFiles((event) => todoItemFsEventListener.onFileRenamed(event))
+		vscode.workspace.onDidRenameFiles((event) => todoItemFsEventListener.onFileRenamed(event)),
+		vscode.workspace.onDidCreateFiles(event => todoItemFsEventListener.onFileCreated(event)),
+		vscode.workspace.onDidDeleteFiles(event => todoItemFsEventListener.onFileDeleted(event))
 	)
+	context.todos = folderParser.parseFolder(context.rootFolder)
 }
 
 export function deactivate() { }

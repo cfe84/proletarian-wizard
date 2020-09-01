@@ -14,9 +14,11 @@ export class FolderTodoParser {
     }
     const content = `${this.deps.fs.readFileSync(file)}`
     const lines = content.split("\n")
-    return lines
+    const todos = lines
       .map(line => this.lineOperations.toTodo(line))
-      .filter(line => line !== null) as TodoItem[]
+      .filter(todo => todo !== null) as TodoItem[]
+    todos.forEach(todo => todo.file = file)
+    return todos
   }
 
   parseFolder(folder: string): TodoItem[] {
@@ -31,7 +33,7 @@ export class FolderTodoParser {
       .reduce((prev, curr) => {
         prev = prev.concat(curr)
         return prev
-      })
+      }, [])
     return todos
   }
 }
