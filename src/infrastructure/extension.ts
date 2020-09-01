@@ -76,7 +76,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		vscontext.subscriptions.push(disposable);
 	})
 
-	const folderParser = new FolderTodoParser(deps)
+	const folderParser = new FolderTodoParser(deps, context)
 	const todoItemFsEventListener = new TodoItemFsEventListener(deps, context, folderParser)
 
 	vscontext.subscriptions.push(

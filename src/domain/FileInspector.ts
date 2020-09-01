@@ -1,5 +1,6 @@
 import { IDependencies } from "../contract/IDependencies";
 import { IContext } from "../contract/IContext";
+import { IDictionary } from "./IDictionary";
 
 export interface InspectionResults {
   containingFolderType: string
@@ -8,7 +9,7 @@ export interface InspectionResults {
 }
 
 export class FileInspector {
-  private foldersRef: { [folder: string]: string } = {};
+  private foldersRef: IDictionary<string> = {};
   constructor(private deps: IDependencies, private context: IContext) {
     Object.keys(context.config.folders).forEach(key => this.foldersRef[(context.config.folders as any)[key]] = key || "")
   }

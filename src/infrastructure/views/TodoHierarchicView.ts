@@ -42,7 +42,7 @@ class TodoTreeItem extends GroupOrTodo {
       command: "vscode.open",
       arguments: [vscode.Uri.file(todo.file)]
     }
-    this.description = todo.file
+    this.description = (todo.project || todo.file)
     this.collapsibleState = vscode.TreeItemCollapsibleState.None
   }
 }

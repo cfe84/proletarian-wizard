@@ -1,11 +1,15 @@
 import { IDependencies } from "../contract/IDependencies";
 import { TodoItem } from "./TodoItem";
 import { LineOperations } from "./LineOperations";
+import { IContext } from "../contract/IContext";
+import { FileInspector } from "./FileInspector";
 
 export class FolderTodoParser {
   private lineOperations: LineOperations
-  constructor(private deps: IDependencies) {
+  private fileInspector: FileInspector
+  constructor(private deps: IDependencies, context: IContext) {
     this.lineOperations = new LineOperations(deps)
+    this.fileInspector = new FileInspector(deps, context)
   }
 
   private parseFile(file: string): TodoItem[] {
@@ -17,7 +21,12 @@ export class FolderTodoParser {
     const todos = lines
       .map(line => this.lineOperations.toTodo(line))
       .filter(todo => todo !== null) as TodoItem[]
-    todos.forEach(todo => todo.file = file)
+    const inspectionResults = this.fileInspector.inspect(file)
+    todos.forEach(todo => {
+      todo.file = file
+      todo.project = inspectionResults.project
+      todo.folderType = inspectionResults.containingFolderType
+    })
     return todos
   }
 
