@@ -3,24 +3,31 @@ import { IDependencies } from '../../contract/IDependencies';
 import { IContext } from '../../contract/IContext';
 import { threadId } from 'worker_threads';
 import { FolderTodoParser } from '../../domain/FolderTodoParser';
+import { Document } from 'yaml';
 
 export class TodoItemFsEventListener {
+  private lastUpdate = 0
   constructor(private deps: IDependencies, private ctx: IContext, private parser: FolderTodoParser) {
-
   }
 
   private refreshTodos() {
-    this.ctx.todos = this.parser.parseFolder(this.ctx.rootFolder)
+    if (Date.now() > this.lastUpdate + 100) {
+      this.lastUpdate = Date.now()
+      this.deps.logger.log(`Refresh`)
+      this.ctx.todos = this.parser.parseFolder(this.ctx.rootFolder)
+      this.fileDidChange.forEach(callback => callback())
+    }
   }
+
+  public fileDidChange: (() => void)[] = []
 
   onFileCreated(change: vscode.FileCreateEvent) {
     this.refreshTodos()
   }
 
-  onFileChanged(change: vscode.TextDocumentChangeEvent) {
-    if (change.document.fileName.endsWith(".md"))
+  onFileSaved(document: vscode.TextDocument) {
+    if (document.fileName.endsWith(".md"))
       this.refreshTodos()
-
   }
 
   onFileRenamed(change: vscode.FileRenameEvent) {

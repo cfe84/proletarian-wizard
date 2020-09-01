@@ -25,6 +25,7 @@ import { MarkTodoAsInProgressCommand } from './commands/MarkTodoAsInProgressComm
 import { MarkTodoAsTodoCommand } from './commands/MarkTodoAsTodoCommand'
 import { TodoItemFsEventListener } from './eventListeners.ts/TodoItemFsEventListener'
 import { FolderTodoParser } from '../domain/FolderTodoParser'
+import { TodoHierarchicView } from './views/TodoHierarchicView'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -79,12 +80,16 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	const todoItemFsEventListener = new TodoItemFsEventListener(deps, context, folderParser)
 
 	vscontext.subscriptions.push(
-		vscode.workspace.onDidChangeTextDocument((event) => todoItemFsEventListener.onFileChanged(event)),
+		vscode.workspace.onDidSaveTextDocument((event) => todoItemFsEventListener.onFileSaved(event)),
 		vscode.workspace.onDidRenameFiles((event) => todoItemFsEventListener.onFileRenamed(event)),
 		vscode.workspace.onDidCreateFiles(event => todoItemFsEventListener.onFileCreated(event)),
 		vscode.workspace.onDidDeleteFiles(event => todoItemFsEventListener.onFileDeleted(event))
 	)
 	context.todos = folderParser.parseFolder(context.rootFolder)
+
+	const todosView = new TodoHierarchicView(deps, context)
+	todoItemFsEventListener.fileDidChange.push(() => todosView.refresh())
+	vscode.window.registerTreeDataProvider("pw.todoHierarchy", todosView)
 }
 
 export function deactivate() { }

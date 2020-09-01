@@ -89,6 +89,21 @@
 				"command": "pw.markTodoAsTodo",
 				"title": "Mark todo as todo",
 				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.todoView.groupBy",
+				"title": "Group by",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.todoView.filter",
+				"title": "Filter",
+				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.todoView.sort",
+				"title": "Sort",
+				"category": "Proletarian Wizard"
 			}
 		],
 		"keybindings": [
@@ -122,7 +137,34 @@
 				"key": "Alt+Shift+Enter",
 				"mac": "Alt+Shift+Enter"
 			}
-		]
+		],
+		"views": {
+			"explorer": [
+				{
+					"id": "pw.todoHierarchy",
+					"name": "Todo hierarchy"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "pw.todoView.groupBy",
+					"when": "view == pw.todoHierarchy",
+					"group": "navigation"
+				},
+				{
+					"command": "pw.todoView.sort",
+					"when": "view == pw.todoHierarchy",
+					"group": "navigation"
+				},
+				{
+					"command": "pw.todoView.filter",
+					"when": "view == pw.todoHierarchy",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run build",
