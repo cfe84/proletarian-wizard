@@ -21,7 +21,8 @@ function makeFakeFs(): IFs {
 function makeFakePath(): IPath {
   return {
     basename: (name: string) => `BASENAME(${name})`,
-    join: (...segments: string[]) => segments.join("|")
+    join: (...segments: string[]) => segments.join("|"),
+    sep: "|"
   }
 }
 

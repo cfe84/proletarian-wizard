@@ -7,7 +7,7 @@ import { TemplateSelector } from "../src/domain/TemplateSelector"
 describe("Template selector", () => {
   // given
   const deps = makeFakeDeps()
-  const context = { rootFolder: "ROOT", todos: [] }
+  const context = { rootFolder: "ROOT", todos: [], config: { folders: {} } }
   const templateSelector = new TemplateSelector(deps, context)
 
   const templatesFileNames = ["template1.md", "temp2.md", "123.md"]

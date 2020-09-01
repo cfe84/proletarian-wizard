@@ -11,4 +11,6 @@ export interface TodoItem {
   status: TodoStatus
   text: string
   file: string
+  folderType?: string
+  project?: string
 }

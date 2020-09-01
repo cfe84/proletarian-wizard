@@ -4,6 +4,6 @@ import { TodoItem } from "../domain/TodoItem";
 
 export interface IContext {
   rootFolder: path
-  config?: IConfig
+  config: IConfig
   todos: TodoItem[]
 }

@@ -19,7 +19,8 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Include recurrence name in new note by default
 - [x] Add date in line
 - [x] Support todo status
-- [ ] List all todos across workspace
+- [x] List all todos across workspace
+- [ ] Support grouping todos by project
 - [ ] Support line attributes (assignee, priority, due date, selected)
 
 ## Extension Settings
@@ -51,6 +52,10 @@ config:
 _Nothing yet_
 
 ## Release Notes
+
+### 0.8.0
+
+- Add view listing todo items by priority
 
 ### 0.7.0
 
