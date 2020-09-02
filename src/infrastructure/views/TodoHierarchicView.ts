@@ -132,13 +132,13 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   private getSelectedGroup(): Group {
     const getSelectedTasks = (): TodoItem[] =>
-      this.context.todos.filter(todo => todo.attributes && todo.attributes.selected)
+      this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes.selected)
     return new Group("Selected tasks", getSelectedTasks())
   }
 
   private getGroupsByStatus(): Group[] {
     const getTodosByStatus = (status: TodoStatus): TodoItem[] =>
-      this.context.todos.filter(todo => todo.status === status)
+      this.context.parsedFolder.todos.filter(todo => todo.status === status)
     return [
       { label: "Attention required", status: TodoStatus.AttentionRequired },
       { label: "Todo", status: TodoStatus.Todo },
@@ -153,7 +153,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   private getGroupsByProject(): Group[] {
     const getProjects = () =>
-      this.context.todos.reduce((projects: IDictionary<TodoItem[]>, todo: TodoItem) => {
+      this.context.parsedFolder.todos.reduce((projects: IDictionary<TodoItem[]>, todo: TodoItem) => {
         const project = todo.project || "Empty"
         if (!projects[project]) {
           projects[project] = []
@@ -170,10 +170,25 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       .sort((a, b) => a.name === "Empty" ? 1 : a.name.localeCompare(b.name))
   }
 
+  private getGroupsByAttribute(attributeName: string): Group[] {
+    const todoWithoutThisAttribute = this.context.parsedFolder.todos.filter(todo => !todo.attributes || todo.attributes[attributeName] === undefined)
+    let groupedByAttributes = this.context.parsedFolder.attributeValues[attributeName].map(
+      attributeValue => {
+        const todos = this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes[attributeName] === attributeValue)
+        return new Group(attributeValue, todos)
+      })
+    if (todoWithoutThisAttribute.length > 0) {
+      groupedByAttributes = groupedByAttributes.concat(new Group("Empty", todoWithoutThisAttribute))
+    }
+    return groupedByAttributes
+  }
+
   private getGroupByGroups() {
     switch (this._groupBy.groupByOption) {
       case GroupByOption.project:
         return this.getGroupsByProject()
+      case GroupByOption.attribute:
+        return this.getGroupsByAttribute(this._groupBy.attributeName as string)
       case GroupByOption.status:
       default:
         return this.getGroupsByStatus()

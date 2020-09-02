@@ -1,11 +1,11 @@
 import { path } from "./IPath";
 import { IConfig } from "./IConfig";
-import { TodoItem } from "../domain/TodoItem";
 import { IStorage } from "./IStorage";
+import { ParsedFolder } from "../domain/FolderTodoParser";
 
 export interface IContext {
   rootFolder: path
   config: IConfig
-  todos: TodoItem[]
+  parsedFolder: ParsedFolder
   storage?: IStorage
 }

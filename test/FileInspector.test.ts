@@ -1,4 +1,5 @@
 import { makeFakeDeps } from "./FakeDeps"
+import { fakeContext } from "./FakeContext"
 import { IContext } from "../src/contract/IContext"
 import { FileInspector, InspectionResults } from "../src/domain/FileInspector"
 import * as should from "should"
@@ -6,17 +7,7 @@ import * as should from "should"
 describe("File inspector", () => {
   // given
   const deps = makeFakeDeps()
-  const context: IContext = {
-    rootFolder: "ROOT", todos: [], config: {
-      folders: {
-        inbox: "INBOX",
-        archive: "ARCHIVE",
-        projects: "PROJECTS",
-        recurrences: "RECURRENCES",
-        reference: "REFERENCE"
-      }
-    }
-  }
+  const context: IContext = fakeContext()
 
   const inspector = new FileInspector(deps, context)
 

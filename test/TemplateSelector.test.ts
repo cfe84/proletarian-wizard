@@ -2,12 +2,13 @@ import { makeFakeDeps } from "./FakeDeps"
 import * as td from "testdouble"
 import * as should from "should"
 import { TemplateSelector } from "../src/domain/TemplateSelector"
+import { fakeContext } from "./FakeContext"
 
 
 describe("Template selector", () => {
   // given
   const deps = makeFakeDeps()
-  const context = { rootFolder: "ROOT", todos: [], config: { folders: {} } }
+  const context = fakeContext()
   const templateSelector = new TemplateSelector(deps, context)
 
   const templatesFileNames = ["template1.md", "temp2.md", "123.md"]

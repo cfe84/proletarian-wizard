@@ -50,6 +50,12 @@ PW also supports inline attributes, using the following format: `@attributename(
 
 There is one special attribute called `selected` which allows you to pick some tasks you want to keep in front (say, for example, those you want to process today, or this week).
 
+## Todo's view
+
+PW comes with a handy view that lists all todos in the current hierarchy. This view can be customized to:
+- Display "selected" todos on top of the list
+- Group by any attribute
+
 ## Features
 
 - [x] Save files in the correct place in few keystrokes
@@ -72,7 +78,7 @@ There is one special attribute called `selected` which allows you to pick some t
 - [x] Grouping todos by project
 - [x] Save display preferences
 - [x] Support line attributes (assignee, priority, due date, selected)
-- [ ] Group by attributes
+- [x] Group by attributes
 - [x] Display "@selected" on top
 - [ ] Optimize reload of todos
 - [ ] When clicking on todo, open file at the right line

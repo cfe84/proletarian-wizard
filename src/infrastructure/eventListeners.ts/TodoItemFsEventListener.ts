@@ -14,7 +14,7 @@ export class TodoItemFsEventListener {
     if (Date.now() > this.lastUpdate + 100) {
       this.lastUpdate = Date.now()
       this.deps.logger.log(`Refresh`)
-      this.ctx.todos = this.parser.parseFolder(this.ctx.rootFolder)
+      this.ctx.parsedFolder = this.parser.parseFolder(this.ctx.rootFolder)
       this.fileDidChange.forEach(callback => callback())
     }
   }

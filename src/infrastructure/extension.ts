@@ -52,7 +52,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	const context: IContext = {
 		rootFolder,
 		config: config || undefined,
-		todos: [],
+		parsedFolder: { todos: [], attributes: [], attributeValues: {} },
 		storage: vscontext.globalState
 	}
 	logger.log("Loaded")
@@ -88,7 +88,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		vscode.workspace.onDidCreateFiles(event => todoItemFsEventListener.onFileCreated(event)),
 		vscode.workspace.onDidDeleteFiles(event => todoItemFsEventListener.onFileDeleted(event))
 	)
-	context.todos = folderParser.parseFolder(context.rootFolder)
+	context.parsedFolder = folderParser.parseFolder(context.rootFolder)
 
 	const todosView = new TodoHierarchicView(deps, context)
 	todoItemFsEventListener.fileDidChange.push(() => todosView.refresh())

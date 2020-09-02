@@ -17,7 +17,11 @@ export class SwitchGroupByCommand implements ICommand<string | null> {
     const options = [
       new GroupByMenuOption("By status", { groupByOption: GroupByOption.status }),
       new GroupByMenuOption("By project", { groupByOption: GroupByOption.project })
-    ]
+    ].concat(this.context.parsedFolder.attributes
+      .filter(attributeName => attributeName !== "selected")
+      .map(
+        attribute => new GroupByMenuOption(`By ${attribute}`, { groupByOption: GroupByOption.attribute, attributeName: attribute })
+      ))
     const option = await vscode.window.showQuickPick(options, { canPickMany: false })
     if (option) {
       this.todoView.groupBy = option.groupByOption

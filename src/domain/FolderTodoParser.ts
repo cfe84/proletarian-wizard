@@ -3,6 +3,13 @@ import { TodoItem } from "./TodoItem";
 import { LineOperations } from "./LineOperations";
 import { IContext } from "../contract/IContext";
 import { FileInspector } from "./FileInspector";
+import { IDictionary } from "./IDictionary";
+
+export interface ParsedFolder {
+  todos: TodoItem[]
+  attributes: string[]
+  attributeValues: IDictionary<string[]>
+}
 
 export class FolderTodoParser {
   private lineOperations: LineOperations
@@ -30,13 +37,13 @@ export class FolderTodoParser {
     return todos
   }
 
-  parseFolder(folder: string): TodoItem[] {
+  private findFolderTodos(folder: string): TodoItem[] {
     const files = this.deps.fs.readdirSync(folder)
     const todos = files
       .map(file => this.deps.path.join(folder, file))
       .map((file) =>
         this.deps.fs.lstatSync(file).isDirectory() ?
-          this.parseFolder(file) :
+          this.findFolderTodos(file) :
           this.parseFile(file)
       )
       .reduce((prev, curr) => {
@@ -44,5 +51,29 @@ export class FolderTodoParser {
         return prev
       }, [])
     return todos
+  }
+
+  public parseFolder(folder: string): ParsedFolder {
+    const todos = this.findFolderTodos(folder)
+    const attributes: IDictionary<string[]> = {}
+    todos.forEach(todo => {
+      if (!todo.attributes) {
+        return
+      }
+      const todoAttributes = todo.attributes
+      Object.keys(todoAttributes).forEach(attribute => {
+        if (!attributes[attribute]) {
+          attributes[attribute] = []
+        }
+        if (todoAttributes[attribute] !== true && attributes[attribute].indexOf(todoAttributes[attribute] as string) < 0) {
+          attributes[attribute].push(todoAttributes[attribute] as string)
+        }
+      })
+    })
+    return {
+      todos,
+      attributes: Object.keys(attributes).sort((a, b) => a.localeCompare(b)),
+      attributeValues: attributes
+    }
   }
 }
