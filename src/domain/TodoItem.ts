@@ -1,3 +1,5 @@
+import { IDictionary } from "./IDictionary";
+
 export enum TodoStatus {
   AttentionRequired = 0,
   Todo = 1,
@@ -13,4 +15,5 @@ export interface TodoItem {
   file: string
   folderType?: string
   project?: string
+  attributes?: IDictionary<string | boolean>
 }

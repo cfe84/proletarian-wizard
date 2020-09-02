@@ -50,12 +50,31 @@ class TodoTreeItem extends GroupOrTodo {
   type: ItemType = ItemType.Todo
   constructor(private todo: TodoItem) {
     super(statusToIcon(todo.status) + " " + todo.text)
+    const mapAttributeName = (attributeName: string): string =>
+      attributeName === "selected" ? "📌"
+        : attributeName === "assignee" || attributeName.toLowerCase() === "assignedto" || attributeName === "assigned" || attributeName === "who" ? "🧍‍♂️"
+          : attributeName === "due" || attributeName.toLowerCase() === "duedate" || attributeName === "when" ? "📆"
+            : "#️⃣ " + attributeName
+    const mapAttributeValue = (attributeName: string, attributeValue: string): string =>
+      (attributeName === "priority" || attributeName === "importance") ?
+        attributeValue === "critical" ? "❗❗"
+          : attributeValue === "high" ? "❗"
+            : attributeValue === "medium" ? "➖"
+              : attributeValue === "low" ? "⬇"
+                : attributeValue
+        : attributeValue
+    const flattenAttributes = (attributes: IDictionary<string | boolean> | undefined): string =>
+      attributes ?
+        Object.keys(attributes)
+          .map(attributeName => mapAttributeName(attributeName) + (attributes[attributeName] === true ? "" : `: ${mapAttributeValue(attributeName, attributes[attributeName] as string)}`))
+          .join(", ")
+        : ""
     this.command = {
       title: "Open",
       command: "vscode.open",
       arguments: [vscode.Uri.file(todo.file)]
     }
-    this.description = (todo.project || todo.file)
+    this.description = (todo.project || todo.file) + " " + flattenAttributes(todo.attributes)
     this.collapsibleState = vscode.TreeItemCollapsibleState.None
   }
 }

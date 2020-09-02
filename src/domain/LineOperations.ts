@@ -1,5 +1,7 @@
 import { IDependencies } from "../contract/IDependencies";
 import { TodoItem, TodoStatus } from "./TodoItem";
+import { IDictionary } from "./IDictionary";
+import { TextDecoder } from "util";
 
 interface ILineStructure {
   indentation: string
@@ -70,13 +72,37 @@ export class LineOperations {
               : mark === "d" ? TodoStatus.Delegated
                 : TodoStatus.Todo
 
+  private parseAttributes(text: string): { textWithoutAttributes: string, attributes: IDictionary<string | boolean> } {
+    const regexp = / @(\w+)(?:\(([^)]+)\))?/g
+    const matches = text.match(regexp)
+    const res: IDictionary<string | boolean> = {}
+    if (!matches)
+      return { textWithoutAttributes: text, attributes: res }
+    let textWithoutAttributes = text
+    matches.forEach(match => {
+      const regexp = / @(\w+)(?:\(([^)]+)\))?/g
+
+      const submatch = regexp.exec(" " + match + " ")
+      if (!submatch) {
+        throw Error("No match?")
+        return
+      }
+      res[submatch[1]] = submatch[2] || true
+      textWithoutAttributes = textWithoutAttributes.replace(match, "")
+    });
+
+    return { textWithoutAttributes, attributes: res }
+  }
+
   toTodo(line: string): TodoItem | null {
     const parsedLine = this.parseLine(line)
     if (!parsedLine.checkbox)
       return null
+    const attributesMatching = this.parseAttributes(parsedLine.line)
     return {
       status: this.markToStatus(parsedLine.checkbox[1]),
-      text: parsedLine.line,
+      text: attributesMatching.textWithoutAttributes,
+      attributes: attributesMatching.attributes,
       file: ""
     }
   }

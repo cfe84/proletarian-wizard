@@ -71,11 +71,23 @@ describe("LineOperations", () => {
   describe("Parses todo:", () => {
     const testCases: TodoParsingTestCase[] = [
       { description: "not a todo", input: "this is not a todo", expected: null },
-      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "" } },
-      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "" } },
-      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "" } },
-      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "" } },
-      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo", file: "" } },
+      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } },
+      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
+      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
+      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "", attributes: {} } },
+      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo", file: "", attributes: {} } },
+      {
+        description: "A todo with a text attribute", input: "[ ] Todo @assignee(Jojo)",
+        expected: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo" } }
+      },
+      {
+        description: "A todo with a text and a boolean attribute", input: "[ ] Todo @assignee(Jojo) @selected",
+        expected: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo", selected: true } }
+      },
+      {
+        description: "A line with an email and an attribute", input: "[ ] Todo email@host @assignee(Jojo) @selected",
+        expected: { status: TodoStatus.Todo, text: "Todo email@host", file: "", attributes: { assignee: "Jojo", selected: true } }
+      },
     ]
 
     testCases.forEach((testCase) => {

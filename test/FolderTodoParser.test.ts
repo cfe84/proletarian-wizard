@@ -41,11 +41,11 @@ not a todo again
     const todos = parser.parseFolder(rootFolder)
 
     // then
-    it("should load normal todo", () => should(todos).containEql({ status: TodoStatus.Todo, text: "A todo todo", file: "ROOT|file.md", project: "", folderType: "" }))
-    it("should skip non md files", () => should(todos).not.containEql({ status: TodoStatus.Todo, text: "A todo that should not be loaded", file: "ROOT|file.txt", project: "", folderType: "" }))
-    it("should load completed todo", () => should(todos).containEql({ status: TodoStatus.Complete, text: "a completed todo", file: "ROOT|file.md", project: "", folderType: "" }))
-    it("should load in progress todo from subfolder", () => should(todos).containEql({ status: TodoStatus.InProgress, text: "An in progress todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something" }))
-    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something" }))
+    it("should load normal todo", () => should(todos).containEql({ status: TodoStatus.Todo, text: "A todo todo", file: "ROOT|file.md", project: "", folderType: "", attributes: {} }))
+    it("should skip non md files", () => should(todos).not.containEql({ status: TodoStatus.Todo, text: "A todo that should not be loaded", file: "ROOT|file.txt", project: "", folderType: "", attributes: {} }))
+    it("should load completed todo", () => should(todos).containEql({ status: TodoStatus.Complete, text: "a completed todo", file: "ROOT|file.md", project: "", folderType: "", attributes: {} }))
+    it("should load in progress todo from subfolder", () => should(todos).containEql({ status: TodoStatus.InProgress, text: "An in progress todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: {} }))
+    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: {} }))
   })
   context("No content", () => {
     // given

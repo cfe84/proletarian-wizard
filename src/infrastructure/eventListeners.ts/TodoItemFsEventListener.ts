@@ -32,7 +32,6 @@ export class TodoItemFsEventListener {
 
   onFileRenamed(change: vscode.FileRenameEvent) {
     this.refreshTodos()
-
   }
 
   onFileDeleted(change: vscode.FileDeleteEvent) {
