@@ -89,11 +89,17 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   constructor(private deps: IDependencies, private context: IContext) { }
 
   private _groupBy: GroupByOption = GroupByOption.status
+  private _showSelectedOnTop: boolean = true
 
   public set groupBy(value: GroupByOption) {
     this._groupBy = value
     this.refresh()
   }
+  public set showSelectedOnTop(value: boolean) {
+    this._showSelectedOnTop = value
+    this.refresh()
+  }
+
 
   private onDidChangeTreeDataEventEmitter: vscode.EventEmitter<GroupOrTodo | undefined> = new vscode.EventEmitter<GroupOrTodo | undefined>();
 
@@ -105,6 +111,12 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   getTreeItem(element: GroupOrTodo): GroupOrTodo {
     return element.type === ItemType.Group ? element.asGroup() : element.asTodoItem()
+  }
+
+  private getSelectedGroup(): Group {
+    const getSelectedTasks = (): TodoItem[] =>
+      this.context.todos.filter(todo => todo.attributes && todo.attributes.selected)
+    return new Group("Selected tasks", getSelectedTasks())
   }
 
   private getGroupsByStatus(): Group[] {
@@ -141,13 +153,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       .sort((a, b) => a.name === "Empty" ? 1 : a.name.localeCompare(b.name))
   }
 
-  async getChildren(element?: GroupOrTodo | undefined): Promise<GroupOrTodo[]> {
-    if (element) {
-      if (element.type === ItemType.Group) {
-        return element.asGroup().todosAsTreeItems()
-      }
-      return []
-    }
+  private getGroupByGroups() {
     switch (this._groupBy) {
       case GroupByOption.project:
         return this.getGroupsByProject()
@@ -155,6 +161,19 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       default:
         return this.getGroupsByStatus()
     }
+  }
+
+  async getChildren(element?: GroupOrTodo | undefined): Promise<GroupOrTodo[]> {
+    if (element) {
+      if (element.type === ItemType.Group) {
+        return element.asGroup().todosAsTreeItems()
+      }
+      return []
+    }
+    const groupByGroups = this.getGroupByGroups()
+    if (!this._showSelectedOnTop) return groupByGroups
+    const selectedTodos = this.getSelectedGroup()
+    return [selectedTodos].concat(groupByGroups)
   }
 
 }

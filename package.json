@@ -96,13 +96,8 @@
 				"category": "Proletarian Wizard"
 			},
 			{
-				"command": "pw.todoView.filter",
-				"title": "Filter",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.todoView.sort",
-				"title": "Sort",
+				"command": "pw.todoView.showSelected",
+				"title": "Show/hide selected",
 				"category": "Proletarian Wizard"
 			}
 		],
@@ -154,12 +149,7 @@
 					"group": "navigation"
 				},
 				{
-					"command": "pw.todoView.sort",
-					"when": "view == pw.todoHierarchy",
-					"group": "navigation"
-				},
-				{
-					"command": "pw.todoView.filter",
+					"command": "pw.todoView.showSelected",
 					"when": "view == pw.todoHierarchy",
 					"group": "navigation"
 				}

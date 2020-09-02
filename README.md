@@ -24,7 +24,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [ ] Save display preferences
 - [x] Support line attributes (assignee, priority, due date, selected)
 - [ ] Group by attributes
-- [ ] Display "@selected" on top
+- [x] Display "@selected" on top
 - [ ] Optimized reload of todos
 
 ## Extension Settings
@@ -51,6 +51,26 @@ config:
 
 **Templates**: To use templates, create a folder `.pw/templates` in your root folder, and put templates there. They can embed variables using the format `${Variable name}` which will be prompted upon creation of a note from the template. To use templates, use the command `Proletarian Wizard: Create Note from Template`
 
+## Todo
+
+Proletarian Wizard also includes a todo management system. These are displayed in an explorer window called "todo hierarchy". Any markdown file with a line following this format:
+
+```markdown
+[ ] This is a todo
+```
+
+will be considered as a todo. In the box, the following values are use:
+- `x` when completed
+- `d` when delegated
+- `-` when in progress
+- `!` when attention is required
+- ` ` when todo
+- remove the space, when cancelled
+
+PW also supports inline attributes, using the following format: `@attributename(attribute value)`. These are used for display in the explorer window.
+
+There is one special attribute called `selected` which allows you to pick some tasks you want to keep in front (say, for example, those you want to process today, or this week).
+
 ## Known Issues
 
 _Nothing yet_
@@ -62,6 +82,7 @@ _Nothing yet_
 - Group view by state or project
 - Display task status as icon
 - Support in-line attributes (use @attributeName(attributeValue))
+- Show selected todos on top (add an @selected attribute to the todo)
 
 ### 0.8.0
 
