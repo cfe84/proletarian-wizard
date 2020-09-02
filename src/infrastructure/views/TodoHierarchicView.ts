@@ -82,22 +82,39 @@ class TodoTreeItem extends GroupOrTodo {
 export enum GroupByOption {
   project,
   status,
+  attribute
 }
+
+export interface GroupByConfig {
+  groupByOption: GroupByOption
+  attributeName?: string
+}
+
+const STORAGEKEY_SHOWSELECTEDONTOP = "todoView.showSelectedOnTop"
+const STORAGEKEY_GROUPBY = "todoView.groupBy"
 
 export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> {
 
-  constructor(private deps: IDependencies, private context: IContext) { }
+  constructor(private deps: IDependencies, private context: IContext) {
+    this._showSelectedOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWSELECTEDONTOP, true) : true
+    this._groupBy = context.storage ? context.storage.get(STORAGEKEY_GROUPBY, { groupByOption: GroupByOption.status }) : { groupByOption: GroupByOption.status }
+  }
 
-  private _groupBy: GroupByOption = GroupByOption.status
-  private _showSelectedOnTop: boolean = true
+  private _groupBy: GroupByConfig
+  private _showSelectedOnTop: boolean
 
-  public set groupBy(value: GroupByOption) {
+  public set groupBy(value: GroupByConfig) {
     this._groupBy = value
+    this.context.storage?.update(STORAGEKEY_GROUPBY, value)
     this.refresh()
   }
   public set showSelectedOnTop(value: boolean) {
     this._showSelectedOnTop = value
+    this.context.storage?.update(STORAGEKEY_SHOWSELECTEDONTOP, value)
     this.refresh()
+  }
+  public get showSelectedOnTop(): boolean {
+    return this._showSelectedOnTop
   }
 
 
@@ -154,7 +171,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   }
 
   private getGroupByGroups() {
-    switch (this._groupBy) {
+    switch (this._groupBy.groupByOption) {
       case GroupByOption.project:
         return this.getGroupsByProject()
       case GroupByOption.status:

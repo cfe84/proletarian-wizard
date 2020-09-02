@@ -96,8 +96,8 @@
 				"category": "Proletarian Wizard"
 			},
 			{
-				"command": "pw.todoView.showSelected",
-				"title": "Show/hide selected",
+				"command": "pw.todoView.showHide",
+				"title": "Show/Hide",
 				"category": "Proletarian Wizard"
 			}
 		],
@@ -108,9 +108,14 @@
 				"mac": "Alt+Enter"
 			},
 			{
-				"command": "pw.markTodoAsComplete",
+				"command": "pw.markTodoAsCancelled",
 				"key": "Alt+c",
 				"mac": "Alt+c"
+			},
+			{
+				"command": "pw.markTodoAsComplete",
+				"key": "Alt+x",
+				"mac": "Alt+x"
 			},
 			{
 				"command": "pw.markTodoAsAttentionRequired",
@@ -129,8 +134,8 @@
 			},
 			{
 				"command": "pw.markTodoAsTodo",
-				"key": "Alt+Shift+Enter",
-				"mac": "Alt+Shift+Enter"
+				"key": "Alt+t",
+				"mac": "Alt+t"
 			}
 		],
 		"views": {
@@ -149,7 +154,7 @@
 					"group": "navigation"
 				},
 				{
-					"command": "pw.todoView.showSelected",
+					"command": "pw.todoView.showHide",
 					"when": "view == pw.todoHierarchy",
 					"group": "navigation"
 				}

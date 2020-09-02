@@ -1,38 +1,8 @@
 # proletarian-wizard README
 
-Proletarian Wizard helps you organize your notes within a GTD-like organized set of folders.
-
-## Features
-
-- [x] Save files in the correct place in few keystrokes
-- [ ] Support several layers of folders
-- [x] Open files with a few keystrokes
-- [x] Create files from templates
-- [x] Create projects
-- [x] Archive projects
-- [ ] Create files directly in projects
-- [x] Define custom paths for directories
-- [ ] List files from tags
-- [x] Create recurrences
-- [x] Create reference folders
-- [x] Prompt variables in templates
-- [x] Use "this folder"
-- [x] Include recurrence name in new note by default
-- [x] Add date in line
-- [x] Support todo status
-- [x] List all todos across workspace
-- [x] Grouping todos by project
-- [ ] Save display preferences
-- [x] Support line attributes (assignee, priority, due date, selected)
-- [ ] Group by attributes
-- [x] Display "@selected" on top
-- [ ] Optimize reload of todos
-- [ ] When clicking on todo, open file at the right line
-- [ ] Support `@project` attribute for todos in the wrong folder
-- [ ] Show projects on top of list of todos
-- [ ] Support tags for todos, group by tags 
-- [ ] Support project briefs, use as project name
-- [ ] Autocomplete attribute names and attribute values
+Proletarian Wizard helps you organize your notes within a GTD-like organized set of folders. It provides two main sets of features:
+- File management, organizing files into an opinionated set of folders and files
+- Todo management, collecting todos from project notes. This is admitting that the distinction between notes and todos is not as clear as it seems, and that these todos still need robust organization.
 
 ## Extension Settings
 
@@ -66,17 +36,51 @@ Proletarian Wizard also includes a todo management system. These are displayed i
 [ ] This is a todo
 ```
 
+Boxes can be toggled using `alt+enter`
+
 will be considered as a todo. In the box, the following values are use:
-- `x` when completed
-- `d` when delegated
-- `-` when in progress
-- `!` when attention is required
-- `space` when todo
-- remove the space, when cancelled
+- `x` when completed. PW provides a shortcut: `Alt+x`
+- `d` when delegated: `alt+d`
+- `-` when in progress: `alt+-`
+- `!` when attention is required `alt+shift+!`
+- `space` when todo `alt+t`
+- remove the space, when cancelled: `alt+c`
 
 PW also supports inline attributes, using the following format: `@attributename(attribute value)`. These are used for display in the explorer window.
 
 There is one special attribute called `selected` which allows you to pick some tasks you want to keep in front (say, for example, those you want to process today, or this week).
+
+## Features
+
+- [x] Save files in the correct place in few keystrokes
+- [ ] Support several layers of folders
+- [x] Open files with a few keystrokes
+- [x] Create files from templates
+- [x] Create projects
+- [x] Archive projects
+- [ ] Create files directly in projects
+- [x] Define custom paths for directories
+- [ ] List files from tags
+- [x] Create recurrences
+- [x] Create reference folders
+- [x] Prompt variables in templates
+- [x] Use "this folder"
+- [x] Include recurrence name in new note by default
+- [x] Add date in line
+- [x] Support todo status
+- [x] List all todos across workspace
+- [x] Grouping todos by project
+- [x] Save display preferences
+- [x] Support line attributes (assignee, priority, due date, selected)
+- [ ] Group by attributes
+- [x] Display "@selected" on top
+- [ ] Optimize reload of todos
+- [ ] When clicking on todo, open file at the right line
+- [ ] Support `@project` attribute for todos in the wrong folder
+- [ ] Show projects on top of list of todos
+- [ ] Support tags for todos, group by tags 
+- [ ] Support project briefs, use as project name
+- [ ] Autocomplete attribute names and attribute values
 
 ## Known Issues
 
