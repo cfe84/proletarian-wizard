@@ -71,6 +71,7 @@ describe("LineOperations", () => {
   describe("Parses todo:", () => {
     const testCases: TodoParsingTestCase[] = [
       { description: "not a todo", input: "this is not a todo", expected: null },
+      { description: "looks like a todo but isn't", input: "[1]: https://npmjs.org/", expected: null },
       { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } },
       { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
       { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },

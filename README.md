@@ -10,6 +10,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Create files from templates
 - [x] Create projects
 - [x] Archive projects
+- [ ] Create files directly in projects
 - [x] Define custom paths for directories
 - [ ] List files from tags
 - [x] Create recurrences
@@ -25,7 +26,13 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Support line attributes (assignee, priority, due date, selected)
 - [ ] Group by attributes
 - [x] Display "@selected" on top
-- [ ] Optimized reload of todos
+- [ ] Optimize reload of todos
+- [ ] When clicking on todo, open file at the right line
+- [ ] Support `@project` attribute for todos in the wrong folder
+- [ ] Show projects on top of list of todos
+- [ ] Support tags for todos, group by tags 
+- [ ] Support project briefs, use as project name
+- [ ] Autocomplete attribute names and attribute values
 
 ## Extension Settings
 
@@ -64,7 +71,7 @@ will be considered as a todo. In the box, the following values are use:
 - `d` when delegated
 - `-` when in progress
 - `!` when attention is required
-- ` ` when todo
+- `space` when todo
 - remove the space, when cancelled
 
 PW also supports inline attributes, using the following format: `@attributename(attribute value)`. These are used for display in the explorer window.
