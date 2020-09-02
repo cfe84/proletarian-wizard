@@ -1,10 +1,10 @@
 export enum TodoStatus {
-  Todo,
-  InProgress,
-  Complete,
-  Cancelled,
-  Delegated,
-  AttentionRequired
+  AttentionRequired = 0,
+  Todo = 1,
+  InProgress = 2,
+  Delegated = 3,
+  Complete = 4,
+  Cancelled = 5,
 }
 
 export interface TodoItem {

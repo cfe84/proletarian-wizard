@@ -20,8 +20,12 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - [x] Add date in line
 - [x] Support todo status
 - [x] List all todos across workspace
-- [ ] Support grouping todos by project
+- [ ] Grouping todos by project
+- [ ] Save display preferences
 - [ ] Support line attributes (assignee, priority, due date, selected)
+- [ ] Group by attributes
+- [ ] Display "@selected" on top
+- [ ] Optimized reload of todos
 
 ## Extension Settings
 

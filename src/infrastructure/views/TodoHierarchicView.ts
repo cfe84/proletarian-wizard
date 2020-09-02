@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { IContext } from '../../contract/IContext';
 import { IDependencies } from '../../contract/IDependencies';
 import { TodoItem, TodoStatus } from '../../domain/TodoItem';
+import { IDictionary } from '../../domain/IDictionary';
 
 enum ItemType {
   Group,
@@ -24,9 +25,21 @@ abstract class GroupOrTodo extends vscode.TreeItem {
   }
 }
 
+const statusToIcon = (status: TodoStatus): string => {
+  switch (status) {
+    case TodoStatus.Complete: return "✔"
+    case TodoStatus.AttentionRequired: return "❗"
+    case TodoStatus.Cancelled: return "❌"
+    case TodoStatus.Delegated: return "👬"
+    case TodoStatus.InProgress: return "🏃‍♂️"
+    case TodoStatus.Todo: return vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark ? "⬜" : "⬛"
+    default: return ""
+  }
+}
+
 class Group extends GroupOrTodo {
   type: ItemType = ItemType.Group
-  constructor(private name: string, public todos: TodoItem[]) {
+  constructor(public name: string, public todos: TodoItem[]) {
     super(name)
     this.collapsibleState = vscode.TreeItemCollapsibleState.Expanded
   }
@@ -36,7 +49,7 @@ class Group extends GroupOrTodo {
 class TodoTreeItem extends GroupOrTodo {
   type: ItemType = ItemType.Todo
   constructor(private todo: TodoItem) {
-    super(todo.text)
+    super(statusToIcon(todo.status) + " " + todo.text)
     this.command = {
       title: "Open",
       command: "vscode.open",
@@ -47,11 +60,21 @@ class TodoTreeItem extends GroupOrTodo {
   }
 }
 
+export enum GroupByOption {
+  project,
+  status,
+}
 
 export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> {
 
-
   constructor(private deps: IDependencies, private context: IContext) { }
+
+  private _groupBy: GroupByOption = GroupByOption.status
+
+  public set groupBy(value: GroupByOption) {
+    this._groupBy = value
+    this.refresh()
+  }
 
   private onDidChangeTreeDataEventEmitter: vscode.EventEmitter<GroupOrTodo | undefined> = new vscode.EventEmitter<GroupOrTodo | undefined>();
 
@@ -80,6 +103,25 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       .filter((group) => group.todos.length > 0)
   }
 
+  private getGroupsByProject(): Group[] {
+    const getProjects = () =>
+      this.context.todos.reduce((projects: IDictionary<TodoItem[]>, todo: TodoItem) => {
+        const project = todo.project || "Empty"
+        if (!projects[project]) {
+          projects[project] = []
+        }
+        projects[project].push(todo)
+        return projects
+      }, {})
+    const projects = getProjects()
+    Object.keys(projects).forEach(key => {
+      projects[key] = projects[key].sort((a, b) => a.status - b.status)
+    })
+    return Object.keys(projects)
+      .map(project => new Group(project, projects[project]))
+      .sort((a, b) => a.name === "Empty" ? 1 : a.name.localeCompare(b.name))
+  }
+
   async getChildren(element?: GroupOrTodo | undefined): Promise<GroupOrTodo[]> {
     if (element) {
       if (element.type === ItemType.Group) {
@@ -87,7 +129,13 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       }
       return []
     }
-    return this.getGroupsByStatus()
+    switch (this._groupBy) {
+      case GroupByOption.project:
+        return this.getGroupsByProject()
+      case GroupByOption.status:
+      default:
+        return this.getGroupsByStatus()
+    }
   }
 
 }
