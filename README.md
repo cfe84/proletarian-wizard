@@ -87,7 +87,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Create files from templates
 - [x] Create projects
 - [x] Archive projects
-- [ ] Create files directly in projects
+- [x] Create files directly in projects
 - [ ] Create projects when selecting project
 - [x] Define custom paths for directories
 - [ ] List files from tags

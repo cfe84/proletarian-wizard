@@ -4,11 +4,14 @@ import { IDependencies } from '../../contract/IDependencies';
 import { FolderSelector } from '../../domain/FolderSelector';
 import { FileNameAssembler } from '../../domain/FileNameAssembler';
 import { IContext } from '../../contract/IContext';
+import { FileSaveSelector } from '../selectors/FileSaveSelector';
 
 export class SaveFileCommand implements ICommand<string | null> {
   private fileNameAssembler: FileNameAssembler;
+  private fileSaveSelector: FileSaveSelector;
   constructor(private deps: IDependencies, private context: IContext) {
     this.fileNameAssembler = new FileNameAssembler(deps)
+    this.fileSaveSelector = new FileSaveSelector(deps, context)
   }
   get Id(): string { return "pw.saveFile" }
 
@@ -23,20 +26,10 @@ export class SaveFileCommand implements ICommand<string | null> {
         return null
       }
     }
-    const typeSelector = new FolderSelector({ allowThisFolder: true }, this.deps, this.context);
-    const folder = await typeSelector.selectFolderAsync()
-    if (!folder) {
-      return null;
-    }
-    let initialValue = this.deps.date.todayAsYMDString() + " - "
-    if (folder.underSpecialFolder === "Recurrence") {
-      initialValue += folder.name
-    }
-    let fileName = await vscode.window.showInputBox({ prompt: "File name", value: initialValue })
-    if (!fileName) {
+    const path = await this.fileSaveSelector.selectFileDestinationAsync()
+    if (!path) {
       return null
     }
-    const path = this.fileNameAssembler.assembleFileName({ fileName, path: folder.path, fixDate: false })
     const editor = vscode.window.activeTextEditor
     const content = editor.document.getText()
     this.deps.fs.writeFileSync(path, content)
