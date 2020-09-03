@@ -64,7 +64,7 @@ export class LineOperations {
   }
 
   private markToStatus = (mark: string) =>
-    mark === "]" ? TodoStatus.Cancelled
+    mark === "]" ? TodoStatus.Canceled
       : mark === "-" ? TodoStatus.InProgress
         : mark === "!" ? TodoStatus.AttentionRequired
           : mark === "x" ? TodoStatus.Complete

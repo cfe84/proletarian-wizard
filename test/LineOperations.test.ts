@@ -76,7 +76,7 @@ describe("LineOperations", () => {
       { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
       { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
       { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "", attributes: {} } },
-      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Cancelled, text: "Todo", file: "", attributes: {} } },
+      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Canceled, text: "Todo", file: "", attributes: {} } },
       {
         description: "A todo with a text attribute", input: "[ ] Todo @assignee(Jojo)",
         expected: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo" } }

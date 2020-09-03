@@ -17,6 +17,8 @@ export class SwitchShowHideCommand implements ICommand<string | null> {
   executeAsync = async (): Promise<string | null> => {
     const option = await vscode.window.showQuickPick([
       new ShowHideMenuOption(`${this.todoView.showSelectedOnTop ? "Hide" : "Show"} selected on top`, () => this.todoView.showSelectedOnTop = !this.todoView.showSelectedOnTop),
+      new ShowHideMenuOption(`${this.todoView.showCompleted ? "Hide" : "Show"} completed tasks`, () => this.todoView.showCompleted = !this.todoView.showCompleted),
+      new ShowHideMenuOption(`${this.todoView.showCanceled ? "Hide" : "Show"} canceled tasks`, () => this.todoView.showCanceled = !this.todoView.showCanceled),
     ], { canPickMany: false })
     if (option) {
       option.onselect()

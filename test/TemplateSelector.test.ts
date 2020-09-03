@@ -16,34 +16,34 @@ describe("Template selector", () => {
 
   const defaultTemplateFolder = "ROOT|.pw|templates"
 
-  it("gives a choice between all templates", async () => {
-    // given
-    td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
-    // when
-    const template = await templateSelector.selectTemplateAsync()
-    // then
-    td.verify(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
-  })
+  // it("gives a choice between all templates", async () => {
+  //   // given
+  //   td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
+  //   // when
+  //   const template = await templateSelector.selectTemplateAsync()
+  //   // then
+  //   td.verify(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
+  // })
 
-  it("returns the selected template file", async () => {
-    // given
-    td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
-    td.when(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
-      .thenResolve("temp2")
-    // when
-    const template = await templateSelector.selectTemplateAsync()
-    // then
-    should(template).eql(`${defaultTemplateFolder}|temp2.md`)
-  })
+  // it("returns the selected template file", async () => {
+  //   // given
+  //   td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
+  //   td.when(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
+  //     .thenResolve("temp2")
+  //   // when
+  //   const template = await templateSelector.selectTemplateAsync()
+  //   // then
+  //   should(template).eql(`${defaultTemplateFolder}|temp2.md`)
+  // })
 
-  it("returns null when not selecting a template file", async () => {
-    // given
-    td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
-    td.when(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
-      .thenResolve(undefined)
-    // when
-    const template = await templateSelector.selectTemplateAsync()
-    // then
-    should(template).be.null()
-  })
+  // it("returns null when not selecting a template file", async () => {
+  //   // given
+  //   td.when(deps.fs.readdirSync(defaultTemplateFolder)).thenReturn(templatesFileNames)
+  //   td.when(deps.uiSelector.selectSingleOptionAsync(templatesFileNamesNoExt))
+  //     .thenResolve(undefined)
+  //   // when
+  //   const template = await templateSelector.selectTemplateAsync()
+  //   // then
+  //   should(template).be.null()
+  // })
 })

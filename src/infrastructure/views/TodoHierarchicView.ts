@@ -29,7 +29,7 @@ const statusToIcon = (status: TodoStatus): string => {
   switch (status) {
     case TodoStatus.Complete: return "✔"
     case TodoStatus.AttentionRequired: return "❗"
-    case TodoStatus.Cancelled: return "❌"
+    case TodoStatus.Canceled: return "❌"
     case TodoStatus.Delegated: return "👬"
     case TodoStatus.InProgress: return "🏃‍♂️"
     case TodoStatus.Todo: return vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark ? "⬜" : "⬛"
@@ -92,17 +92,23 @@ export interface GroupByConfig {
 }
 
 const STORAGEKEY_SHOWSELECTEDONTOP = "todoView.showSelectedOnTop"
+const STORAGEKEY_SHOWCOMPLETED = "todoView.showCompleted"
+const STORAGEKEY_SHOWCANCELED = "todoView.showCanceled"
 const STORAGEKEY_GROUPBY = "todoView.groupBy"
 
 export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> {
 
   constructor(private deps: IDependencies, private context: IContext) {
     this._showSelectedOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWSELECTEDONTOP, true) : true
+    this._showCompleted = context.storage ? context.storage.get(STORAGEKEY_SHOWCOMPLETED, true) : true
+    this._showCanceled = context.storage ? context.storage.get(STORAGEKEY_SHOWCANCELED, true) : true
     this._groupBy = context.storage ? context.storage.get(STORAGEKEY_GROUPBY, { groupByOption: GroupByOption.status }) : { groupByOption: GroupByOption.status }
   }
 
   private _groupBy: GroupByConfig
   private _showSelectedOnTop: boolean
+  private _showCompleted: boolean
+  private _showCanceled: boolean
 
   public set groupBy(value: GroupByConfig) {
     this._groupBy = value
@@ -118,6 +124,23 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return this._showSelectedOnTop
   }
 
+  public set showCompleted(value: boolean) {
+    this._showCompleted = value
+    this.context.storage?.update(STORAGEKEY_SHOWCOMPLETED, value)
+    this.refresh()
+  }
+  public get showCompleted(): boolean {
+    return this._showCompleted
+  }
+  public set showCanceled(value: boolean) {
+    this._showCanceled = value
+    this.context.storage?.update(STORAGEKEY_SHOWCANCELED, value)
+    this.refresh()
+  }
+  public get showCanceled(): boolean {
+    return this._showCanceled
+  }
+
 
   private onDidChangeTreeDataEventEmitter: vscode.EventEmitter<GroupOrTodo | undefined> = new vscode.EventEmitter<GroupOrTodo | undefined>();
 
@@ -131,10 +154,21 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return element.type === ItemType.Group ? element.asGroup() : element.asTodoItem()
   }
 
+  private groomTodos(todos: TodoItem[]): TodoItem[] {
+    if (!this.showCompleted) {
+      todos = todos.filter(todo => todo.status !== TodoStatus.Complete)
+    }
+    if (!this.showCanceled) {
+      todos = todos.filter(todo => todo.status !== TodoStatus.Canceled)
+    }
+    todos = todos.sort((a, b) => a.status - b.status)
+    return todos
+  }
+
   private getSelectedGroup(): Group {
     const getSelectedTasks = (): TodoItem[] =>
       this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes.selected)
-    return new Group("Selected tasks", getSelectedTasks())
+    return new Group("Selected tasks", this.groomTodos(getSelectedTasks()))
   }
 
   private getGroupsByStatus(): Group[] {
@@ -146,9 +180,9 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       { label: "In progress", status: TodoStatus.InProgress },
       { label: "Delegated", status: TodoStatus.Delegated },
       { label: "Complete", status: TodoStatus.Complete },
-      { label: "Cancelled", status: TodoStatus.Cancelled },
+      { label: "Cancelled", status: TodoStatus.Canceled },
     ]
-      .map(({ label, status }) => new Group(label, getTodosByStatus(status)))
+      .map(({ label, status }) => new Group(label, this.groomTodos(getTodosByStatus(status))))
       .filter((group) => group.todos.length > 0)
   }
 
@@ -164,7 +198,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       }, {})
     const projects = getProjects()
     Object.keys(projects).forEach(key => {
-      projects[key] = projects[key].sort((a, b) => a.status - b.status)
+      projects[key] = this.groomTodos(projects[key])
     })
     return Object.keys(projects)
       .map(project => new Group(project, projects[project]))
@@ -176,16 +210,16 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     let groupedByAttributes = this.context.parsedFolder.attributeValues[attributeName].map(
       attributeValue => {
         const todos = this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes[attributeName] === attributeValue)
-        return new Group(attributeValue, todos)
+        return new Group(attributeValue, this.groomTodos(todos))
       })
     if (todoWithoutThisAttribute.length > 0) {
-      groupedByAttributes = groupedByAttributes.concat(new Group("Empty", todoWithoutThisAttribute))
+      groupedByAttributes = groupedByAttributes.concat(new Group("Empty", this.groomTodos(todoWithoutThisAttribute)))
     }
     return groupedByAttributes
   }
 
   private getNoGroups(): Group[] {
-    return [new Group("All todos", this.context.parsedFolder.todos)]
+    return [new Group("All todos", this.groomTodos(this.context.parsedFolder.todos))]
   }
 
   private getGroupByGroups() {

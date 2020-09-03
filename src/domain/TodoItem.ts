@@ -6,7 +6,7 @@ export enum TodoStatus {
   InProgress = 2,
   Delegated = 3,
   Complete = 4,
-  Cancelled = 5,
+  Canceled = 5,
 }
 
 export interface TodoItem {
