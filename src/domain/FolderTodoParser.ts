@@ -31,7 +31,9 @@ export class FolderTodoParser {
     const inspectionResults = this.fileInspector.inspect(file)
     todos.forEach(todo => {
       todo.file = file
-      todo.project = inspectionResults.project
+      todo.project = (todo.attributes && todo.attributes.project) ? todo.attributes.project as string : inspectionResults.project
+      if (todo.attributes?.project)
+        delete todo.attributes.project
       todo.folderType = inspectionResults.containingFolderType
     })
     return todos

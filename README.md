@@ -71,7 +71,9 @@ will be considered as a todo. In the box, the following values are use:
 
 PW also supports inline attributes, using the following format: `@attributename(attribute value)`. These are used for display in the explorer window.
 
-There is one special attribute called `selected` which allows you to pick some tasks you want to keep in front (say, for example, those you want to process today, or this week).
+There are a few special attributes:
+- `selected` which allows you to pick some tasks you want to keep in front (say, for example, those you want to process today, or this week).
+- `project` allows you to specify another project a given Todo should be assigned to
 
 ## Todo's view
 
@@ -109,7 +111,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Show/Hide completed and canceled
 - [ ] Optimize reload of todos
 - [ ] When clicking on todo, open file at the right line
-- [ ] Support `@project` attribute for todos in the wrong folder
+- [x] Support `@project` attribute for todos in the wrong folder
 - [ ] Show projects on top of list of todos
 - [ ] Support tags for todos, group by tags 
 - [ ] Support project briefs, use as project name
