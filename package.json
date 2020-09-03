@@ -103,6 +103,11 @@
 		],
 		"keybindings": [
 			{
+				"command": "pw.addDateToLine",
+				"key": "Alt+.",
+				"mac": "Alt+."
+			},
+			{
 				"command": "pw.toggleTodo",
 				"key": "Alt+Enter",
 				"mac": "Alt+Enter"

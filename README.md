@@ -1,8 +1,31 @@
-# proletarian-wizard README
-
 Proletarian Wizard helps you organize your notes within a GTD-like organized set of folders. It provides two main sets of features:
 - File management, organizing files into an opinionated set of folders and files
-- Todo management, collecting todos from project notes. This is admitting that the distinction between notes and todos is not as clear as it seems, and that these todos still need robust organization.
+- Todo management, collecting todos from project notes.
+
+![Example of todos](doc/img/todos.png)
+
+## Opinionated workflow
+
+### Projects
+
+Proletarian Wizard instruments an opinionated workflow, which central aspect is that of a project. Most of your (professional) life revolves around poorly defined projects that you need to lead to completion. A project is therefore the sum of its contents (notes, documents) and actions (todos). The workflow usually begins with creating a project and adding notes to it. This could be the notes for the first meeting about a topic, or ideas around a new initiative. They can also start with an uncategorized not in the inbox, to be categorized into a project later. Once a project is completed, OR abandoned, it is archived.
+
+PW also instruments the notion of recurrences: those meetings and cadences that happen regularly and don't really categorize as project, and which are more convenient to keep together (say, 1:1 meetings, planning sessions, monthly business reviews, etc.)
+
+### Todos
+
+Notes shall be taken in markdown. It is very frequent that you define todos while taking notes. When you finally admit that the distinction between notes and todos is pretty fuzzy, merging both together seems to make sense. Proletarian Wizard offers a robust way to organize these, using projects as the background organization layer, adding to that statuses, a process of selection for creating a todo-list for the day, and flexible attributes.
+
+Todos are noted with the `[ ]` symbol at the beginning of the line (or after a list marker). A completed todo is marked `[x]`. If you decide to delegate a todo, mark it `[d]`. When you are in progress, mark a `[-]`, in progress todos should be completed first. A todo is rarely done in one day, and often requires information found in various places: emails, IM, websites. When receiving new information about a todo, rather than scattering in different tools, add sub-items to keep track of what's happening. PW offers a command to add the date to the beginning of the line by pressing `alt+.`. This helps remembering what is happening. For example:
+
+```markdown
+- [d] Write monthly report @assignee(Geraldine) @due(2020-09-10)
+  - 2020-08-01: Lorraine asked to fill the new features section by Sept 10
+  - 2020-08-04: Asked Geraldine to do it
+  - 2020-08-10: Checked with Geraldine, she needs more time
+```
+
+To select todos you want to address today, add a `@selected` attribute on their lines. This conveniently places those todos in a folder on top of the "Todos" window.
 
 ## Extension Settings
 
@@ -65,6 +88,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Create projects
 - [x] Archive projects
 - [ ] Create files directly in projects
+- [ ] Create projects when selecting project
 - [x] Define custom paths for directories
 - [ ] List files from tags
 - [x] Create recurrences
@@ -93,6 +117,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 _Nothing yet_
 
 ## Release Notes
+
+### 0.10.0
+
+- Group by attributes
 
 ### 0.9.0
 
