@@ -1,5 +1,6 @@
 import { IDependencies } from "../contract/IDependencies";
 import { IContext } from "../contract/IContext";
+import { IUISelectorOption } from "../contract/IUISelector";
 
 const defaultConfigFolder = ".pw"
 const defaultTemplateFolder = "templates"
@@ -26,10 +27,10 @@ export class TemplateSelector {
       path: this.deps.path.join(this.templateFolder, template),
       isEmpty: false
     })))
-    const selectedTemplateName = await this.deps.uiSelector.selectSingleOptionAsync(templates.map(template => template.name)) as string
-    if (selectedTemplateName === undefined) {
+    const selectedTemplate = await this.deps.uiSelector.selectSingleOptionAsync(templates.map(template => ({ label: template.name, template })), "Template name")
+    if (selectedTemplate === undefined) {
       return null
     }
-    return templates.find(template => template.name === selectedTemplateName) || null
+    return selectedTemplate.template || null
   }
 }

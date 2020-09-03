@@ -10,7 +10,7 @@ export class FileSaveSelector {
     this.fileNameAssembler = new FileNameAssembler(deps)
   }
   async selectFileDestinationAsync(): Promise<string | null> {
-    const typeSelector = new FolderSelector({ allowThisFolder: true }, this.deps, this.context);
+    const typeSelector = new FolderSelector({ allowThisFolder: true, allowCreateFolder: true }, this.deps, this.context);
     const folder = await typeSelector.selectFolderAsync()
     if (!folder) {
       return null;

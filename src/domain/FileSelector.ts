@@ -15,11 +15,10 @@ export class FileSelector {
         name: f
       }))
       .filter(f => !this.deps.fs.lstatSync(f.fullpath).isDirectory())
-    const pick = await this.deps.uiSelector.selectSingleOptionAsync(files.map(f => f.name));
+    const pick = await this.deps.uiSelector.selectSingleOptionAsync(files.map(f => ({ label: f.name, file: f })), "Pick file");
     if (!pick) {
       return null
     }
-    const pickFile = files.find(f => f.name === pick)
-    return pickFile?.fullpath || null
+    return pick?.file.fullpath || null
   }
 }
