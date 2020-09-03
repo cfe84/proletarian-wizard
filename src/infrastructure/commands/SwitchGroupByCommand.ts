@@ -15,6 +15,7 @@ export class SwitchGroupByCommand implements ICommand<string | null> {
 
   executeAsync = async (): Promise<string | null> => {
     const options = [
+      new GroupByMenuOption("Disable grouping", { groupByOption: GroupByOption.nogroups }),
       new GroupByMenuOption("By status", { groupByOption: GroupByOption.status }),
       new GroupByMenuOption("By project", { groupByOption: GroupByOption.project })
     ].concat(this.context.parsedFolder.attributes
@@ -22,7 +23,7 @@ export class SwitchGroupByCommand implements ICommand<string | null> {
       .map(
         attribute => new GroupByMenuOption(`By ${attribute}`, { groupByOption: GroupByOption.attribute, attributeName: attribute })
       ))
-    const option = await vscode.window.showQuickPick(options, { canPickMany: false })
+    const option = await vscode.window.showQuickPick(options, { canPickMany: false, placeHolder: "Group by" })
     if (option) {
       this.todoView.groupBy = option.groupByOption
     }

@@ -104,6 +104,9 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Support line attributes (assignee, priority, due date, selected)
 - [x] Group by attributes
 - [x] Display "@selected" on top
+- [x] Group by no group
+- [ ] Sort todos
+- [ ] Show/Hide completed
 - [ ] Optimize reload of todos
 - [ ] When clicking on todo, open file at the right line
 - [ ] Support `@project` attribute for todos in the wrong folder

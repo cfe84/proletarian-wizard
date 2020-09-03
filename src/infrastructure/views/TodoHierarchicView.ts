@@ -82,6 +82,7 @@ class TodoTreeItem extends GroupOrTodo {
 export enum GroupByOption {
   project,
   status,
+  nogroups,
   attribute
 }
 
@@ -183,6 +184,10 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return groupedByAttributes
   }
 
+  private getNoGroups(): Group[] {
+    return [new Group("All todos", this.context.parsedFolder.todos)]
+  }
+
   private getGroupByGroups() {
     switch (this._groupBy.groupByOption) {
       case GroupByOption.project:
@@ -190,8 +195,10 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       case GroupByOption.attribute:
         return this.getGroupsByAttribute(this._groupBy.attributeName as string)
       case GroupByOption.status:
-      default:
         return this.getGroupsByStatus()
+      case GroupByOption.nogroups:
+      default:
+        return this.getNoGroups()
     }
   }
 
