@@ -109,6 +109,8 @@ export interface SortByConfig {
 }
 
 const STORAGEKEY_SHOWSELECTEDONTOP = "todoView.showSelectedOnTop"
+const STORAGEKEY_SHOWPROJECTSONTOP = "todoView.showProjectsOnTop"
+const STORAGEKEY_SHOWOVERDUEONTOP = "todoView.showOverdueOnTop"
 const STORAGEKEY_SHOWCOMPLETED = "todoView.showCompleted"
 const STORAGEKEY_SHOWCANCELED = "todoView.showCanceled"
 const STORAGEKEY_GROUPBY = "todoView.groupBy"
@@ -118,6 +120,8 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   constructor(private deps: IDependencies, private context: IContext) {
     this._showSelectedOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWSELECTEDONTOP, true) : true
+    this._showProjectsOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWPROJECTSONTOP, true) : true
+    this._showOverdueOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWOVERDUEONTOP, true) : true
     this._showCompleted = context.storage ? context.storage.get(STORAGEKEY_SHOWCOMPLETED, true) : true
     this._showCanceled = context.storage ? context.storage.get(STORAGEKEY_SHOWCANCELED, true) : true
     this._groupBy = context.storage ? context.storage.get(STORAGEKEY_GROUPBY, { groupByOption: GroupByOption.status }) : { groupByOption: GroupByOption.status }
@@ -127,6 +131,8 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   private _groupBy: GroupByConfig
   private _sortBy: SortByConfig
   private _showSelectedOnTop: boolean
+  private _showProjectsOnTop: boolean
+  private _showOverdueOnTop: boolean
   private _showCompleted: boolean
   private _showCanceled: boolean
 
@@ -153,6 +159,22 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   }
   public get showSelectedOnTop(): boolean {
     return this._showSelectedOnTop
+  }
+  public set showProjectsOnTop(value: boolean) {
+    this._showProjectsOnTop = value
+    this.context.storage?.update(STORAGEKEY_SHOWPROJECTSONTOP, value)
+    this.refresh()
+  }
+  public get showProjectsOnTop(): boolean {
+    return this._showProjectsOnTop
+  }
+  public set showOverdueOnTop(value: boolean) {
+    this._showOverdueOnTop = value
+    this.context.storage?.update(STORAGEKEY_SHOWOVERDUEONTOP, value)
+    this.refresh()
+  }
+  public get showOverdueOnTop(): boolean {
+    return this._showOverdueOnTop
   }
 
   public set showCompleted(value: boolean) {
@@ -219,6 +241,31 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     const getSelectedTasks = (): TodoItem[] =>
       this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes.selected)
     return new Group("Selected tasks", this.groomTodos(getSelectedTasks()))
+  }
+
+  private getProjectsGroup(): Group {
+    const projectsFolder = this.deps.path.join(this.context.rootFolder, this.context.config.folders.projects || "")
+    let projects: string[] = []
+    if (this.deps.fs.existsSync(projectsFolder))
+      projects = this.deps.fs.readdirSync(projectsFolder)
+    return new Group("Projects", projects.map(project => ({
+      file: this.deps.path.join(projectsFolder, project),
+      status: TodoStatus.Todo,
+      text: project
+    })))
+  }
+
+  private getOverdueGroup(): Group {
+    const dueDateAttributes = ["due", "duedate", "when", "expire", "expires"]
+    const now = Date.now()
+    const todosWithOverdueDate = this.context.parsedFolder.todos
+      .filter(todo => todo.attributes && dueDateAttributes.find(attribute => {
+        if (!todo.attributes || !todo.attributes[attribute])
+          return false
+        const date = Date.parse(`${todo.attributes[attribute]}`)
+        return date !== NaN && date < now
+      }))
+    return new Group("Overdue", todosWithOverdueDate)
   }
 
   private getGroupsByStatus(): Group[] {
@@ -293,10 +340,14 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       }
       return []
     }
-    const groupByGroups = this.getGroupByGroups()
-    if (!this._showSelectedOnTop) return groupByGroups
-    const selectedTodos = this.getSelectedGroup()
-    return [selectedTodos].concat(groupByGroups)
+    let groups = this.getGroupByGroups()
+    if (this.showProjectsOnTop)
+      groups = [this.getProjectsGroup()].concat(groups)
+    if (this._showOverdueOnTop)
+      groups = [this.getOverdueGroup()].concat(groups)
+    if (this._showSelectedOnTop)
+      groups = [this.getSelectedGroup()].concat(groups)
+    return groups
   }
 
 }

@@ -112,7 +112,8 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [ ] Optimize reload of todos
 - [ ] When clicking on todo, open file at the right line
 - [x] Support `@project` attribute for todos in the wrong folder
-- [ ] Show projects on top of list of todos
+- [x] Show projects on top of list of todos
+- [x] Show overdue on top of list of todos
 - [ ] Support tags for todos, group by tags 
 - [ ] Support project briefs, use as project name
 - [ ] Autocomplete attribute names and attribute values
