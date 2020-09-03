@@ -174,7 +174,20 @@
 					"group": "navigation"
 				}
 			]
-		}
+		},
+		"languages": [
+			{
+				"aliases": [
+					"Markdown",
+					"md"
+				],
+				"id": "markdown",
+				"extensions": [
+					".md",
+					".markdown"
+				]
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run build",

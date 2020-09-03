@@ -116,13 +116,19 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Show overdue on top of list of todos
 - [ ] Support tags for todos, group by tags 
 - [ ] Support project briefs, use as project name
-- [ ] Autocomplete attribute names and attribute values
+- [x] Autocomplete attribute names 
+- [ ] Autocomplete attribute values
 
 ## Known Issues
 
 _Nothing yet_
 
 ## Release Notes
+
+### 1.1.0
+
+- Autocomplete attribute names
+- Support @project attribute to re-classify todos to the right project
 
 ### 1.0.0
 

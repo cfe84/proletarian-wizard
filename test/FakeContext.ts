@@ -1,4 +1,6 @@
-export function fakeContext() {
+import { IContext } from "../src/contract/IContext";
+
+export function fakeContext(): IContext {
   return {
     rootFolder: "ROOT", parsedFolder: { todos: [], attributeValues: {}, attributes: [] }, config: {
       folders: {

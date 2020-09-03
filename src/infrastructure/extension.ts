@@ -29,6 +29,7 @@ import { TodoHierarchicView } from './views/TodoHierarchicView'
 import { SwitchGroupByCommand } from './commands/SwitchGroupByCommand'
 import { SwitchShowHideCommand } from './commands/SwitchShowHideCommand'
 import { SwitchSortByCommand } from './commands/SwitchSortCommand'
+import { AttributeCompletionItemProvider, AttributeCompletionTriggerCharacters } from './completion/AttributeCompletionItemProvider'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -103,6 +104,11 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		vscontext.subscriptions.push(disposable);
 	})
 	vscode.window.registerTreeDataProvider("pw.todoHierarchy", todosView)
+
+	const attributeCompletion = new AttributeCompletionItemProvider(deps, context)
+	vscontext.subscriptions.push(
+		vscode.languages.registerCompletionItemProvider("markdown", attributeCompletion, ...AttributeCompletionTriggerCharacters)
+	)
 }
 
 export function deactivate() { }
