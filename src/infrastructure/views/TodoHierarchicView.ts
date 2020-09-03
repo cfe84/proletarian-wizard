@@ -91,10 +91,28 @@ export interface GroupByConfig {
   attributeName?: string
 }
 
+export enum SortByOption {
+  project,
+  status,
+  attribute
+}
+
+export enum SortByDirection {
+  up,
+  down
+}
+
+export interface SortByConfig {
+  sortByOption: SortByOption
+  sortDirection: SortByDirection
+  attributeName?: string
+}
+
 const STORAGEKEY_SHOWSELECTEDONTOP = "todoView.showSelectedOnTop"
 const STORAGEKEY_SHOWCOMPLETED = "todoView.showCompleted"
 const STORAGEKEY_SHOWCANCELED = "todoView.showCanceled"
 const STORAGEKEY_GROUPBY = "todoView.groupBy"
+const STORAGEKEY_SORTBY = "todoView.sortBy"
 
 export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> {
 
@@ -103,9 +121,11 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     this._showCompleted = context.storage ? context.storage.get(STORAGEKEY_SHOWCOMPLETED, true) : true
     this._showCanceled = context.storage ? context.storage.get(STORAGEKEY_SHOWCANCELED, true) : true
     this._groupBy = context.storage ? context.storage.get(STORAGEKEY_GROUPBY, { groupByOption: GroupByOption.status }) : { groupByOption: GroupByOption.status }
+    this._sortBy = context.storage ? context.storage.get(STORAGEKEY_SORTBY, { sortByOption: SortByOption.status, sortDirection: SortByDirection.up }) : { sortByOption: SortByOption.status, sortDirection: SortByDirection.up }
   }
 
   private _groupBy: GroupByConfig
+  private _sortBy: SortByConfig
   private _showSelectedOnTop: boolean
   private _showCompleted: boolean
   private _showCanceled: boolean
@@ -115,6 +135,17 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     this.context.storage?.update(STORAGEKEY_GROUPBY, value)
     this.refresh()
   }
+
+  public set sortBy(value: SortByConfig) {
+    this._sortBy = value
+    this.context.storage?.update(STORAGEKEY_SORTBY, value)
+    this.refresh()
+  }
+
+  public get sortBy(): SortByConfig {
+    return this._sortBy
+  }
+
   public set showSelectedOnTop(value: boolean) {
     this._showSelectedOnTop = value
     this.context.storage?.update(STORAGEKEY_SHOWSELECTEDONTOP, value)
@@ -161,7 +192,26 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     if (!this.showCanceled) {
       todos = todos.filter(todo => todo.status !== TodoStatus.Canceled)
     }
-    todos = todos.sort((a, b) => a.status - b.status)
+    const directionMultiplier = this._sortBy.sortDirection === SortByDirection.up ? 1 : -1
+    switch (this._sortBy.sortByOption) {
+      case SortByOption.status:
+        todos = todos.sort((a, b) => (a.status - b.status) * directionMultiplier)
+        break
+      case SortByOption.project:
+        todos = todos.sort((a, b) => (a.project && b.project) ? (a.project.localeCompare(b.project) * directionMultiplier) : directionMultiplier)
+        break
+      case SortByOption.attribute:
+      default:
+        if (!this._sortBy.attributeName)
+          break
+        const attributeName = this._sortBy.attributeName
+        todos = todos.sort((a, b) => (a.attributes && b.attributes
+          && a.attributes[attributeName] && b.attributes[attributeName]
+          && a.attributes[attributeName] !== true && b.attributes[attributeName] !== true) ?
+          ((a.attributes[attributeName] as string).localeCompare(b.attributes[attributeName] as string) * directionMultiplier)
+          : directionMultiplier)
+
+    }
     return todos
   }
 

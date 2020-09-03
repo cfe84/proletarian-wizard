@@ -96,6 +96,11 @@
 				"category": "Proletarian Wizard"
 			},
 			{
+				"command": "pw.todoView.sortBy",
+				"title": "Sort by",
+				"category": "Proletarian Wizard"
+			},
+			{
 				"command": "pw.todoView.showHide",
 				"title": "Show/Hide",
 				"category": "Proletarian Wizard"
@@ -160,6 +165,11 @@
 				},
 				{
 					"command": "pw.todoView.showHide",
+					"when": "view == pw.todoHierarchy",
+					"group": "navigation"
+				},
+				{
+					"command": "pw.todoView.sortBy",
 					"when": "view == pw.todoHierarchy",
 					"group": "navigation"
 				}

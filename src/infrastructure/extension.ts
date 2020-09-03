@@ -28,6 +28,7 @@ import { FolderTodoParser } from '../domain/FolderTodoParser'
 import { TodoHierarchicView } from './views/TodoHierarchicView'
 import { SwitchGroupByCommand } from './commands/SwitchGroupByCommand'
 import { SwitchShowHideCommand } from './commands/SwitchShowHideCommand'
+import { SwitchSortByCommand } from './commands/SwitchSortCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -94,7 +95,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	todoItemFsEventListener.fileDidChange.push(() => todosView.refresh())
 	const viewCommands = [
 		new SwitchGroupByCommand(deps, context, todosView),
-		new SwitchShowHideCommand(deps, context, todosView)
+		new SwitchShowHideCommand(deps, context, todosView),
+		new SwitchSortByCommand(deps, context, todosView)
 	]
 	viewCommands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

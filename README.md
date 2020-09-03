@@ -105,7 +105,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Group by attributes
 - [x] Display "@selected" on top
 - [x] Group by no group
-- [ ] Sort todos
+- [x] Sort todos
 - [x] Show/Hide completed and canceled
 - [ ] Optimize reload of todos
 - [ ] When clicking on todo, open file at the right line
@@ -120,6 +120,14 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 _Nothing yet_
 
 ## Release Notes
+
+### 1.0.0
+
+- Sort todos by attribute, project or status
+- Show/hide complete or cancelled tasks
+- Disable grouping
+- Create project on select
+- Save file directly on creation
 
 ### 0.10.0
 
