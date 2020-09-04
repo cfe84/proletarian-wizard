@@ -104,6 +104,11 @@
 				"command": "pw.todoView.showHide",
 				"title": "Show/Hide",
 				"category": "Proletarian Wizard"
+			},
+			{
+				"command": "pw.openExternalDocument",
+				"title": "Open With Default App",
+				"category": "Proletarian Wizard"
 			}
 		],
 		"keybindings": [
@@ -157,6 +162,12 @@
 			]
 		},
 		"menus": {
+			"explorer/context": [
+				{
+					"command": "pw.openExternalDocument",
+					"group": "navigation@10"
+				}
+			],
 			"view/title": [
 				{
 					"command": "pw.todoView.groupBy",

@@ -1,4 +1,4 @@
 export interface ICommand<T> {
   Id: string;
-  executeAsync(): Promise<T>
+  executeAsync(...parameters: any[]): Promise<T>
 }

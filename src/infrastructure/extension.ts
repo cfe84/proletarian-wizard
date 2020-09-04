@@ -30,9 +30,11 @@ import { SwitchGroupByCommand } from './commands/SwitchGroupByCommand'
 import { SwitchShowHideCommand } from './commands/SwitchShowHideCommand'
 import { SwitchSortByCommand } from './commands/SwitchSortCommand'
 import { AttributeCompletionItemProvider, AttributeCompletionTriggerCharacters } from './completion/AttributeCompletionItemProvider'
+import { OpenExternalDocument } from './commands/OpenExternalDocumentCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
+	logger.log("Loading")
 	const date = new StdDate()
 	const uiSelector = new VSUiSelector()
 	const deps: IDependencies = {
@@ -57,7 +59,6 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		parsedFolder: { todos: [], attributes: [], attributeValues: {} },
 		storage: vscontext.globalState
 	}
-	logger.log("Loaded")
 
 	const commands: ICommand<string | null>[] = [
 		new SaveFileCommand(deps, context),
@@ -75,6 +76,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new MarkTodoAsAttentionRequiredCommand(deps, context),
 		new MarkTodoAsInProgressCommand(deps, context),
 		new MarkTodoAsTodoCommand(deps, context),
+		new OpenExternalDocument(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);
@@ -109,6 +111,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 	vscontext.subscriptions.push(
 		vscode.languages.registerCompletionItemProvider("markdown", attributeCompletion, ...AttributeCompletionTriggerCharacters)
 	)
+	logger.log("Loaded")
 }
 
 export function deactivate() { }

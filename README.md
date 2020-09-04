@@ -118,13 +118,15 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [ ] Support project briefs, use as project name
 - [x] Autocomplete attribute names 
 - [x] Autocomplete attribute values
-- [ ] Open files out of vscode
+- [x] Open files out of vscode with default application (useful for stuff like word documents)
 
 ## Known Issues
 
 _Nothing yet_
 
 ## Release Notes
+
+
 
 ### 1.1.0
 
