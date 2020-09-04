@@ -126,7 +126,12 @@ _Nothing yet_
 
 ## Release Notes
 
+### 1.2.0
 
+- Autocomplete attribute values
+- Open files with default application direct from vscode
+- Tweaks to how projects are displayed
+- Fix bug displaying complete or cancelled as overdue
 
 ### 1.1.0
 
