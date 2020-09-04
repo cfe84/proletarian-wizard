@@ -162,6 +162,12 @@
 			]
 		},
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "pw.openExternalDocument",
+					"when": "false"
+				}
+			],
 			"explorer/context": [
 				{
 					"command": "pw.openExternalDocument",
