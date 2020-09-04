@@ -260,7 +260,8 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     const now = Date.now()
     const todosWithOverdueDate = this.context.parsedFolder.todos
       .filter(todo => todo.attributes && dueDateAttributes.find(attribute => {
-        if (!todo.attributes || !todo.attributes[attribute])
+        if (todo.status === TodoStatus.Complete || todo.status === TodoStatus.Canceled
+          || !todo.attributes || !todo.attributes[attribute])
           return false
         const date = Date.parse(`${todo.attributes[attribute]}`)
         return date !== NaN && date < now
