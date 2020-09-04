@@ -8,6 +8,11 @@ export interface InspectionResults {
   name: string
 }
 
+export interface ProjectInspectionResults {
+  projectName: string
+  date?: string
+}
+
 export class FileInspector {
   private foldersRef: IDictionary<string> = {};
   constructor(private deps: IDependencies, private context: IContext) {
@@ -39,6 +44,20 @@ export class FileInspector {
       containingFolderType,
       project,
       name
+    }
+  }
+
+  inspectProject(project: string): ProjectInspectionResults {
+    const regex = /(?:(\d\d\d\d-\d\d-\d\d) - )?(.+)/
+    const res = regex.exec(project)
+    if (!res) {
+      return {
+        projectName: project
+      }
+    }
+    return {
+      date: res[1],
+      projectName: res[2]
     }
   }
 }

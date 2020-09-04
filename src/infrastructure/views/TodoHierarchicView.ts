@@ -3,6 +3,7 @@ import { IContext } from '../../contract/IContext';
 import { IDependencies } from '../../contract/IDependencies';
 import { TodoItem, TodoStatus } from '../../domain/TodoItem';
 import { IDictionary } from '../../domain/IDictionary';
+import { FileInspector } from '../../domain/FileInspector';
 
 enum ItemType {
   Group,
@@ -31,7 +32,7 @@ const statusToIcon = (status: TodoStatus): string => {
     case TodoStatus.AttentionRequired: return "❗"
     case TodoStatus.Canceled: return "❌"
     case TodoStatus.Delegated: return "👬"
-    case TodoStatus.InProgress: return "🏃‍♂️"
+    case TodoStatus.InProgress: return "‍⏩"
     case TodoStatus.Todo: return vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark ? "⬜" : "⬛"
     default: return ""
   }
@@ -246,13 +247,20 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   private getProjectsGroup(): Group {
     const projectsFolder = this.deps.path.join(this.context.rootFolder, this.context.config.folders.projects || "")
     let projects: string[] = []
+    const fileInspector = new FileInspector(this.deps, this.context)
     if (this.deps.fs.existsSync(projectsFolder))
       projects = this.deps.fs.readdirSync(projectsFolder)
-    return new Group("Projects", projects.map(project => ({
-      file: this.deps.path.join(projectsFolder, project),
-      status: TodoStatus.Todo,
-      text: project
-    })))
+    return new Group("Projects", projects.map(project => {
+      const prj = fileInspector.inspectProject(project)
+      return {
+        file: this.deps.path.join(projectsFolder, project),
+        status: TodoStatus.Todo,
+        text: prj.projectName,
+        attributes: {
+          when: prj.date || ""
+        }
+      }
+    }))
   }
 
   private getOverdueGroup(): Group {
