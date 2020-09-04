@@ -7,6 +7,13 @@ export class Completion {
     return this.context.parsedFolder.attributes.filter(attr => attr.startsWith(beginning))
   }
 
+  private completeAttributeValue(attributeName: string, beginning: string): string[] {
+    const values = this.context.parsedFolder.attributeValues[attributeName]
+    if (!values)
+      return []
+    return values.filter(value => value.startsWith(beginning))
+  }
+
   private findCurrentWordBeginning(content: string, position: number): string {
     let beginning = position
     while (beginning > 0 && content[beginning] !== "@" && content[beginning] !== "\n") {
@@ -22,6 +29,13 @@ export class Completion {
     const currentWordBeginning = this.findCurrentWordBeginning(content, position)
     if (currentWordBeginning === "") {
       return []
+    }
+    const valueBeginningIndex = currentWordBeginning.indexOf("(")
+    if (valueBeginningIndex >= 0) {
+      const attributeName = currentWordBeginning.substr(1, valueBeginningIndex - 1) // ignore @
+      const valueBeginning = currentWordBeginning.substr(valueBeginningIndex + 1, currentWordBeginning.length - valueBeginningIndex - 1)
+      console.log(attributeName + " - " + valueBeginning)
+      return this.completeAttributeValue(attributeName, valueBeginning)
     }
     return this.completeAttribute(currentWordBeginning.substr(1, currentWordBeginning.length - 1))
   }
