@@ -2,7 +2,7 @@ Proletarian Wizard helps you organize your notes within a GTD-like organized set
 - File management, organizing files into an opinionated set of folders and files
 - Todo management, collecting todos from project notes.
 
-![Example of todos](doc/img/todos.png)
+![Example of todos](/doc/img/todos.png)
 
 ## Opinionated workflow
 
