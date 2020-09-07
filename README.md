@@ -126,6 +126,10 @@ _Nothing yet_
 
 ## Release Notes
 
+### 1.2.2
+
+- Fix bug with autocomplete.
+
 ### 1.2.0
 
 - Autocomplete attribute values

@@ -1,7 +1,9 @@
 import { IContext } from "../contract/IContext";
+import { deepStrictEqual } from "assert";
+import { IDependencies } from "../contract/IDependencies";
 
 export class Completion {
-  constructor(private context: IContext) { }
+  constructor(private deps: IDependencies, private context: IContext) { }
 
   private completeAttribute(beginning: string): string[] {
     return this.context.parsedFolder.attributes.filter(attr => attr.startsWith(beginning))
@@ -34,7 +36,6 @@ export class Completion {
     if (valueBeginningIndex >= 0) {
       const attributeName = currentWordBeginning.substr(1, valueBeginningIndex - 1) // ignore @
       const valueBeginning = currentWordBeginning.substr(valueBeginningIndex + 1, currentWordBeginning.length - valueBeginningIndex - 1)
-      console.log(attributeName + " - " + valueBeginning)
       return this.completeAttributeValue(attributeName, valueBeginning)
     }
     return this.completeAttribute(currentWordBeginning.substr(1, currentWordBeginning.length - 1))

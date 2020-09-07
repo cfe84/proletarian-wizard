@@ -7,11 +7,12 @@ import { Context } from "mocha"
 describe("Completion", () => {
   // given
   const ctx = fakeContext()
+  const deps = makeFakeDeps()
   ctx.parsedFolder.attributes.push("attribute1", "attribute2", "due")
   ctx.parsedFolder.attributeValues = {
     "attribute1": ["value1", "value2", "something else"]
   }
-  const completion = new Completion(ctx)
+  const completion = new Completion(deps, ctx)
 
   context("attributes", () => {
     it("proposes all attributes", () => {
