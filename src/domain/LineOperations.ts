@@ -96,16 +96,20 @@ export class LineOperations {
     return { textWithoutAttributes, attributes: res }
   }
 
-  toTodo(line: string): TodoItem | null {
+  toTodo(line: string, lineNumber?: number): TodoItem | null {
     const parsedLine = this.parseLine(line)
     if (!parsedLine.checkbox)
       return null
     const attributesMatching = this.parseAttributes(parsedLine.line)
-    return {
+    const todo: TodoItem = {
       status: this.markToStatus(parsedLine.checkbox[1]),
       text: attributesMatching.textWithoutAttributes,
       attributes: attributesMatching.attributes,
       file: ""
     }
+    if (lineNumber !== undefined) {
+      todo.line = lineNumber
+    }
+    return todo
   }
 }

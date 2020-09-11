@@ -110,7 +110,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Sort todos
 - [x] Show/Hide completed and canceled
 - [ ] Optimize reload of todos
-- [ ] When clicking on todo, open file at the right line
+- [x] When clicking on todo, open file at the right line
 - [x] Support `@project` attribute for todos in the wrong folder
 - [x] Show projects on top of list of todos
 - [x] Show overdue on top of list of todos
@@ -122,8 +122,8 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Known Issues
 
-- [ ] Status doesn't work with upper case
-- [ ] "Open in default app" doesn't work on mac
+- [x] Status doesn't work with upper case
+- [x] "Open in default app" doesn't work on mac
 
 ## Release Notes
 

@@ -31,6 +31,7 @@ import { SwitchShowHideCommand } from './commands/SwitchShowHideCommand'
 import { SwitchSortByCommand } from './commands/SwitchSortCommand'
 import { AttributeCompletionItemProvider, AttributeCompletionTriggerCharacters } from './completion/AttributeCompletionItemProvider'
 import { OpenExternalDocument } from './commands/OpenExternalDocumentCommand'
+import { OpenAtLineCommand } from './commands/OpenAtLineCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -76,7 +77,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new MarkTodoAsAttentionRequiredCommand(deps, context),
 		new MarkTodoAsInProgressCommand(deps, context),
 		new MarkTodoAsTodoCommand(deps, context),
-		new OpenExternalDocument(deps, context)
+		new OpenExternalDocument(deps, context),
+		new OpenAtLineCommand(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

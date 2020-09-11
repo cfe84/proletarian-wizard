@@ -26,7 +26,7 @@ export class FolderTodoParser {
     const content = `${this.deps.fs.readFileSync(file)}`
     const lines = content.split("\n")
     const todos = lines
-      .map(line => this.lineOperations.toTodo(line))
+      .map((line, number) => this.lineOperations.toTodo(line, number))
       .filter(todo => todo !== null) as TodoItem[]
     const inspectionResults = this.fileInspector.inspect(file)
     todos.forEach(todo => {

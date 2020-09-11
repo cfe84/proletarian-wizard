@@ -16,4 +16,5 @@ export interface TodoItem {
   folderType?: string
   project?: string
   attributes?: IDictionary<string | boolean>
+  line?: number
 }

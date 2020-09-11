@@ -72,8 +72,8 @@ class TodoTreeItem extends GroupOrTodo {
         : ""
     this.command = {
       title: "Open",
-      command: "vscode.open",
-      arguments: [vscode.Uri.file(todo.file)]
+      command: "pw.openAtLine",
+      arguments: [vscode.Uri.file(todo.file), todo.line]
     }
     this.description = (todo.project || todo.file) + " " + flattenAttributes(todo.attributes)
     this.collapsibleState = vscode.TreeItemCollapsibleState.None
