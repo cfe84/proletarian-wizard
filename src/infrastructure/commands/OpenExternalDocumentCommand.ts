@@ -2,6 +2,7 @@ import { ICommand } from './ICommand';
 import { IDependencies } from '../../contract/IDependencies';
 import { IContext } from '../../contract/IContext';
 import * as childprocess from "child_process"
+import * as os from "os"
 
 interface File {
   fsPath: string,
@@ -18,7 +19,9 @@ export class OpenExternalDocument implements ICommand<string | null> {
 
   executeAsync = async (file: File): Promise<string | null> => {
     this.deps.logger.log(`Open ${file.fsPath}`)
-    childprocess.exec(`"${file.fsPath}"`, (error) => {
+    // Mac OS requires to use the "open" command
+    const command = os.platform() === "darwin" ? "open " : ""
+    childprocess.exec(`${command}"${file.fsPath}"`, (error) => {
       if (error) {
         this.deps.logger.error(error.message)
       }
