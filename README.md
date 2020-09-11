@@ -122,7 +122,8 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Known Issues
 
-_Nothing yet_
+- [ ] Status doesn't work with upper case
+- [ ] "Open in default app" doesn't work on mac
 
 ## Release Notes
 

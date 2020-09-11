@@ -63,14 +63,16 @@ export class LineOperations {
     return this.lineToString(parsedLine)
   }
 
-  private markToStatus = (mark: string) =>
-    mark === "]" ? TodoStatus.Canceled
+  private markToStatus = (mark: string) => {
+    mark = mark.toLowerCase()
+    return mark === "]" ? TodoStatus.Canceled
       : mark === "-" ? TodoStatus.InProgress
         : mark === "!" ? TodoStatus.AttentionRequired
           : mark === "x" ? TodoStatus.Complete
             : mark === " " ? TodoStatus.Todo
               : mark === "d" ? TodoStatus.Delegated
                 : TodoStatus.Todo
+  }
 
   private parseAttributes(text: string): { textWithoutAttributes: string, attributes: IDictionary<string | boolean> } {
     const regexp = / @(\w+)(?:\(([^)]+)\))?/g

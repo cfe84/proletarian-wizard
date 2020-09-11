@@ -74,7 +74,9 @@ describe("LineOperations", () => {
       { description: "looks like a todo but isn't", input: "[1]: https://npmjs.org/", expected: null },
       { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } },
       { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
+      { description: "A capitalized completed todo", input: "[X] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
       { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
+      { description: "A capitalized delegated todo", input: "[D] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
       { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "", attributes: {} } },
       { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Canceled, text: "Todo", file: "", attributes: {} } },
       {
