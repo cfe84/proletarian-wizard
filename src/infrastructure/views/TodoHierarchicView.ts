@@ -114,6 +114,7 @@ const STORAGEKEY_SHOWPROJECTSONTOP = "todoView.showProjectsOnTop"
 const STORAGEKEY_SHOWOVERDUEONTOP = "todoView.showOverdueOnTop"
 const STORAGEKEY_SHOWCOMPLETED = "todoView.showCompleted"
 const STORAGEKEY_SHOWCANCELED = "todoView.showCanceled"
+const STORAGEKEY_SHOWEMPTY = "todoView.showEmpty"
 const STORAGEKEY_GROUPBY = "todoView.groupBy"
 const STORAGEKEY_SORTBY = "todoView.sortBy"
 
@@ -125,6 +126,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     this._showOverdueOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWOVERDUEONTOP, true) : true
     this._showCompleted = context.storage ? context.storage.get(STORAGEKEY_SHOWCOMPLETED, true) : true
     this._showCanceled = context.storage ? context.storage.get(STORAGEKEY_SHOWCANCELED, true) : true
+    this._showEmpty = context.storage ? context.storage.get(STORAGEKEY_SHOWEMPTY, true) : true
     this._groupBy = context.storage ? context.storage.get(STORAGEKEY_GROUPBY, { groupByOption: GroupByOption.status }) : { groupByOption: GroupByOption.status }
     this._sortBy = context.storage ? context.storage.get(STORAGEKEY_SORTBY, { sortByOption: SortByOption.status, sortDirection: SortByDirection.up }) : { sortByOption: SortByOption.status, sortDirection: SortByDirection.up }
   }
@@ -136,6 +138,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   private _showOverdueOnTop: boolean
   private _showCompleted: boolean
   private _showCanceled: boolean
+  private _showEmpty: boolean
 
   public set groupBy(value: GroupByConfig) {
     this._groupBy = value
@@ -193,6 +196,14 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   }
   public get showCanceled(): boolean {
     return this._showCanceled
+  }
+  public set showEmpty(value: boolean) {
+    this._showEmpty = value
+    this.context.storage?.update(STORAGEKEY_SHOWEMPTY, value)
+    this.refresh()
+  }
+  public get showEmpty(): boolean {
+    return this._showEmpty
   }
 
 
@@ -342,6 +353,10 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     }
   }
 
+  private filterEmptyGroups(groups: Group[]): Group[] {
+    return groups.filter(group => group.todos.length > 0)
+  }
+
   async getChildren(element?: GroupOrTodo | undefined): Promise<GroupOrTodo[]> {
     if (element) {
       if (element.type === ItemType.Group) {
@@ -350,6 +365,8 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       return []
     }
     let groups = this.getGroupByGroups()
+    if (!this.showEmpty)
+      groups = this.filterEmptyGroups(groups)
     if (this.showProjectsOnTop)
       groups = [this.getProjectsGroup()].concat(groups)
     if (this._showOverdueOnTop)
