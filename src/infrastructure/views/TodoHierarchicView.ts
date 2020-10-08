@@ -47,23 +47,34 @@ class Group extends GroupOrTodo {
   todosAsTreeItems = () => this.todos.map(todo => new TodoTreeItem(todo))
 }
 
+const attributeIsPriority = (attributeName: string) => attributeName === "priority" || attributeName === "importance"
+
+const mapPriority = (attributes: IDictionary<string | boolean> | undefined): string =>
+  attributes ?
+    Object.keys(attributes)
+      .filter(attributeIsPriority)
+      .map(priority => attributes[priority])
+      .map(attributeValue =>
+        attributeValue === "critical" ? "❗❗"
+          : attributeValue === "high" ? "❗"
+            : attributeValue === "medium" ? "🔸"
+              : attributeValue === "low" ? "🔽"
+                : attributeValue === "lowest" ? "⏬"
+                  : "")[0] as string || ""
+    : ""
+
 class TodoTreeItem extends GroupOrTodo {
   type: ItemType = ItemType.Todo
   constructor(private todo: TodoItem) {
-    super(statusToIcon(todo.status) + " " + todo.text)
+    super(statusToIcon(todo.status) + mapPriority(todo.attributes) + " " + todo.text)
+
     const mapAttributeName = (attributeName: string): string =>
       attributeName === "selected" ? "📌"
         : attributeName === "assignee" || attributeName.toLowerCase() === "assignedto" || attributeName === "assigned" || attributeName === "who" ? "🧍‍♂️"
           : attributeName === "due" || attributeName.toLowerCase() === "duedate" || attributeName === "when" ? "📆"
             : "#️⃣ " + attributeName
     const mapAttributeValue = (attributeName: string, attributeValue: string): string =>
-      (attributeName === "priority" || attributeName === "importance") ?
-        attributeValue === "critical" ? "❗❗"
-          : attributeValue === "high" ? "❗"
-            : attributeValue === "medium" ? "➖"
-              : attributeValue === "low" ? "⬇"
-                : attributeValue
-        : attributeValue
+      attributeValue
     const flattenAttributes = (attributes: IDictionary<string | boolean> | undefined): string =>
       attributes ?
         Object.keys(attributes)
@@ -75,6 +86,7 @@ class TodoTreeItem extends GroupOrTodo {
       command: "pw.openAtLine",
       arguments: [vscode.Uri.file(todo.file), todo.line]
     }
+
     this.description = (todo.project || todo.file) + " " + flattenAttributes(todo.attributes)
     this.collapsibleState = vscode.TreeItemCollapsibleState.None
   }
@@ -208,6 +220,15 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return element.type === ItemType.Group ? element.asGroup() : element.asTodoItem()
   }
 
+  private priorityValues: IDictionary<number> =
+    {
+      "critical": 10,
+      "high": 9,
+      "medium": 5,
+      "low": 3,
+      "lowest": -1
+    }
+
   private groomTodos(todos: TodoItem[]): TodoItem[] {
     if (!this.showCompleted) {
       todos = todos.filter(todo => todo.status !== TodoStatus.Complete)
@@ -228,11 +249,24 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
         if (!this._sortBy.attributeName)
           break
         const attributeName = this._sortBy.attributeName
-        todos = todos.sort((a, b) => (a.attributes && b.attributes
-          && a.attributes[attributeName] && b.attributes[attributeName]
-          && a.attributes[attributeName] !== true && b.attributes[attributeName] !== true) ?
-          ((a.attributes[attributeName] as string).localeCompare(b.attributes[attributeName] as string) * directionMultiplier)
-          : directionMultiplier)
+        const compare = (a: TodoItem, b: TodoItem) => {
+          if (attributeIsPriority(attributeName)) {
+            const aPriority = a.attributes ? this.priorityValues[a.attributes[attributeName] as string] || 0 : 0
+            const bPriority = b.attributes ? this.priorityValues[b.attributes[attributeName] as string] || 0 : 0
+            return (aPriority - bPriority) * directionMultiplier
+          }
+          if (!a.attributes || a.attributes[attributeName] === undefined) // a doesn't have attribute, it's smaller
+            return directionMultiplier
+          if (!b.attributes || b.attributes[attributeName] === undefined)
+            return -directionMultiplier
+          // a is true, or b is false, a is bigger
+          if (a.attributes[attributeName] === true || b.attributes[attributeName] === false)
+            return -directionMultiplier
+          if (a.attributes[attributeName] === false || b.attributes[attributeName] === true)
+            return directionMultiplier
+          return (a.attributes[attributeName] as string).localeCompare(b.attributes[attributeName] as string) * directionMultiplier
+        }
+        todos = todos.sort((a, b) => compare(a, b))
 
     }
     return todos

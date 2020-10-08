@@ -1,8 +1,4 @@
 import * as vscode from 'vscode';
-import { ICommand } from './ICommand';
-import { IDependencies } from '../../contract/IDependencies';
-import { IContext } from '../../contract/IContext';
-import { LineOperations } from '../../domain/LineOperations';
 
 export class SubstituteLine {
   static substitute = (substitute: (line: string) => string) => {

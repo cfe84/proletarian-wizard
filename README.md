@@ -124,8 +124,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 1. [x] Status doesn't work with upper case
 2. [x] "Open in default app" doesn't work on mac
+3. [x] Sort by attributes doesn't work well
 
 ## Release Notes
+
+### 1.3.1
+
+- Fix bug 3.
 
 ### 1.3
 

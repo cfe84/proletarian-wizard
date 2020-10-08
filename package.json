@@ -1,6 +1,6 @@
 {
 	"name": "proletarian-wizard",
-	"displayName": "proletarian-wizard",
+	"displayName": "Proletarian Wizard",
 	"description": "Manage notes within a GTD-like directory",
 	"version": "1.3.0",
 	"engines": {
