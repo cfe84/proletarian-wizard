@@ -119,6 +119,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Autocomplete attribute names 
 - [x] Autocomplete attribute values
 - [x] Open files out of vscode with default application (useful for stuff like word documents)
+- [x] Show/Hide groups with no active todo in todo list
 
 ## Known Issues
 
@@ -128,9 +129,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
-### 1.3.1
+### 1.4.1
 
 - Fix bug 3.
+
+### 1.4
+
+- Show / hide empty groups in todo list
 
 ### 1.3
 
