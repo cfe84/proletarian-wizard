@@ -120,12 +120,14 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Autocomplete attribute values
 - [x] Open files out of vscode with default application (useful for stuff like word documents)
 - [x] Show/Hide groups with no active todo in todo list
+- [ ] Right click archive
 
 ## Known Issues
 
 1. [x] Status doesn't work with upper case
 2. [x] "Open in default app" doesn't work on mac
 3. [x] Sort by attributes doesn't work well
+4. [ ] `@project` autocompletion don't work
 
 ## Release Notes
 

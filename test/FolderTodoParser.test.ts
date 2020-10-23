@@ -25,6 +25,8 @@ not a todo
     td.when(deps.fs.lstatSync("ROOT|PROJECTS|2020-01-02 - Something|file2.md")).thenReturn({ isDirectory: () => false })
     td.when(deps.fs.readFileSync("ROOT|PROJECTS|2020-01-02 - Something|file2.md")).thenReturn(new Buffer(`[-] An in progress todo
 not a todo again @notAnAttribute
+[ ] a todo with @project(this project)
+
 [d] a delegated todo @assignee(Leah) @anotherBooleanAttr`))
     td.when(deps.fs.lstatSync("ROOT|PROJECTS|2020-01-02 - Something|file3.md")).thenReturn({ isDirectory: () => false })
     td.when(deps.fs.readFileSync("ROOT|PROJECTS|2020-01-02 - Something|file3.md")).thenReturn(new Buffer(`[ ] A todo for another project @project(2020-03-03 - Another project)
@@ -40,10 +42,11 @@ not a todo again @notAnAttribute
     it("should skip non md files", () => should(todos).not.containEql({ status: TodoStatus.Todo, text: "A todo that should not be loaded", file: "ROOT|file.txt", project: "", folderType: "", attributes: {}, line: 0 }))
     it("should load completed todo", () => should(todos).containEql({ status: TodoStatus.Complete, text: "a completed todo", file: "ROOT|file.md", project: "", folderType: "", attributes: { assignee: "Pete", booleanAttribute: true }, line: 2 }))
     it("should load in progress todo from subfolder", () => should(todos).containEql({ status: TodoStatus.InProgress, text: "An in progress todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: {}, line: 0 }))
-    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: { assignee: "Leah", anotherBooleanAttr: true }, line: 2 }))
-    it("should move task to the corresponding project when specified", () => should(todos).containEql({ status: TodoStatus.Todo, text: "A todo for another project", file: "ROOT|PROJECTS|2020-01-02 - Something|file3.md", folderType: "projects", project: "2020-03-03 - Another project", attributes: {}, line: 0 }))
+    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: { assignee: "Leah", anotherBooleanAttr: true }, line: 4 }))
+    it("should move task to the corresponding project when specified", () => should(todos).containEql({ status: TodoStatus.Todo, text: "A todo for another project", file: "ROOT|PROJECTS|2020-01-02 - Something|file3.md", folderType: "projects", project: "2020-03-03 - Another project", attributes: { project: "2020-03-03 - Another project" }, line: 0 }))
     it("loads attributes", () => {
       should(parsedFolder.attributes).containEql("assignee")
+      should(parsedFolder.attributes).containEql("project")
       should(parsedFolder.attributes).containEql("booleanAttribute")
       should(parsedFolder.attributes).containEql("anotherBooleanAttr")
       should(parsedFolder.attributes).not.containEql("notAnAttribute")
@@ -51,6 +54,10 @@ not a todo again @notAnAttribute
     it("loads attribute values", () => {
       should(parsedFolder.attributeValues["assignee"]).containEql("Pete")
       should(parsedFolder.attributeValues["assignee"]).containEql("Leah")
+      should(parsedFolder.attributeValues["project"]).containEql("this project")
+    })
+    it("adds projects as attribute values", () => {
+      should(parsedFolder.attributeValues["project"]).containEql("2020-01-02 - Something")
     })
   })
   context("No content", () => {

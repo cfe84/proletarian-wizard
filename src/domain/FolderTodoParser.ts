@@ -32,8 +32,6 @@ export class FolderTodoParser {
     todos.forEach(todo => {
       todo.file = file
       todo.project = (todo.attributes && todo.attributes.project) ? todo.attributes.project as string : inspectionResults.project
-      if (todo.attributes?.project)
-        delete todo.attributes.project
       todo.folderType = inspectionResults.containingFolderType
     })
     return todos
@@ -72,10 +70,23 @@ export class FolderTodoParser {
         }
       })
     })
-    return {
+
+    const parsedFolder: ParsedFolder = {
       todos,
       attributes: Object.keys(attributes).sort((a, b) => a.localeCompare(b)),
       attributeValues: attributes
     }
+    if (!attributes["project"]) {
+      attributes["project"] = []
+    }
+    if (!attributes["selected"]) {
+      attributes["selected"] = []
+    }
+    todos.forEach(todo => {
+      if (todo.project !== undefined && !attributes["project"].find(value => value === todo.project)) {
+        attributes["project"].push(todo.project)
+      }
+    })
+    return parsedFolder
   }
 }
