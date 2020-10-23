@@ -22,6 +22,12 @@ function makeFakePath(): IPath {
   return {
     basename: (name: string) => `BASENAME(${name})`,
     join: (...segments: string[]) => segments.join("|"),
+    resolve: (name: string): string => name,
+    dirname: (name: string) => {
+      const folder = name.split("|")
+      folder.pop()
+      return folder.join("|")
+    },
     sep: "|"
   }
 }

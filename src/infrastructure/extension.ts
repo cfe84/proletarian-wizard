@@ -32,6 +32,7 @@ import { SwitchSortByCommand } from './commands/SwitchSortCommand'
 import { AttributeCompletionItemProvider, AttributeCompletionTriggerCharacters } from './completion/AttributeCompletionItemProvider'
 import { OpenExternalDocument } from './commands/OpenExternalDocumentCommand'
 import { OpenAtLineCommand } from './commands/OpenAtLineCommand'
+import { ArchiveClickedProjectCommand } from './commands/ArchiveClickedProjectCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -65,6 +66,7 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new SaveFileCommand(deps, context),
 		new OpenFileCommand(deps, context),
 		new ArchiveProjectCommand(deps, context),
+		new ArchiveClickedProjectCommand(deps, context),
 		new CreateProjectCommand(deps, context),
 		new CreateRecurrenceCommand(deps, context),
 		new CreateReferenceFolderCommand(deps, context),
