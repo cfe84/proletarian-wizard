@@ -114,13 +114,15 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Support `@project` attribute for todos in the wrong folder
 - [x] Show projects on top of list of todos
 - [x] Show overdue on top of list of todos
-- [ ] Support tags for todos, group by tags 
-- [ ] Support project briefs, use as project name
+- [] Support tags for todos, group by tags (Cancelled - use the `hashtags` extension instead)
+- [ ] Support project briefs, use as project name (Alternatively - use the `@project` attribute)
 - [x] Autocomplete attribute names 
 - [x] Autocomplete attribute values
 - [x] Open files out of vscode with default application (useful for stuff like word documents)
 - [x] Show/Hide groups with no active todo in todo list
 - [x] Right click archive
+- [ ] Reminders for tasks
+- [ ] Periodic tasks
 
 ## Known Issues
 
