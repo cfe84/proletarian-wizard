@@ -136,6 +136,11 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
+### 1.6.0
+
+- Fix bug 5 and 6
+- Support tasks in numbered lists
+
 ### 1.5.0
 
 - Fix bug 4
