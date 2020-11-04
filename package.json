@@ -17,12 +17,12 @@
 		"commands": [
 			{
 				"command": "pw.saveFile",
-				"title": "Save File",
+				"title": "Save Note",
 				"category": "Proletarian Wizard"
 			},
 			{
 				"command": "pw.openFile",
-				"title": "Open File",
+				"title": "Open Note",
 				"category": "Proletarian Wizard"
 			},
 			{
