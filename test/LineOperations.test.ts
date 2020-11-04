@@ -27,6 +27,7 @@ describe("LineOperations", () => {
     const testCases = [
       { description: "adds date to regular line", input: "this just tells something", expected: "TODAY: this just tells something" },
       { description: "adds date to line with dash", input: "- this just tells something", expected: "- TODAY: this just tells something" },
+      { description: "adds date to line with number", input: "5. this just tells something", expected: "5. TODAY: this just tells something" },
       { description: "adds date to line with multi dash", input: "- - just tells something", expected: "- TODAY: - just tells something" },
       { description: "adds date to line with dash and indent", input: "  - this just tells something", expected: "  - TODAY: this just tells something" },
       { description: "adds date to line with star and indent", input: "  * this just tells something", expected: "  * TODAY: this just tells something" },
@@ -46,6 +47,7 @@ describe("LineOperations", () => {
       { description: "adds empty checkbox to list item", input: " - this just tells something", expected: " - [ ] this just tells something" },
       { description: "adds empty checkbox to list item with date", input: " - 2020-01-02: this just tells something", expected: " - [ ] 2020-01-02: this just tells something" },
       { description: "removes empty checkbox to list item with date", input: " - [ ] 2020-01-02: this just tells something", expected: " - 2020-01-02: this just tells something" },
+      { description: "removes empty checkbox to numbered list item with date", input: " 4. [ ] 2020-01-02: this just tells something", expected: " 4. 2020-01-02: this just tells something" },
       { description: "removes checked checkbox to list item with date", input: " - [x] 2020-01-02: this just tells something", expected: " - 2020-01-02: this just tells something" },
     ]
     runTestCases(testCases, (line) => lineOperations.toggleTodo(line))

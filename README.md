@@ -92,7 +92,6 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Create files directly in projects
 - [x] Create projects when selecting project
 - [x] Define custom paths for directories
-- [ ] List files from tags
 - [x] Create recurrences
 - [x] Create reference folders
 - [x] Prompt variables in templates
@@ -115,6 +114,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Show projects on top of list of todos
 - [x] Show overdue on top of list of todos
 - [] Support tags for todos, group by tags (Cancelled - use the `hashtags` extension instead)
+- [] List files from tags
 - [ ] Support project briefs, use as project name (Alternatively - use the `@project` attribute)
 - [x] Autocomplete attribute names 
 - [x] Autocomplete attribute values
@@ -123,7 +123,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Right click archive
 - [ ] Reminders for tasks
 - [ ] Periodic tasks
-- [ ] Support tasks in numbered lists
+- [x] Support tasks in numbered lists
 
 ## Known Issues
 
