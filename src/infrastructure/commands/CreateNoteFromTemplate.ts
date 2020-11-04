@@ -56,7 +56,6 @@ export class CreateNoteFromTemplate implements ICommand<string | null> {
     this.deps.fs.writeFileSync(path, substitutedContent)
     const uri = vscode.Uri.file(path);
     const editor = await vscode.window.showTextDocument(uri);
-    editor.edit(edit => edit.insert(new vscode.Position(0, 0), substitutedContent))
     return template.path
   }
 }

@@ -131,7 +131,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 2. [x] "Open in default app" doesn't work on mac
 3. [x] Sort by attributes doesn't work well
 4. [x] `@project` autocompletion don't work
-5. [ ] Templates are copied twice
+5. [x] Templates are copied twice
 6. [x] Same variable in a template is asked several times
 
 ## Release Notes
