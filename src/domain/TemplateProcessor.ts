@@ -8,13 +8,16 @@ export class TemplateProcessor {
 
   getTemplateVariables(templateContent: string): TemplateVariableName[] {
     const regex = /\${([a-z0-9_ .?!,;-]+)}/mig
-    const res = templateContent.match(regex)
-    return res?.map(r => r.substr(2, r.length - 3)) || []
+    const res = templateContent.match(regex)?.map(r => r.substr(2, r.length - 3)) || []
+    return res.filter((elementA, index) =>
+      // Remove duplicates case insensitive
+      res.findIndex(elementB => elementA.toLowerCase() === elementB.toLowerCase()) === index
+    )
   }
 
   replaceVariables(templateContent: string, variables: TemplateVariableName[], values: IDictionary<string>): string {
     variables.forEach(variableName => {
-      const regex = new RegExp("\\${" + variableName + "}", "g")
+      const regex = new RegExp("\\${" + variableName + "}", "gi")
       const value = values[variableName]
       templateContent = templateContent.replace(regex, value)
     })

@@ -123,13 +123,16 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Right click archive
 - [ ] Reminders for tasks
 - [ ] Periodic tasks
+- [ ] Support tasks in numbered lists
 
 ## Known Issues
 
 1. [x] Status doesn't work with upper case
 2. [x] "Open in default app" doesn't work on mac
 3. [x] Sort by attributes doesn't work well
-[x] 4. [ ] `@project` autocompletion don't work
+4. [x] `@project` autocompletion don't work
+5. [ ] Templates are copied twice
+6. [x] Same variable in a template is asked several times
 
 ## Release Notes
 
