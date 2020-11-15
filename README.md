@@ -133,8 +133,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 4. [x] `@project` autocompletion don't work
 5. [x] Templates are copied twice
 6. [x] Same variable in a template is asked several times
+7. [x] Todos in templates are loaded as todos
 
 ## Release Notes
+
+### 1.6.1
+
+- Fix bug 7
 
 ### 1.6.0
 
