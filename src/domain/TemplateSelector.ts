@@ -14,7 +14,7 @@ interface TemplateOption {
 export class TemplateSelector {
   private templateFolder: string
   constructor(private deps: IDependencies, private context: IContext) {
-    this.templateFolder = deps.path.join(context.rootFolder, defaultConfigFolder, defaultTemplateFolder)
+    this.templateFolder = context.templatesFolder
   }
 
   selectTemplateAsync = async (): Promise<TemplateOption | null> => {

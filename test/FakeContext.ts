@@ -10,6 +10,7 @@ export function fakeContext(): IContext {
         recurrences: "RECURRENCES",
         reference: "REFERENCE"
       }
-    }
+    },
+    templatesFolder: "ROOT|.pw|templates"
   }
 }

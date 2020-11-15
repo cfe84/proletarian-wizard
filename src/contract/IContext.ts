@@ -8,4 +8,5 @@ export interface IContext {
   config: IConfig
   parsedFolder: ParsedFolder
   storage?: IStorage
+  templatesFolder: path
 }

@@ -14,7 +14,7 @@ export interface ParsedFolder {
 export class FolderTodoParser {
   private lineOperations: LineOperations
   private fileInspector: FileInspector
-  constructor(private deps: IDependencies, context: IContext) {
+  constructor(private deps: IDependencies, private context: IContext) {
     this.lineOperations = new LineOperations(deps)
     this.fileInspector = new FileInspector(deps, context)
   }
@@ -38,6 +38,9 @@ export class FolderTodoParser {
   }
 
   private findFolderTodos(folder: string): TodoItem[] {
+    if (folder === this.context.templatesFolder) {
+      return []
+    }
     const files = this.deps.fs.readdirSync(folder)
     const todos = files
       .map(file => this.deps.path.join(folder, file))

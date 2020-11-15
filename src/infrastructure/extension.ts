@@ -59,7 +59,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		rootFolder,
 		config: config || undefined,
 		parsedFolder: { todos: [], attributes: [], attributeValues: {} },
-		storage: vscontext.globalState
+		storage: vscontext.globalState,
+		templatesFolder: deps.path.join(rootFolder, ".pw", "templates")
 	}
 
 	const commands: ICommand<string | null>[] = [
