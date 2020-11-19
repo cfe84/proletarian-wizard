@@ -124,6 +124,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [ ] Reminders for tasks
 - [ ] Periodic tasks
 - [x] Support tasks in numbered lists
+- [x] Add project name in the default note name
 
 ## Known Issues
 
@@ -136,6 +137,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 7. [x] Todos in templates are loaded as todos
 
 ## Release Notes
+
+### 1.7.0
+
+- Add project name in default note name
 
 ### 1.6.1
 

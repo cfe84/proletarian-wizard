@@ -19,6 +19,10 @@ export class FileSaveSelector {
     if (folder.underSpecialFolder === "Recurrence") {
       initialValue += folder.name
     }
+    if (folder.underSpecialFolder === "Project" && !folder.isSpecialFolder) {
+      const projectName = folder.name.replace(/\d\d\d\d-\d\d-\d\d - /, "")
+      initialValue += projectName + " - "
+    }
     let fileName = await vscode.window.showInputBox({ prompt: "File name", value: initialValue })
     if (!fileName) {
       return null
