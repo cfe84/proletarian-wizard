@@ -8,7 +8,7 @@ export class OpenAtLineCommand implements ICommand<string | null> {
   }
   executeAsync = async (filepath: string, line: number): Promise<string | null> => {
     this.deps.logger.log(filepath + " " + line)
-    vscode.window.showTextDocument(vscode.Uri.parse(filepath))
+    await vscode.window.showTextDocument(vscode.Uri.parse(filepath))
     const editor = vscode.window.activeTextEditor
     if (editor) {
       const newSelection = new vscode.Selection(line, 0, line, 0)
