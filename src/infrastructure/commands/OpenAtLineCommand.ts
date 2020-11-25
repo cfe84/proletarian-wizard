@@ -13,6 +13,7 @@ export class OpenAtLineCommand implements ICommand<string | null> {
     if (editor) {
       const newSelection = new vscode.Selection(line, 0, line, 0)
       editor.selection = newSelection
+      editor.revealRange(newSelection)
       return ""
     }
     return null

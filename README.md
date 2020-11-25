@@ -135,9 +135,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 5. [x] Templates are copied twice
 6. [x] Same variable in a template is asked several times
 7. [x] Todos in templates are loaded as todos
-8. [ ] Clicking on todos in the overview sometimes doesn't bring you at the right line
+8. [x] Clicking on todos in the overview sometimes doesn't bring you at the right line
 
 ## Release Notes
+
+### 1.7.2
+
+- Scroll to todo
 
 ### 1.7.1
 
