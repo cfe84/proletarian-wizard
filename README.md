@@ -139,6 +139,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
+### 1.7.3
+
+- Made checkbox white even in light themes.
+
 ### 1.7.2
 
 - Scroll to todo

@@ -33,7 +33,7 @@ const statusToIcon = (status: TodoStatus): string => {
     case TodoStatus.Canceled: return "❌"
     case TodoStatus.Delegated: return "👬"
     case TodoStatus.InProgress: return "‍⏩"
-    case TodoStatus.Todo: return vscode.window.activeColorTheme.kind === vscode.ColorThemeKind.Dark ? "⬜" : "⬛"
+    case TodoStatus.Todo: return "⬜"
     default: return ""
   }
 }
