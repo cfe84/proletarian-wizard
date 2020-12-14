@@ -1,9 +1,5 @@
 import { IDependencies } from "../contract/IDependencies";
 import { IContext } from "../contract/IContext";
-import { IUISelectorOption } from "../contract/IUISelector";
-
-const defaultConfigFolder = ".pw"
-const defaultTemplateFolder = "templates"
 
 interface TemplateOption {
   name: string

@@ -33,6 +33,7 @@ import { AttributeCompletionItemProvider, AttributeCompletionTriggerCharacters }
 import { OpenExternalDocument } from './commands/OpenExternalDocumentCommand'
 import { OpenAtLineCommand } from './commands/OpenAtLineCommand'
 import { ArchiveClickedProjectCommand } from './commands/ArchiveClickedProjectCommand'
+import { OpenDailyNoteCommand } from './commands/OpenDailyNoteCommand'
 
 export function activate(vscontext: vscode.ExtensionContext) {
 	const logger = new ConsoleLogger()
@@ -81,7 +82,8 @@ export function activate(vscontext: vscode.ExtensionContext) {
 		new MarkTodoAsInProgressCommand(deps, context),
 		new MarkTodoAsTodoCommand(deps, context),
 		new OpenExternalDocument(deps, context),
-		new OpenAtLineCommand(deps, context)
+		new OpenAtLineCommand(deps, context),
+		new OpenDailyNoteCommand(deps, context)
 	]
 	commands.forEach(command => {
 		let disposable = vscode.commands.registerCommand(command.Id, command.executeAsync);

@@ -27,6 +27,12 @@ Todos are noted with the `[ ]` symbol at the beginning of the line (or after a l
 
 To select todos you want to address today, add a `@selected` attribute on their lines. This conveniently places those todos in a folder on top of the "Todos" window.
 
+## Recurrence
+
+A recurrence is something that happens regularly, such as one-to-one meetings, status reports, daily-notes, etc. 
+
+A special type of recurrence is the daily-notes file, which is created to store... daily notes. To create/open today's daily not, use command "Open/create daily note". You need a folder called "daily-notes" in the recurrence folder, and a template called `daily-notes.md` in the templates folder.
+
 ## Extension Settings
 
 App requires the folder structure to be the following:
@@ -125,6 +131,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [ ] Periodic tasks
 - [x] Support tasks in numbered lists
 - [x] Add project name in the default note name
+- [x] Create/open daily note
 
 ## Known Issues
 
@@ -136,8 +143,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 6. [x] Same variable in a template is asked several times
 7. [x] Todos in templates are loaded as todos
 8. [x] Clicking on todos in the overview sometimes doesn't bring you at the right line
+9. [ ] Daily notes should be more configurable.
 
 ## Release Notes
+
+### 1.8.0
+
+- Daily notes.
 
 ### 1.7.3
 

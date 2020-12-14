@@ -26,6 +26,11 @@
 				"category": "Proletarian Wizard"
 			},
 			{
+				"command": "pw.openDailyNote",
+				"title": "Open Daily Note (create if it doesn't exist)",
+				"category": "Proletarian Wizard"
+			},
+			{
 				"command": "pw.archiveProject",
 				"title": "Archive Project",
 				"category": "Proletarian Wizard"
