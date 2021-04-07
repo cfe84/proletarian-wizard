@@ -144,8 +144,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 7. [x] Todos in templates are loaded as todos
 8. [x] Clicking on todos in the overview sometimes doesn't bring you at the right line
 9. [ ] Daily notes should be more configurable.
+10. [x] Overdue are showing early (date calculated on UTC)
 
 ## Release Notes
+
+### 1.8.1
+
+- Fix 10.
 
 ### 1.8.0
 

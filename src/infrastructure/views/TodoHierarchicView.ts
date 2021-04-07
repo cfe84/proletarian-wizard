@@ -310,16 +310,22 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   private getOverdueGroup(): Group {
     const dueDateAttributes = ["due", "duedate", "when", "expire", "expires"]
-    const now = Date.now()
+    const now = new Date()
+    now.setDate(now.getDate())
     const todosWithOverdueDate = this.context.parsedFolder.todos
       .filter(todo => todo.attributes && dueDateAttributes.find(attribute => {
         if (todo.status === TodoStatus.Complete || todo.status === TodoStatus.Canceled
           || !todo.attributes || !todo.attributes[attribute])
           return false
-        const date = Date.parse(`${todo.attributes[attribute]}`)
-        return date !== NaN && date < now
+        try {
+          const date = new Date(`${todo.attributes[attribute]}`)
+          return date < now
+        } catch (err) {
+          this.deps.logger.error(`Error while parsing date: ${err}`)
+          return false
+        }
       }))
-    return new Group("Overdue", todosWithOverdueDate)
+    return new Group("Due", todosWithOverdueDate)
   }
 
   private getGroupsByStatus(): Group[] {
