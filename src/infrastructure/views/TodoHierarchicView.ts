@@ -1,4 +1,4 @@
-#import * as vscode from 'vscode';
+import * as vscode from 'vscode';
 import { IContext } from '../../contract/IContext';
 import { IDependencies } from '../../contract/IDependencies';
 import { TodoItem, TodoStatus } from '../../domain/TodoItem';
