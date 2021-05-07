@@ -1,5 +1,5 @@
 import * as should from "should"
-import { LineOperations } from "../src/domain/LineOperations"
+import { ITodoParsingResult, LineOperations } from "../src/domain/LineOperations"
 import { makeFakeDeps } from "./FakeDeps"
 import * as td from "testdouble"
 import { TodoItem, TodoStatus } from "../src/domain/TodoItem"
@@ -67,31 +67,40 @@ describe("LineOperations", () => {
   interface TodoParsingTestCase {
     description: string,
     input: string,
-    expected: TodoItem | null
+    expected: ITodoParsingResult
   }
 
   describe("Parses todo:", () => {
     const testCases: TodoParsingTestCase[] = [
-      { description: "not a todo", input: "this is not a todo", expected: null },
-      { description: "looks like a todo but isn't", input: "[1]: https://npmjs.org/", expected: null },
-      { description: "A todo to do", input: "[ ] Todo to do", expected: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } },
-      { description: "A completed todo", input: "[x] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
-      { description: "A capitalized completed todo", input: "[X] Todo", expected: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } },
-      { description: "A delegated todo", input: "[d] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
-      { description: "A capitalized delegated todo", input: "[D] Todo", expected: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } },
-      { description: "An in progress todo", input: "[-] Todo", expected: { status: TodoStatus.InProgress, text: "Todo", file: "", attributes: {} } },
-      { description: "A cancelled todo", input: "[] Todo", expected: { status: TodoStatus.Canceled, text: "Todo", file: "", attributes: {} } },
+      { description: "not a todo", input: "this is not a todo", expected: { isTodo: false } },
+      { description: "looks like a todo but isn't", input: "[1]: https://npmjs.org/", expected: { isTodo: false } },
+      { description: "A todo to do", input: "[ ] Todo to do", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
+      { description: "An indented todo to do", input: " [ ] Todo to do", expected: { isTodo: true, indentLevel: 1, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
+      { description: "A more indented todo to do", input: "  [ ] Todo to do", expected: { isTodo: true, indentLevel: 2, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
+      { description: "A todo indented with tabs and spaces", input: "\t  [ ] Todo to do", expected: { isTodo: true, indentLevel: 6, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
+      { description: "A completed todo", input: "[x] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } } },
+      { description: "A capitalized completed todo", input: "[X] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Complete, text: "Todo", file: "", attributes: {} } } },
+      { description: "A delegated todo", input: "[d] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } } },
+      { description: "A capitalized delegated todo", input: "[D] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Delegated, text: "Todo", file: "", attributes: {} } } },
+      { description: "An in progress todo", input: "[-] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.InProgress, text: "Todo", file: "", attributes: {} } } },
+      { description: "A cancelled todo", input: "[] Todo", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Canceled, text: "Todo", file: "", attributes: {} } } },
       {
         description: "A todo with a text attribute", input: "[ ] Todo @assignee(Jojo)",
-        expected: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo" } }
+        expected: {
+          isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo" } }
+        }
       },
       {
         description: "A todo with a text and a boolean attribute", input: "[ ] Todo @assignee(Jojo) @selected",
-        expected: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo", selected: true } }
+        expected: {
+          isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Todo, text: "Todo", file: "", attributes: { assignee: "Jojo", selected: true } }
+        }
       },
       {
         description: "A line with an email and an attribute", input: "[ ] Todo email@host @assignee(Jojo) @selected",
-        expected: { status: TodoStatus.Todo, text: "Todo email@host", file: "", attributes: { assignee: "Jojo", selected: true } }
+        expected: {
+          isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Todo, text: "Todo email@host", file: "", attributes: { assignee: "Jojo", selected: true } }
+        }
       },
     ]
 

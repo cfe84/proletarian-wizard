@@ -1,6 +1,6 @@
 import { IDependencies } from "../contract/IDependencies";
 import { TodoItem } from "./TodoItem";
-import { LineOperations } from "./LineOperations";
+import { ITodoParsingResult, LineOperations } from "./LineOperations";
 import { IContext } from "../contract/IContext";
 import { FileInspector } from "./FileInspector";
 import { IDictionary } from "./IDictionary";
@@ -19,20 +19,83 @@ export class FolderTodoParser {
     this.fileInspector = new FileInspector(deps, context)
   }
 
+  private createTodoTreeStructure(parsingResults: ITodoParsingResult[]) {
+    let parentStack: ITodoParsingResult[] = []
+    let lastLine = -5
+    let lastVisited: ITodoParsingResult | undefined
+    parsingResults.forEach((current, i) => {
+      const isConsecutive = current.todo?.line === lastLine + 1
+      lastLine = current.todo?.line as number
+      if (!isConsecutive || !lastVisited) {
+        parentStack = []
+        lastVisited = current
+        return
+      }
+
+      const isDeeperThanBefore = ((current.indentLevel as number) > (lastVisited.indentLevel as number))
+      if (isDeeperThanBefore) {
+        parentStack.push(lastVisited);
+        (lastVisited.todo as TodoItem).subtasks = [current.todo as TodoItem]
+      } else {
+        const getParent = () => parentStack[parentStack.length - 1]
+        const isDeeperThanParent = () => ((current.indentLevel as number) > (getParent().indentLevel as number))
+        while (getParent() && !isDeeperThanParent()) {
+          parentStack.pop()
+        }
+        if (getParent()) {
+          (getParent().todo as TodoItem).subtasks?.push(current.todo as TodoItem)
+        }
+      }
+      lastVisited = current
+    })
+  }
+
+  private propagateProjectsToSubtasks(todo: TodoItem, project: string) {
+    if (todo.attributes && todo.attributes.project) {
+      project = todo.attributes.project as string
+    } else {
+      todo.project = project
+    }
+    if (todo.subtasks) {
+      todo.subtasks.forEach(subtask => this.propagateProjectsToSubtasks(subtask, project))
+    }
+  }
+
+  private removeSubtasksFromTree(todos: TodoItem[]) {
+    const toRemove = []
+    for (let i = 0; i < todos.length; i++) {
+      const todo = todos[i]
+      if (todo.subtasks) {
+        toRemove.push(...todo.subtasks)
+      }
+    }
+    toRemove.forEach(subtask => {
+      const idx = todos.findIndex(t => t === subtask)
+      todos.splice(idx, 1)
+    })
+  }
+
   private parseFile(file: string): TodoItem[] {
-    if (!file.endsWith(".md")) {
+    if (!file.endsWith(".md") && !file.endsWith(".txt")) {
       return []
     }
     const content = `${this.deps.fs.readFileSync(file)}`
     const lines = content.split("\n")
-    const todos = lines
-      .map((line, number) => this.lineOperations.toTodo(line, number))
-      .filter(todo => todo !== null) as TodoItem[]
+    const parsingResults = lines.map((line, number) => this.lineOperations.toTodo(line, number))
+      .filter(todoParsingResult => todoParsingResult.isTodo)
+    this.createTodoTreeStructure(parsingResults)
+    const todos = parsingResults.map(result => result.todo) as TodoItem[]
     const inspectionResults = this.fileInspector.inspect(file)
-    todos.forEach(todo => {
+    todos.forEach((todo) => {
       todo.file = file
       todo.project = (todo.attributes && todo.attributes.project) ? todo.attributes.project as string : inspectionResults.project
       todo.folderType = inspectionResults.containingFolderType
+    })
+    this.removeSubtasksFromTree(todos)
+    todos.forEach(todo => {
+      if (todo.subtasks) {
+        this.propagateProjectsToSubtasks(todo, todo.project as string)
+      }
     })
     return todos
   }

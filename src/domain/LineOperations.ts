@@ -11,6 +11,12 @@ interface ILineStructure {
   line: string
 }
 
+export interface ITodoParsingResult {
+  isTodo: boolean
+  todo?: TodoItem
+  indentLevel?: number
+}
+
 export class LineOperations {
   constructor(private deps: IDependencies) { }
 
@@ -96,10 +102,17 @@ export class LineOperations {
     return { textWithoutAttributes, attributes: res }
   }
 
-  toTodo(line: string, lineNumber?: number): TodoItem | null {
+  private getIndentationLevel(str: string) {
+    return (str.match(/ /g)?.length || 0) +
+      (str.match(/\t/g)?.length || 0) * 4
+  }
+
+  toTodo(line: string, lineNumber?: number): ITodoParsingResult {
     const parsedLine = this.parseLine(line)
     if (!parsedLine.checkbox)
-      return null
+      return {
+        isTodo: false
+      }
     const attributesMatching = this.parseAttributes(parsedLine.line)
     const todo: TodoItem = {
       status: this.markToStatus(parsedLine.checkbox[1]),
@@ -107,9 +120,14 @@ export class LineOperations {
       attributes: attributesMatching.attributes,
       file: ""
     }
+    const res: ITodoParsingResult = {
+      isTodo: true,
+      todo,
+      indentLevel: this.getIndentationLevel(parsedLine.indentation)
+    }
     if (lineNumber !== undefined) {
       todo.line = lineNumber
     }
-    return todo
+    return res
   }
 }

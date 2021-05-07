@@ -13,24 +13,28 @@ describe("FolderTodoParser", () => {
     const deps = makeFakeDeps()
 
     td.when(deps.fs.lstatSync(rootFolder)).thenReturn({ isDirectory: () => true })
-    td.when(deps.fs.readdirSync(rootFolder)).thenReturn(["file.md", "PROJECTS|2020-01-02 - Something", "file.txt", ".pw"])
+    td.when(deps.fs.readdirSync(rootFolder)).thenReturn(["file.md", "PROJECTS|2020-01-02 - Something", "file.doc", ".pw"])
     td.when(deps.fs.lstatSync("ROOT|.pw")).thenReturn({ isDirectory: () => true })
     td.when(deps.fs.readdirSync(deps.path.join(rootFolder, ".pw"))).thenReturn(["templates"])
     td.when(deps.fs.lstatSync("ROOT|.pw|templates")).thenReturn({ isDirectory: () => true })
     td.when(deps.fs.readdirSync(deps.path.join(rootFolder, ".pw", "templates"))).thenReturn(["file.md"])
     td.when(deps.fs.lstatSync("ROOT|.pw|templates|file.md")).thenReturn({ isDirectory: () => false })
     td.when(deps.fs.lstatSync("ROOT|file.md")).thenReturn({ isDirectory: () => false })
-    td.when(deps.fs.lstatSync("ROOT|file.txt")).thenReturn({ isDirectory: () => false })
+    td.when(deps.fs.lstatSync("ROOT|file.doc")).thenReturn({ isDirectory: () => false })
     td.when(deps.fs.readFileSync("ROOT|file.md")).thenReturn(Buffer.from(`[ ] A todo todo
 not a todo
 [x] a completed todo @assignee(Pete) @booleanAttribute`))
-    td.when(deps.fs.readFileSync("ROOT|file.txt")).thenReturn(Buffer.from(`[ ] A todo that should not be loaded`))
+    td.when(deps.fs.readFileSync("ROOT|file.doc")).thenReturn(Buffer.from(`[ ] A todo that should not be loaded`))
     td.when(deps.fs.lstatSync("ROOT|PROJECTS|2020-01-02 - Something")).thenReturn({ isDirectory: () => true })
     td.when(deps.fs.readdirSync("ROOT|PROJECTS|2020-01-02 - Something")).thenReturn(["file2.md", "file3.md"])
     td.when(deps.fs.lstatSync("ROOT|PROJECTS|2020-01-02 - Something|file2.md")).thenReturn({ isDirectory: () => false })
-    td.when(deps.fs.readFileSync("ROOT|PROJECTS|2020-01-02 - Something|file2.md")).thenReturn(new Buffer(`[-] An in progress todo
+    td.when(deps.fs.readFileSync("ROOT|PROJECTS|2020-01-02 - Something|file2.md")).thenReturn(Buffer.from(`[-] An in progress todo
 not a todo again @notAnAttribute
 [ ] a todo with @project(this project)
+  - [ ] a substask of that todo
+    - [x] a sub, subtask of that todo @project(in another project)
+  - [ ] another subtask of that todo
+ - [d] and another
 
 [d] a delegated todo @assignee(Leah) @anotherBooleanAttr`))
     td.when(deps.fs.lstatSync("ROOT|PROJECTS|2020-01-02 - Something|file3.md")).thenReturn({ isDirectory: () => false })
@@ -49,7 +53,61 @@ not a todo again @notAnAttribute
     it("should skip templates", () => should(todos).not.containEql({ status: TodoStatus.Todo, text: "A todo in a template", file: "ROOT|.pw|templates|file.md", project: "", folderType: "", attributes: {}, line: 0 }))
     it("should load completed todo", () => should(todos).containEql({ status: TodoStatus.Complete, text: "a completed todo", file: "ROOT|file.md", project: "", folderType: "", attributes: { assignee: "Pete", booleanAttribute: true }, line: 2 }))
     it("should load in progress todo from subfolder", () => should(todos).containEql({ status: TodoStatus.InProgress, text: "An in progress todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: {}, line: 0 }))
-    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: { assignee: "Leah", anotherBooleanAttr: true }, line: 4 }))
+    it("should load delegated todo from subfolder", () => should(todos).containEql({ status: TodoStatus.Delegated, text: "a delegated todo", file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md", folderType: "projects", project: "2020-01-02 - Something", attributes: { assignee: "Leah", anotherBooleanAttr: true }, line: 8 }))
+    it("should load todo with subtasks and project", () => should(todos).containEql(
+      {
+        status: TodoStatus.Todo,
+        text: "a todo with",
+        file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md",
+        folderType: "projects",
+        project: "this project",
+        attributes: { project: "this project" },
+        line: 2,
+        subtasks: [
+          {
+            status: TodoStatus.Todo,
+            text: "a substask of that todo",
+            file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md",
+            folderType: "projects",
+            project: "this project",
+            attributes: {},
+            line: 3,
+            subtasks: [
+              {
+                status: TodoStatus.Complete,
+                text: "a sub, subtask of that todo",
+                file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md",
+                folderType: "projects",
+                project: "in another project",
+                attributes: { project: "in another project" },
+                line: 4
+              }
+            ]
+          },
+          {
+            status: TodoStatus.Todo,
+            text: "another subtask of that todo",
+            file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md",
+            folderType: "projects",
+            project: "this project",
+            attributes: {},
+            line: 5
+          },
+          {
+            status: TodoStatus.Delegated,
+            text: "and another",
+            file: "ROOT|PROJECTS|2020-01-02 - Something|file2.md",
+            folderType: "projects",
+            project: "this project",
+            attributes: {},
+            line: 6
+          }
+        ]
+      }))
+    it("doesn't load subtasks as todos", () => {
+      const todo = todos.find(todo => todo.text === "a sub, subtask of that todo")
+      should(todo).be.undefined()
+    })
     it("should move task to the corresponding project when specified", () => should(todos).containEql({ status: TodoStatus.Todo, text: "A todo for another project", file: "ROOT|PROJECTS|2020-01-02 - Something|file3.md", folderType: "projects", project: "2020-03-03 - Another project", attributes: { project: "2020-03-03 - Another project" }, line: 0 }))
     it("loads attributes", () => {
       should(parsedFolder.attributes).containEql("assignee")
