@@ -291,16 +291,17 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return todos
   }
 
-  private findSelectedTodos(todos: TodoItem[]): TodoItem[] {
-    const selectedAtThisLevel = todos.filter(todo => todo.attributes && todo.attributes.selected)
-    const selectedChildren = todos
-      .map(todo => !!todo.subtasks ? this.findSelectedTodos(todo.subtasks) : [])
+  private getAllTodosIncludingSubs(todos: TodoItem[]): TodoItem[] {
+    const atThisLevel = todos
+    const atTheNextLevel = todos
+      .map(todo => !!todo.subtasks ? this.getAllTodosIncludingSubs(todo.subtasks) : [])
       .reduce((curr, subTasks) => ([...curr, ...subTasks]))
-    return [...selectedAtThisLevel, ...selectedChildren]
+    return [...atThisLevel, ...atTheNextLevel]
   }
 
   private getSelectedGroup(): Group {
-    const selectedTodos = this.findSelectedTodos(this.context.parsedFolder.todos)
+    const allTodos = this.getAllTodosIncludingSubs(this.context.parsedFolder.todos)
+    const selectedTodos = allTodos.filter(todo => todo.attributes && todo.attributes.selected)
     return new Group("Selected tasks", this.groomTodos(selectedTodos))
   }
 
@@ -323,11 +324,12 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     }))
   }
 
-  private getOverdueGroup(): Group {
+  private getDueGroup(): Group {
     const dueDateAttributes = ["due", "duedate", "when", "expire", "expires"]
     const now = new Date()
     now.setDate(now.getDate())
-    const todosWithOverdueDate = this.context.parsedFolder.todos
+    const allTodos = this.getAllTodosIncludingSubs(this.context.parsedFolder.todos)
+    const todosWithOverdueDate = allTodos
       .filter(todo => todo.attributes && dueDateAttributes.find(attribute => {
         if (todo.status === TodoStatus.Complete || todo.status === TodoStatus.Canceled
           || !todo.attributes || !todo.attributes[attribute])
@@ -428,7 +430,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     if (this.showProjectsOnTop)
       groups = [this.getProjectsGroup()].concat(groups)
     if (this._showOverdueOnTop)
-      groups = [this.getOverdueGroup()].concat(groups)
+      groups = [this.getDueGroup()].concat(groups)
     if (this._showSelectedOnTop)
       groups = [this.getSelectedGroup()].concat(groups)
     return groups

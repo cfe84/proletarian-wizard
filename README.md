@@ -149,8 +149,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 8. [x] Clicking on todos in the overview sometimes doesn't bring you at the right line
 9. [ ] Daily notes should be more configurable.
 10. [x] Overdue are showing early (date calculated on UTC)
+11. [x] Subtasks with due dates don't appear in Due group in the hierarchic tree
 
 ## Release Notes
+
+### 1.9.4
+
+- Fix 11.
 
 ### 1.9.3
 
