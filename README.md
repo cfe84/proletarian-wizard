@@ -152,6 +152,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
+### 1.9.3
+
+- Adding a logo, fixing build.
+
 ### 1.9.1
 
 - Show selected sub-todos in Selected

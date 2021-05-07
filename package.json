@@ -253,5 +253,10 @@
 	},
 	"dependencies": {
 		"yaml": "^1.10.0"
+	},
+	"icon": "img/wizard.png",
+	"galleryBanner": {
+		"color": "#003399",
+		"theme": "dark"
 	}
 }
