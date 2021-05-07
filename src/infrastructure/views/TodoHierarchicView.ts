@@ -1,4 +1,4 @@
-import * as vscode from 'vscode';
+#import * as vscode from 'vscode';
 import { IContext } from '../../contract/IContext';
 import { IDependencies } from '../../contract/IDependencies';
 import { TodoItem, TodoStatus } from '../../domain/TodoItem';
@@ -291,10 +291,17 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     return todos
   }
 
+  private findSelectedTodos(todos: TodoItem[]): TodoItem[] {
+    const selectedAtThisLevel = todos.filter(todo => todo.attributes && todo.attributes.selected)
+    const selectedChildren = todos
+      .map(todo => !!todo.subtasks ? this.findSelectedTodos(todo.subtasks) : [])
+      .reduce((curr, subTasks) => ([...curr, ...subTasks]))
+    return [...selectedAtThisLevel, ...selectedChildren]
+  }
+
   private getSelectedGroup(): Group {
-    const getSelectedTasks = (): TodoItem[] =>
-      this.context.parsedFolder.todos.filter(todo => todo.attributes && todo.attributes.selected)
-    return new Group("Selected tasks", this.groomTodos(getSelectedTasks()))
+    const selectedTodos = this.findSelectedTodos(this.context.parsedFolder.todos)
+    return new Group("Selected tasks", this.groomTodos(selectedTodos))
   }
 
   private getProjectsGroup(): Group {
