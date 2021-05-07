@@ -132,8 +132,8 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [x] Support tasks in numbered lists
 - [x] Add project name in the default note name
 - [x] Create/open daily note
-- [ ] Handle subtasks
-  - [ ] associate with parent tasks
+- [x] Handle subtasks
+  - [x] associate with parent tasks
   - [ ] show/hide in the task tree
 
 ## Known Issues
@@ -150,6 +150,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 10. [x] Overdue are showing early (date calculated on UTC)
 
 ## Release Notes
+
+### 1.9
+
+- Add support for subtasks.
 
 ### 1.8.1
 

@@ -88,7 +88,15 @@ class TodoTreeItem extends GroupOrTodo {
     }
 
     this.description = (todo.project || todo.file) + " " + flattenAttributes(todo.attributes)
-    this.collapsibleState = vscode.TreeItemCollapsibleState.None
+    this.collapsibleState = (todo.subtasks && todo.subtasks.length > 0)
+      ? vscode.TreeItemCollapsibleState.Expanded
+      : vscode.TreeItemCollapsibleState.None
+  }
+
+  subtasksAsTreeItems(): TodoTreeItem[] {
+    return (this.todo.subtasks && this.todo.subtasks.length > 0)
+      ? this.todo.subtasks.map(task => new TodoTreeItem(task))
+      : []
   }
 }
 
@@ -401,6 +409,9 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
     if (element) {
       if (element.type === ItemType.Group) {
         return element.asGroup().todosAsTreeItems()
+      }
+      if (element.type === ItemType.Todo) {
+        return element.asTodoItem().subtasksAsTreeItems()
       }
       return []
     }
