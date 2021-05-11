@@ -4,6 +4,7 @@ import { IDependencies } from '../../contract/IDependencies';
 import { TodoItem, TodoStatus } from '../../domain/TodoItem';
 import { IDictionary } from '../../domain/IDictionary';
 import { FileInspector } from '../../domain/FileInspector';
+import { DateTime } from "luxon"
 
 enum ItemType {
   Group,
@@ -326,8 +327,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
 
   private getDueGroup(): Group {
     const dueDateAttributes = ["due", "duedate", "when", "expire", "expires"]
-    const now = new Date()
-    now.setDate(now.getDate())
+    const now = DateTime.now()
     const allTodos = this.getAllTodosIncludingSubs(this.context.parsedFolder.todos)
     const todosWithOverdueDate = allTodos
       .filter(todo => todo.attributes && dueDateAttributes.find(attribute => {
@@ -335,7 +335,10 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
           || !todo.attributes || !todo.attributes[attribute])
           return false
         try {
-          const date = new Date(`${todo.attributes[attribute]}`)
+          const date = DateTime.fromISO(`${todo.attributes[attribute]}`)
+          if (date.startOf("day") < now.endOf("day")) {
+            this.deps.logger.log(`Now: ${now}, Due: ${date}`)
+          }
           return date < now
         } catch (err) {
           this.deps.logger.error(`Error while parsing date: ${err}`)

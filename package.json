@@ -233,6 +233,7 @@
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
+		"@types/luxon": "^1.26.5",
 		"@types/mocha": "^7.0.2",
 		"@types/node": "^13.11.0",
 		"@types/vscode": "^1.44.0",
@@ -252,6 +253,7 @@
 		"url": "https://github.com/cfe84/proletarian-wizard"
 	},
 	"dependencies": {
+		"luxon": "^1.26.0",
 		"yaml": "^1.10.0"
 	},
 	"icon": "img/wizard.png",
