@@ -4,6 +4,7 @@ import { IDependencies } from "../../contract/IDependencies"
 import { IContext } from "../../contract/IContext"
 import { FolderSelector } from "../../domain/FolderSelector"
 import { dir } from 'console'
+import { DateTime } from 'luxon'
 
 export class OpenDailyNoteCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext) {
@@ -20,7 +21,7 @@ export class OpenDailyNoteCommand implements ICommand<string | null> {
   // Todo: this should be configurable
   private getDailyNoteFileName() {
     const folderSelector = new FolderSelector({ allowThisFolder: true }, this.deps, this.context)
-    const date = (new Date()).toISOString().substr(0, 10)
+    const date = DateTime.now().toISODate()
     const name = `${date} - daily-notes.md`
     const file = this.deps.path.join(folderSelector.getSpecialFolder("Recurrence"), "daily-notes", name)
     return file

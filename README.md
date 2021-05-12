@@ -150,9 +150,15 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 9. [ ] Daily notes should be more configurable.
 10. [x] Overdue are showing early (date calculated on UTC)
 11. [x] Subtasks with due dates don't appear in Due group in the hierarchic tree
-12. [-] Todos due tomorrow are showing up when it's tomorrow in UTC rather than local
+12. [x] Todos due tomorrow are showing up when it's tomorrow in UTC rather than local
+13. [-] Daily notes are created for tomorrow past UTC midnight
 
 ## Release Notes
+
+### 1.9.6
+
+- Fix for 12 confirmed.
+- Attempt to fix 13.
 
 ### 1.9.5
 
