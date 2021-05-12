@@ -136,6 +136,7 @@ const STORAGEKEY_SHOWOVERDUEONTOP = "todoView.showOverdueOnTop"
 const STORAGEKEY_SHOWCOMPLETED = "todoView.showCompleted"
 const STORAGEKEY_SHOWCANCELED = "todoView.showCanceled"
 const STORAGEKEY_SHOWEMPTY = "todoView.showEmpty"
+const STORAGEKEY_SHOWDATEONPROJECT = "todoView.showDatesOnProject"
 const STORAGEKEY_GROUPBY = "todoView.groupBy"
 const STORAGEKEY_SORTBY = "todoView.sortBy"
 
@@ -144,6 +145,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   constructor(private deps: IDependencies, private context: IContext) {
     this._showSelectedOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWSELECTEDONTOP, true) : true
     this._showProjectsOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWPROJECTSONTOP, true) : true
+    this._showDatesOnProjects = context.storage ? context.storage.get(STORAGEKEY_SHOWDATEONPROJECT, true) : true
     this._showOverdueOnTop = context.storage ? context.storage.get(STORAGEKEY_SHOWOVERDUEONTOP, true) : true
     this._showCompleted = context.storage ? context.storage.get(STORAGEKEY_SHOWCOMPLETED, true) : true
     this._showCanceled = context.storage ? context.storage.get(STORAGEKEY_SHOWCANCELED, true) : true
@@ -156,6 +158,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   private _sortBy: SortByConfig
   private _showSelectedOnTop: boolean
   private _showProjectsOnTop: boolean
+  private _showDatesOnProjects: boolean
   private _showOverdueOnTop: boolean
   private _showCompleted: boolean
   private _showCanceled: boolean
@@ -192,6 +195,14 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
   }
   public get showProjectsOnTop(): boolean {
     return this._showProjectsOnTop
+  }
+  public set showDatesOnProject(value: boolean) {
+    this._showDatesOnProjects = value
+    this.context.storage?.update(STORAGEKEY_SHOWDATEONPROJECT, value)
+    this.refresh()
+  }
+  public get showDatesOnProject(): boolean {
+    return this._showDatesOnProjects
   }
   public set showOverdueOnTop(value: boolean) {
     this._showOverdueOnTop = value
@@ -363,6 +374,17 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       .filter((group) => group.todos.length > 0)
   }
 
+  private removeDateFromProjectNameIfNecessary(projectName: string): string {
+    if (this._showDatesOnProjects) {
+      return projectName
+    }
+    const match = projectName.match(/^(\d\d\d\d-\d\d-\d\d)?(\s?-\s?)?(.+)$/)
+    if (!match || match.length < 4) {
+      return projectName
+    }
+    return match[3]
+  }
+
   private getGroupsByProject(): Group[] {
     const getProjects = () =>
       this.context.parsedFolder.todos.reduce((projects: IDictionary<TodoItem[]>, todo: TodoItem) => {
@@ -378,7 +400,7 @@ export class TodoHierarchicView implements vscode.TreeDataProvider<GroupOrTodo> 
       projects[key] = this.groomTodos(projects[key])
     })
     return Object.keys(projects)
-      .map(project => new Group(project, projects[project]))
+      .map(project => new Group(this.removeDateFromProjectNameIfNecessary(project), projects[project]))
       .sort((a, b) => a.name === "Empty" ? 1 : a.name.localeCompare(b.name))
   }
 

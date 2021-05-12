@@ -131,6 +131,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 - [ ] Periodic tasks
 - [x] Support tasks in numbered lists
 - [x] Add project name in the default note name
+- [x] Hide date from project name
 - [x] Create/open daily note
 - [x] Handle subtasks
   - [x] associate with parent tasks
@@ -154,6 +155,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 13. [-] Daily notes are created for tomorrow past UTC midnight
 
 ## Release Notes
+
+### 1.10.0
+
+- Show/hide project date in project name.
 
 ### 1.9.6
 
