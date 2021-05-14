@@ -157,6 +157,10 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
+### 1.10.1
+
+- Fix 14: Subtasks that are after non todo list items are ignored.
+
 ### 1.10.0
 
 - Show/hide project date in project name.
