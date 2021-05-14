@@ -148,11 +148,12 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 6. [x] Same variable in a template is asked several times
 7. [x] Todos in templates are loaded as todos
 8. [x] Clicking on todos in the overview sometimes doesn't bring you at the right line
-9. [ ] Daily notes should be more configurable.
+9. [ ] Daily notes should use handlebars.
 10. [x] Overdue are showing early (date calculated on UTC)
 11. [x] Subtasks with due dates don't appear in Due group in the hierarchic tree
 12. [x] Todos due tomorrow are showing up when it's tomorrow in UTC rather than local
-13. [-] Daily notes are created for tomorrow past UTC midnight
+13. [x] Daily notes are created for tomorrow past UTC midnight
+14. [x] Subtasks that are after non todo list items are ignored.
 
 ## Release Notes
 

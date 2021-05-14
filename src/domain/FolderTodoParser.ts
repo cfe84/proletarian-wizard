@@ -19,34 +19,40 @@ export class FolderTodoParser {
     this.fileInspector = new FileInspector(deps, context)
   }
 
-  private createTodoTreeStructure(parsingResults: ITodoParsingResult[]) {
+  private createTodoTreeStructure(lines: string[], parsingResults: ITodoParsingResult[]) {
     let parentStack: ITodoParsingResult[] = []
-    let lastLine = -5
-    let lastVisited: ITodoParsingResult | undefined
+    const getParent = () => parentStack[parentStack.length - 1]
+    let lastVisitedTodo: ITodoParsingResult | undefined
     parsingResults.forEach((current, i) => {
-      const isConsecutive = current.todo?.line === lastLine + 1
-      lastLine = current.todo?.line as number
-      if (!isConsecutive || !lastVisited) {
-        parentStack = []
-        lastVisited = current
+      if (!lastVisitedTodo) {
+        if (current.isTodo) {
+          lastVisitedTodo = current
+        }
         return
       }
 
-      const isDeeperThanBefore = ((current.indentLevel as number) > (lastVisited.indentLevel as number))
-      if (isDeeperThanBefore) {
-        parentStack.push(lastVisited);
-        (lastVisited.todo as TodoItem).subtasks = [current.todo as TodoItem]
+      if (lines[i].match(/^\s*$/)) {
+        return
+      }
+
+      const isDeeperThanLastTodo = ((current.indentLevel as number) > (lastVisitedTodo.indentLevel as number))
+      if (isDeeperThanLastTodo) {
+        if (current.isTodo) {
+          parentStack.push(lastVisitedTodo);
+          (lastVisitedTodo.todo as TodoItem).subtasks = [current.todo as TodoItem]
+        }
       } else {
-        const getParent = () => parentStack[parentStack.length - 1]
         const isDeeperThanParent = () => ((current.indentLevel as number) > (getParent().indentLevel as number))
         while (getParent() && !isDeeperThanParent()) {
           parentStack.pop()
         }
-        if (getParent()) {
+        if (getParent() && current.isTodo) {
           (getParent().todo as TodoItem).subtasks?.push(current.todo as TodoItem)
         }
       }
-      lastVisited = current
+      if (current.isTodo) {
+        lastVisitedTodo = current
+      }
     })
   }
 
@@ -82,9 +88,10 @@ export class FolderTodoParser {
     const content = `${this.deps.fs.readFileSync(file)}`
     const lines = content.split("\n")
     const parsingResults = lines.map((line, number) => this.lineOperations.toTodo(line, number))
+    this.createTodoTreeStructure(lines, parsingResults)
+    const todos = parsingResults
       .filter(todoParsingResult => todoParsingResult.isTodo)
-    this.createTodoTreeStructure(parsingResults)
-    const todos = parsingResults.map(result => result.todo) as TodoItem[]
+      .map(result => result.todo) as TodoItem[]
     const inspectionResults = this.fileInspector.inspect(file)
     todos.forEach((todo) => {
       todo.file = file

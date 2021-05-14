@@ -72,8 +72,8 @@ describe("LineOperations", () => {
 
   describe("Parses todo:", () => {
     const testCases: TodoParsingTestCase[] = [
-      { description: "not a todo", input: "this is not a todo", expected: { isTodo: false } },
-      { description: "looks like a todo but isn't", input: "[1]: https://npmjs.org/", expected: { isTodo: false } },
+      { description: "not a todo", input: "this is not a todo", expected: { isTodo: false, indentLevel: 0 } },
+      { description: "looks like a todo but isn't", input: "  [1]: https://npmjs.org/", expected: { isTodo: false, indentLevel: 2 } },
       { description: "A todo to do", input: "[ ] Todo to do", expected: { isTodo: true, indentLevel: 0, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
       { description: "An indented todo to do", input: " [ ] Todo to do", expected: { isTodo: true, indentLevel: 1, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
       { description: "A more indented todo to do", input: "  [ ] Todo to do", expected: { isTodo: true, indentLevel: 2, todo: { status: TodoStatus.Todo, text: "Todo to do", file: "", attributes: {} } } },
