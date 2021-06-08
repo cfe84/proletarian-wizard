@@ -23,7 +23,7 @@ import { MarkTodoAsDelegatedCommand } from "./commands/MarkTodoAsDelegatedComman
 import { MarkTodoAsAttentionRequiredCommand } from "./commands/MarkTodoAsAttentionRequiredCommand";
 import { MarkTodoAsInProgressCommand } from "./commands/MarkTodoAsInProgressCommand";
 import { MarkTodoAsTodoCommand } from "./commands/MarkTodoAsTodoCommand";
-import { TodoItemFsEventListener } from "./eventListeners.ts/TodoItemFsEventListener";
+import { TodoItemFsEventListener } from "./eventListeners/TodoItemFsEventListener";
 import { FolderTodoParser } from "../domain/FolderTodoParser";
 import { TodoHierarchicView } from "./views/TodoHierarchicView";
 import { SwitchGroupByCommand } from "./commands/SwitchGroupByCommand";
