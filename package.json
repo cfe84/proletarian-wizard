@@ -2,7 +2,7 @@
   "name": "proletarian-wizard",
   "displayName": "Proletarian Wizard",
   "description": "Manage notes within a GTD-like directory",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "engines": {
     "vscode": "^1.44.0"
   },
