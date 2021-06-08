@@ -2,6 +2,7 @@ import { IDependencies } from "../contract/IDependencies";
 import { TodoItem, TodoStatus } from "./TodoItem";
 import { IDictionary } from "./IDictionary";
 import { TextDecoder } from "util";
+import { Completion } from "./Completion";
 
 interface ILineStructure {
   indentation: string;
@@ -16,6 +17,11 @@ export interface ITodoParsingResult {
   todo?: TodoItem;
   isBlank?: boolean;
   indentLevel: number;
+}
+
+interface IAttributesStructure {
+  textWithoutAttributes: string;
+  attributes: IDictionary<string | boolean>;
 }
 
 export class LineOperations {
@@ -51,8 +57,36 @@ export class LineOperations {
     )}${space(line.date, ": ")}${line.line}`;
   }
 
-  processDates(line: string): string {
-    return line;
+  private attributesToString(
+    attributesStructure: IAttributesStructure
+  ): string {
+    return (
+      attributesStructure.textWithoutAttributes +
+      " " +
+      Object.keys(attributesStructure.attributes)
+        .map((key) =>
+          typeof attributesStructure.attributes[key] === "boolean"
+            ? `@${key}`
+            : `@${key}(${attributesStructure.attributes[key]})`
+        )
+        .join(" ")
+    );
+  }
+
+  convertDateAttributes(line: string): string {
+    const parsedLine = this.parseLine(line);
+    const parsedAttributes = this.parseAttributes(parsedLine.line);
+    Object.keys(parsedAttributes.attributes).forEach((key) => {
+      const val = parsedAttributes.attributes[key];
+      if (typeof val === "string") {
+        const completion = Completion.completeDate(val as string);
+        if (completion !== null) {
+          parsedAttributes.attributes[key] = completion;
+        }
+      }
+    });
+    parsedLine.line = this.attributesToString(parsedAttributes);
+    return this.lineToString(parsedLine);
   }
 
   addDate(line: string): string {
@@ -95,10 +129,7 @@ export class LineOperations {
       : TodoStatus.Todo;
   };
 
-  private parseAttributes(text: string): {
-    textWithoutAttributes: string;
-    attributes: IDictionary<string | boolean>;
-  } {
+  private parseAttributes(text: string): IAttributesStructure {
     const regexp = / @(\w+)(?:\(([^)]+)\))?/g;
     const matches = text.match(regexp);
     const res: IDictionary<string | boolean> = {};

@@ -1,266 +1,271 @@
 {
-	"name": "proletarian-wizard",
-	"displayName": "Proletarian Wizard",
-	"description": "Manage notes within a GTD-like directory",
-	"version": "1.10.1",
-	"engines": {
-		"vscode": "^1.44.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onStartupFinished"
-	],
-	"main": "./out/infrastructure/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "pw.saveFile",
-				"title": "Save Note",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.openFile",
-				"title": "Open Note",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.openDailyNote",
-				"title": "Open Daily Note (create if it doesn't exist)",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.archiveProject",
-				"title": "Archive Project",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.archiveClickedProject",
-				"title": "Archive Project",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.createProject",
-				"title": "Create Project",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.createNoteFromTemplate",
-				"title": "Create Note from Template",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.createRecurrence",
-				"title": "Create Recurrence",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.createReference",
-				"title": "Create Reference Folder",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.addDateToLine",
-				"title": "Add date to line",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.toggleTodo",
-				"title": "Toggle todo",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsCancelled",
-				"title": "Mark todo as cancelled",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsComplete",
-				"title": "Mark todo as complete",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsDelegated",
-				"title": "Mark todo as delegated",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsAttentionRequired",
-				"title": "Mark todo as attention-required",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsInProgress",
-				"title": "Mark todo as in progress",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.markTodoAsTodo",
-				"title": "Mark todo as todo",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.todoView.groupBy",
-				"title": "Group by",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.todoView.sortBy",
-				"title": "Sort by",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.todoView.showHide",
-				"title": "Show/Hide",
-				"category": "Proletarian Wizard"
-			},
-			{
-				"command": "pw.openExternalDocument",
-				"title": "Open With Default App",
-				"category": "Proletarian Wizard"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "pw.addDateToLine",
-				"key": "Alt+.",
-				"mac": "Alt+."
-			},
-			{
-				"command": "pw.toggleTodo",
-				"key": "Alt+Enter",
-				"mac": "Alt+Enter"
-			},
-			{
-				"command": "pw.markTodoAsCancelled",
-				"key": "Alt+c",
-				"mac": "Alt+c"
-			},
-			{
-				"command": "pw.markTodoAsComplete",
-				"key": "Alt+x",
-				"mac": "Alt+x"
-			},
-			{
-				"command": "pw.markTodoAsAttentionRequired",
-				"key": "Alt+Shift+1",
-				"mac": "Alt+Shift+1"
-			},
-			{
-				"command": "pw.markTodoAsInProgress",
-				"key": "Alt+-",
-				"mac": "Alt+-"
-			},
-			{
-				"command": "pw.markTodoAsDelegated",
-				"key": "Alt+d",
-				"mac": "Alt+d"
-			},
-			{
-				"command": "pw.markTodoAsTodo",
-				"key": "Alt+t",
-				"mac": "Alt+t"
-			}
-		],
-		"views": {
-			"explorer": [
-				{
-					"id": "pw.todoHierarchy",
-					"name": "Todo hierarchy"
-				}
-			]
-		},
-		"menus": {
-			"commandPalette": [
-				{
-					"command": "pw.openExternalDocument",
-					"when": "false"
-				},
-				{
-					"command": "pw.archiveClickedProject",
-					"when": "false"
-				}
-			],
-			"explorer/context": [
-				{
-					"command": "pw.openExternalDocument",
-					"group": "navigation@10"
-				},
-				{
-					"command": "pw.archiveClickedProject",
-					"group": "navigation@10"
-				}
-			],
-			"view/title": [
-				{
-					"command": "pw.todoView.groupBy",
-					"when": "view == pw.todoHierarchy",
-					"group": "navigation"
-				},
-				{
-					"command": "pw.todoView.showHide",
-					"when": "view == pw.todoHierarchy",
-					"group": "navigation"
-				},
-				{
-					"command": "pw.todoView.sortBy",
-					"when": "view == pw.todoHierarchy",
-					"group": "navigation"
-				}
-			]
-		},
-		"languages": [
-			{
-				"aliases": [
-					"Markdown",
-					"md"
-				],
-				"id": "markdown",
-				"extensions": [
-					".md",
-					".markdown"
-				]
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run build",
-		"build": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"test": "mocha --require ts-node/register ./test/**/*.ts"
-	},
-	"devDependencies": {
-		"@types/glob": "^7.1.1",
-		"@types/luxon": "^1.26.5",
-		"@types/mocha": "^7.0.2",
-		"@types/node": "^13.11.0",
-		"@types/vscode": "^1.44.0",
-		"@typescript-eslint/eslint-plugin": "^2.30.0",
-		"@typescript-eslint/parser": "^2.30.0",
-		"eslint": "^6.8.0",
-		"glob": "^7.1.6",
-		"mocha": "^7.1.2",
-		"should": "^13.2.3",
-		"testdouble": "^3.16.0",
-		"ts-node": "^8.10.2",
-		"typescript": "^3.8.3",
-		"vscode-test": "^1.3.0"
-	},
-	"publisher": "cfe",
-	"repository": {
-		"url": "https://github.com/cfe84/proletarian-wizard"
-	},
-	"dependencies": {
-		"chrono-node": "^2.2.6",
-		"luxon": "^1.26.0",
-		"moment": "^2.29.1",
-		"yaml": "^1.10.0"
-	},
-	"icon": "img/wizard.png",
-	"galleryBanner": {
-		"color": "#003399",
-		"theme": "dark"
-	}
+  "name": "proletarian-wizard",
+  "displayName": "Proletarian Wizard",
+  "description": "Manage notes within a GTD-like directory",
+  "version": "1.10.1",
+  "engines": {
+    "vscode": "^1.44.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/infrastructure/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "pw.saveFile",
+        "title": "Save Note",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.openFile",
+        "title": "Open Note",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.openDailyNote",
+        "title": "Open Daily Note (create if it doesn't exist)",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.archiveProject",
+        "title": "Archive Project",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.archiveClickedProject",
+        "title": "Archive Project",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.createProject",
+        "title": "Create Project",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.createNoteFromTemplate",
+        "title": "Create Note from Template",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.createRecurrence",
+        "title": "Create Recurrence",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.createReference",
+        "title": "Create Reference Folder",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.addDateToLine",
+        "title": "Add date to line",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.toggleTodo",
+        "title": "Toggle todo",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsCancelled",
+        "title": "Mark todo as cancelled",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsComplete",
+        "title": "Mark todo as complete",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsDelegated",
+        "title": "Mark todo as delegated",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsAttentionRequired",
+        "title": "Mark todo as attention-required",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsInProgress",
+        "title": "Mark todo as in progress",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.markTodoAsTodo",
+        "title": "Mark todo as todo",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.todoView.groupBy",
+        "title": "Group by",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.todoView.sortBy",
+        "title": "Sort by",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.todoView.showHide",
+        "title": "Show/Hide",
+        "category": "Proletarian Wizard"
+      },
+      {
+        "command": "pw.openExternalDocument",
+        "title": "Open With Default App",
+        "category": "Proletarian Wizard"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "pw.addDateToLine",
+        "key": "Ctrl+Alt+.",
+        "mac": "Ctrl+Alt+."
+      },
+      {
+        "command": "pw.convertDateAttributes",
+        "key": "Alt+.",
+        "mac": "Alt+."
+      },
+      {
+        "command": "pw.toggleTodo",
+        "key": "Alt+Enter",
+        "mac": "Alt+Enter"
+      },
+      {
+        "command": "pw.markTodoAsCancelled",
+        "key": "Alt+c",
+        "mac": "Alt+c"
+      },
+      {
+        "command": "pw.markTodoAsComplete",
+        "key": "Alt+x",
+        "mac": "Alt+x"
+      },
+      {
+        "command": "pw.markTodoAsAttentionRequired",
+        "key": "Alt+Shift+1",
+        "mac": "Alt+Shift+1"
+      },
+      {
+        "command": "pw.markTodoAsInProgress",
+        "key": "Alt+-",
+        "mac": "Alt+-"
+      },
+      {
+        "command": "pw.markTodoAsDelegated",
+        "key": "Alt+d",
+        "mac": "Alt+d"
+      },
+      {
+        "command": "pw.markTodoAsTodo",
+        "key": "Alt+t",
+        "mac": "Alt+t"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "pw.todoHierarchy",
+          "name": "Todo hierarchy"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "pw.openExternalDocument",
+          "when": "false"
+        },
+        {
+          "command": "pw.archiveClickedProject",
+          "when": "false"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "pw.openExternalDocument",
+          "group": "navigation@10"
+        },
+        {
+          "command": "pw.archiveClickedProject",
+          "group": "navigation@10"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "pw.todoView.groupBy",
+          "when": "view == pw.todoHierarchy",
+          "group": "navigation"
+        },
+        {
+          "command": "pw.todoView.showHide",
+          "when": "view == pw.todoHierarchy",
+          "group": "navigation"
+        },
+        {
+          "command": "pw.todoView.sortBy",
+          "when": "view == pw.todoHierarchy",
+          "group": "navigation"
+        }
+      ]
+    },
+    "languages": [
+      {
+        "aliases": [
+          "Markdown",
+          "md"
+        ],
+        "id": "markdown",
+        "extensions": [
+          ".md",
+          ".markdown"
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "test": "mocha --require ts-node/register ./test/**/*.ts"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/luxon": "^1.26.5",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.11.0",
+    "@types/vscode": "^1.44.0",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "eslint": "^6.8.0",
+    "glob": "^7.1.6",
+    "mocha": "^7.1.2",
+    "should": "^13.2.3",
+    "testdouble": "^3.16.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.8.3",
+    "vscode-test": "^1.3.0"
+  },
+  "publisher": "cfe",
+  "repository": {
+    "url": "https://github.com/cfe84/proletarian-wizard"
+  },
+  "dependencies": {
+    "chrono-node": "^2.2.6",
+    "luxon": "^1.26.0",
+    "moment": "^2.29.1",
+    "yaml": "^1.10.0"
+  },
+  "icon": "img/wizard.png",
+  "galleryBanner": {
+    "color": "#003399",
+    "theme": "dark"
+  }
 }

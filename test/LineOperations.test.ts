@@ -6,6 +6,7 @@ import {
 import { makeFakeDeps } from "./FakeDeps";
 import * as td from "testdouble";
 import { TodoItem, TodoStatus } from "../src/domain/TodoItem";
+import { DateTime } from "luxon";
 
 interface ITestCase {
   description: string;
@@ -83,6 +84,29 @@ describe("LineOperations", () => {
       },
     ];
     runTestCases(testCases, (line) => lineOperations.addDate(line));
+  });
+
+  describe("Process date", () => {
+    const testCases = [
+      {
+        description: "fixes date in attributes",
+        input: "this line @attr(132) @attribute(today)",
+        expected: `this line @attr(132) @attribute(${DateTime.now().toISODate()})`,
+      },
+      {
+        description: "fixes date in todos",
+        input: "- [ ] this line @att( @attr(132) @attribute(today)",
+        expected: `- [ ] this line @att( @attr(132) @attribute(${DateTime.now().toISODate()})`,
+      },
+      {
+        description: "bool attributes",
+        input: "- [ ] this line @att",
+        expected: `- [ ] this line @att`,
+      },
+    ];
+    runTestCases(testCases, (line) =>
+      lineOperations.convertDateAttributes(line)
+    );
   });
 
   describe("Toggle todo", () => {

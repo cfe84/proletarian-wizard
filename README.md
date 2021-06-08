@@ -137,6 +137,7 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
   - [x] associate with parent tasks
   - [ ] show/hide in the task tree
   - [x] show in selected if @selected
+- [x] Handle date autocompletion (e.g. '@due(tomorrow' should propose tomorrow's date in completion)
 
 ## Known Issues
 
@@ -154,8 +155,13 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 12. [x] Todos due tomorrow are showing up when it's tomorrow in UTC rather than local
 13. [x] Daily notes are created for tomorrow past UTC midnight
 14. [x] Subtasks that are after non todo list items are ignored.
+15. [ ] Projects appear with date in task detail even when date should be stripped
 
 ## Release Notes
+
+### 1.11
+
+- Add date attribute replacement. If you specify attribute @attr(today) then press Alt + ., today will be replaced by today's date.
 
 ### 1.10.1
 
