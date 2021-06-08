@@ -1,10 +1,10 @@
-import * as should from "should";
+import should from "should";
 import {
   ITodoParsingResult,
   LineOperations,
 } from "../src/domain/LineOperations";
 import { makeFakeDeps } from "./FakeDeps";
-import * as td from "testdouble";
+import td from "testdouble";
 import { TodoItem, TodoStatus } from "../src/domain/TodoItem";
 import { DateTime } from "luxon";
 

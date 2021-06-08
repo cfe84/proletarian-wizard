@@ -1,20 +1,19 @@
-import { makeFakeDeps } from "./FakeDeps"
-import * as td from "testdouble"
-import * as should from "should"
-import { TemplateSelector } from "../src/domain/TemplateSelector"
-import { fakeContext } from "./FakeContext"
-
+import { makeFakeDeps } from "./FakeDeps";
+import td from "testdouble";
+import should from "should";
+import { TemplateSelector } from "../src/domain/TemplateSelector";
+import { fakeContext } from "./FakeContext";
 
 describe("Template selector", () => {
   // given
-  const deps = makeFakeDeps()
-  const context = fakeContext()
-  const templateSelector = new TemplateSelector(deps, context)
+  const deps = makeFakeDeps();
+  const context = fakeContext();
+  const templateSelector = new TemplateSelector(deps, context);
 
-  const templatesFileNames = ["template1.md", "temp2.md", "123.md"]
-  const templatesFileNamesNoExt = ["template1", "temp2", "123"]
+  const templatesFileNames = ["template1.md", "temp2.md", "123.md"];
+  const templatesFileNamesNoExt = ["template1", "temp2", "123"];
 
-  const defaultTemplateFolder = "ROOT|.pw|templates"
+  const defaultTemplateFolder = "ROOT|.pw|templates";
 
   // it("gives a choice between all templates", async () => {
   //   // given
@@ -46,4 +45,4 @@ describe("Template selector", () => {
   //   // then
   //   should(template).be.null()
   // })
-})
+});

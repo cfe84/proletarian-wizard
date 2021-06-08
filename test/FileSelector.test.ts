@@ -1,3 +1,3 @@
-import { makeFakeDeps } from "./FakeDeps"
-import * as td from "testdouble"
-import * as should from "should"
+import { makeFakeDeps } from "./FakeDeps";
+import td from "testdouble";
+import should from "should";
