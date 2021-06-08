@@ -159,6 +159,11 @@ PW comes with a handy view that lists all todos in the current hierarchy. This v
 
 ## Release Notes
 
+### 1.11.1
+
+- NPM audit fix
+- Fix broken build
+
 ### 1.11
 
 - Add date attribute replacement. If you specify attribute @attr(today) then press Alt + ., today will be replaced by today's date.
