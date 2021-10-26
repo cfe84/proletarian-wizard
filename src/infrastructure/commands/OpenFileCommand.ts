@@ -15,15 +15,15 @@ export class OpenFileCommand implements ICommand<string | null> {
     let folder: IFolder | null = null;
     let file: string | null = null;
     do {
-      folder = await folderSelector.selectFolderAsync()
+      folder = await folderSelector.selectFolderAsync();
       if (!folder) {
-        return null
+        return null;
       }
-      file = await fileSelector.selectFileAsync(folder.path)
-    } while (file === null)
-    vscode.window.showTextDocument(vscode.Uri.file(file))
-    return file
-  }
-  get Id(): string { return "pw.openFile" };
+      file = await fileSelector.selectFileAsync(folder.path);
+    } while (file === null);
+    vscode.window.showTextDocument(vscode.Uri.file(file));
+    return file;
+  };
+  get Id(): string { return "pw.openFile"; };
 
 }

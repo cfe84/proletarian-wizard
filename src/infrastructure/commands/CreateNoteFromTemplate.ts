@@ -8,54 +8,54 @@ import { IDictionary } from '../../domain/IDictionary';
 import { FileSaveSelector } from '../selectors/FileSaveSelector';
 
 export class CreateNoteFromTemplate implements ICommand<string | null> {
-  private templateSelector: TemplateSelector
-  private fileSaveSelector: FileSaveSelector
+  private templateSelector: TemplateSelector;
+  private fileSaveSelector: FileSaveSelector;
   constructor(private deps: IDependencies, context: IContext) {
-    this.templateSelector = new TemplateSelector(deps, context)
-    this.fileSaveSelector = new FileSaveSelector(deps, context)
+    this.templateSelector = new TemplateSelector(deps, context);
+    this.fileSaveSelector = new FileSaveSelector(deps, context);
   }
-  get Id(): string { return "pw.createNoteFromTemplate" }
+  get Id(): string { return "pw.createNoteFromTemplate"; }
 
   private async replaceVariables(templateContent: string): Promise<string | null> {
-    const templateProcessor = new TemplateProcessor()
-    const variables = templateProcessor.getTemplateVariables(templateContent)
+    const templateProcessor = new TemplateProcessor();
+    const variables = templateProcessor.getTemplateVariables(templateContent);
     if (variables.length === 0) {
-      return templateContent
+      return templateContent;
     }
-    const values: IDictionary<string> = {}
+    const values: IDictionary<string> = {};
     for (let i = 0; i < variables.length; i++) {
-      const variableName: string = variables[i]
+      const variableName: string = variables[i];
       const value = await vscode.window.showInputBox({
         placeHolder: `${variableName}`,
         prompt: `Template variable`
-      })
+      });
       if (value === undefined) {
-        return null
+        return null;
       }
-      values[variableName] = value
+      values[variableName] = value;
     }
-    templateContent = templateProcessor.replaceVariables(templateContent, variables, values)
-    return templateContent
+    templateContent = templateProcessor.replaceVariables(templateContent, variables, values);
+    return templateContent;
   }
 
   executeAsync = async (): Promise<string | null> => {
-    const path = await this.fileSaveSelector.selectFileDestinationAsync()
+    const path = await this.fileSaveSelector.selectFileDestinationAsync();
     if (!path) {
-      return null
+      return null;
     }
-    const template = await this.templateSelector.selectTemplateAsync()
+    const template = await this.templateSelector.selectTemplateAsync();
     if (!template) {
-      return null
+      return null;
     }
     const templateContent =
-      template.isEmpty ? "" : `${this.deps.fs.readFileSync(template.path)}`
-    const substitutedContent = await this.replaceVariables(templateContent)
+      template.isEmpty ? "" : `${this.deps.fs.readFileSync(template.path)}`;
+    const substitutedContent = await this.replaceVariables(templateContent);
     if (substitutedContent === null) {
-      return null
+      return null;
     }
-    this.deps.fs.writeFileSync(path, substitutedContent)
+    this.deps.fs.writeFileSync(path, substitutedContent);
     const uri = vscode.Uri.file(path);
     const editor = await vscode.window.showTextDocument(uri);
-    return template.path
-  }
+    return template.path;
+  };
 }

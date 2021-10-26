@@ -1,6 +1,6 @@
 import { IDependencies } from "../contract/IDependencies";
 
-const defaultName = "notes"
+const defaultName = "notes";
 
 export interface FileNameProps {
   fileName: string,
@@ -16,42 +16,42 @@ export class FileNameAssembler {
   }
 
   private fixExtension = (filename: string): string => {
-    const finishesByMdRegex = /\.md$/i
+    const finishesByMdRegex = /\.md$/i;
     if (!finishesByMdRegex.test(filename)) {
-      filename += ".md"
+      filename += ".md";
     }
-    return filename
-  }
+    return filename;
+  };
 
   private fixDate = (filename: string): string => {
-    const dateRegex = /^\d\d\d\d-\d\d-\d\d/
+    const dateRegex = /^\d\d\d\d-\d\d-\d\d/;
     if (!dateRegex.test(filename)) {
-      const date = this.deps.date.todayAsYMDString()
-      filename = `${date} - ${filename}`
+      const date = this.deps.date.todayAsYMDString();
+      filename = `${date} - ${filename}`;
     }
-    return filename
-  }
+    return filename;
+  };
 
   private fixName = (filename: string, defaultName: string): string => {
-    const nameRegex = /^\d\d\d\d-\d\d-\d\d - $/
+    const nameRegex = /^\d\d\d\d-\d\d-\d\d - $/;
     if (!filename || nameRegex.test(filename)) {
-      filename += defaultName
+      filename += defaultName;
     }
-    return filename
-  }
+    return filename;
+  };
 
   assembleFileName = (props: FileNameProps) => {
-    let filename = props.fileName
+    let filename = props.fileName;
     if (props.fixFilename === undefined || props.fixFilename) {
-      filename = this.fixName(filename, props.defaultName || defaultName)
+      filename = this.fixName(filename, props.defaultName || defaultName);
     }
     if (props.fixDate === undefined || props.fixDate) {
-      filename = this.fixDate(filename)
+      filename = this.fixDate(filename);
     }
     if (props.fixExtension === undefined || props.fixExtension) {
-      filename = this.fixExtension(filename)
+      filename = this.fixExtension(filename);
     }
-    const filepath = this.deps.path.join(props.path, filename)
-    return filepath
-  }
+    const filepath = this.deps.path.join(props.path, filename);
+    return filepath;
+  };
 }

@@ -26,7 +26,7 @@ export class TodoItemFsEventListener {
   }
 
   onFileSaved(document: vscode.TextDocument) {
-    if (document.fileName.endsWith(".md")) this.refreshTodos();
+    if (document.fileName.endsWith(".md")) {this.refreshTodos();}
   }
 
   onFileRenamed(change: vscode.FileRenameEvent) {

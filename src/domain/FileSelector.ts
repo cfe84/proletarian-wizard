@@ -14,11 +14,11 @@ export class FileSelector {
         fullpath: this.deps.path.join(folder, f),
         name: f
       }))
-      .filter(f => !this.deps.fs.lstatSync(f.fullpath).isDirectory())
+      .filter(f => !this.deps.fs.lstatSync(f.fullpath).isDirectory());
     const pick = await this.deps.uiSelector.selectSingleOptionAsync(files.map(f => ({ label: f.name, file: f })), "Pick file");
     if (!pick) {
-      return null
+      return null;
     }
-    return pick?.file.fullpath || null
-  }
+    return pick?.file.fullpath || null;
+  };
 }

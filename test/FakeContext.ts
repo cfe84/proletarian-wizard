@@ -12,5 +12,5 @@ export function fakeContext(): IContext {
       }
     },
     templatesFolder: "ROOT|.pw|templates"
-  }
+  };
 }

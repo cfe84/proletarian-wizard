@@ -11,7 +11,7 @@ class GroupByMenuOption {
 export class SwitchGroupByCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, private context: IContext, private todoView: TodoHierarchicView) {
   }
-  get Id(): string { return "pw.todoView.groupBy" }
+  get Id(): string { return "pw.todoView.groupBy"; }
 
   executeAsync = async (): Promise<string | null> => {
     const options = [
@@ -22,11 +22,11 @@ export class SwitchGroupByCommand implements ICommand<string | null> {
       .filter(attributeName => attributeName !== "selected")
       .map(
         attribute => new GroupByMenuOption(`By ${attribute}`, { groupByOption: GroupByOption.attribute, attributeName: attribute })
-      ))
-    const option = await vscode.window.showQuickPick(options, { canPickMany: false, placeHolder: "Group by" })
+      ));
+    const option = await vscode.window.showQuickPick(options, { canPickMany: false, placeHolder: "Group by" });
     if (option) {
-      this.todoView.groupBy = option.groupByOption
+      this.todoView.groupBy = option.groupByOption;
     }
-    return ""
-  }
+    return "";
+  };
 }
