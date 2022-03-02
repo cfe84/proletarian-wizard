@@ -25,7 +25,7 @@ interface IAttributesStructure {
 }
 
 export class LineOperations {
-  constructor(private deps: IDependencies) {}
+  constructor(private deps: IDependencies) { }
 
   private parseLine(line: string): ILineStructure {
     const regexp =
@@ -116,17 +116,19 @@ export class LineOperations {
     mark = mark.toLowerCase();
     return mark === "]"
       ? TodoStatus.Canceled
-      : mark === "-"
-      ? TodoStatus.InProgress
-      : mark === "!"
-      ? TodoStatus.AttentionRequired
-      : mark === "x"
-      ? TodoStatus.Complete
-      : mark === " "
-      ? TodoStatus.Todo
-      : mark === "d"
-      ? TodoStatus.Delegated
-      : TodoStatus.Todo;
+      : mark === "c"
+        ? TodoStatus.Canceled
+        : mark === "-"
+          ? TodoStatus.InProgress
+          : mark === "!"
+            ? TodoStatus.AttentionRequired
+            : mark === "x"
+              ? TodoStatus.Complete
+              : mark === " "
+                ? TodoStatus.Todo
+                : mark === "d"
+                  ? TodoStatus.Delegated
+                  : TodoStatus.Todo;
   };
 
   private parseAttributes(text: string): IAttributesStructure {
