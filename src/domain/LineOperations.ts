@@ -135,7 +135,7 @@ export class LineOperations {
     const regexp = / @(\w+)(?:\(([^)]+)\))?/g;
     const matches = text.match(regexp);
     const res: IDictionary<string | boolean> = {};
-    if (!matches) return { textWithoutAttributes: text, attributes: res };
+    if (!matches) {return { textWithoutAttributes: text, attributes: res };}
     let textWithoutAttributes = text;
     matches.forEach((match) => {
       const regexp = / @(\w+)(?:\(([^)]+)\))?/g;
@@ -160,10 +160,10 @@ export class LineOperations {
     const parsedLine = this.parseLine(line);
     const indentLevel = this.getIndentationLevel(parsedLine.indentation);
     if (!parsedLine.checkbox)
-      return {
+      {return {
         isTodo: false,
         indentLevel,
-      };
+      };}
     const attributesMatching = this.parseAttributes(parsedLine.line);
     const todo: TodoItem = {
       status: this.markToStatus(parsedLine.checkbox[1]),

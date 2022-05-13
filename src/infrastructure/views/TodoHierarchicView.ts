@@ -15,12 +15,12 @@ abstract class GroupOrTodo extends vscode.TreeItem {
   abstract type: ItemType;
 
   public asGroup(): Group {
-    if (this.type === ItemType.Group) return this as unknown as Group;
+    if (this.type === ItemType.Group) {return this as unknown as Group;}
     throw Error("Invalid cast (to group)");
   }
 
   public asTodoItem(): TodoTreeItem {
-    if (this.type === ItemType.Todo) return this as unknown as TodoTreeItem;
+    if (this.type === ItemType.Todo) {return this as unknown as TodoTreeItem;}
     throw Error("Invalid cast (to todo item)");
   }
 }
@@ -353,7 +353,7 @@ export class TodoHierarchicView
         break;
       case SortByOption.attribute:
       default:
-        if (!this._sortBy.attributeName) break;
+        if (!this._sortBy.attributeName) {break;}
         const attributeName = this._sortBy.attributeName;
         const compare = (a: TodoItem, b: TodoItem) => {
           if (attributeIsPriority(attributeName)) {
@@ -367,20 +367,20 @@ export class TodoHierarchicView
           }
           if (!a.attributes || a.attributes[attributeName] === undefined)
             // a doesn't have attribute, it's smaller
-            return directionMultiplier;
+            {return directionMultiplier;}
           if (!b.attributes || b.attributes[attributeName] === undefined)
-            return -directionMultiplier;
+            {return -directionMultiplier;}
           // a is true, or b is false, a is bigger
           if (
             a.attributes[attributeName] === true ||
             b.attributes[attributeName] === false
           )
-            return -directionMultiplier;
+            {return -directionMultiplier;}
           if (
             a.attributes[attributeName] === false ||
             b.attributes[attributeName] === true
           )
-            return directionMultiplier;
+            {return directionMultiplier;}
           return (
             (a.attributes[attributeName] as string).localeCompare(
               b.attributes[attributeName] as string
@@ -420,7 +420,7 @@ export class TodoHierarchicView
     let projects: string[] = [];
     const fileInspector = new FileInspector(this.deps, this.context);
     if (this.deps.fs.existsSync(projectsFolder))
-      projects = this.deps.fs.readdirSync(projectsFolder);
+      {projects = this.deps.fs.readdirSync(projectsFolder);}
     return new Group(
       "Projects",
       projects.map((project) => {
@@ -453,7 +453,7 @@ export class TodoHierarchicView
             !todo.attributes ||
             !todo.attributes[attribute]
           )
-            return false;
+            {return false;}
           try {
             const date = DateTime.fromISO(`${todo.attributes[attribute]}`);
             if (date.startOf("day") < now.endOf("day")) {
@@ -579,12 +579,12 @@ export class TodoHierarchicView
       return [];
     }
     let groups = this.getGroupByGroups();
-    if (!this.showEmpty) groups = this.filterEmptyGroups(groups);
+    if (!this.showEmpty) {groups = this.filterEmptyGroups(groups);}
     if (this.showProjectsOnTop)
-      groups = [this.getProjectsGroup()].concat(groups);
-    if (this._showOverdueOnTop) groups = [this.getDueGroup()].concat(groups);
+      {groups = [this.getProjectsGroup()].concat(groups);}
+    if (this._showOverdueOnTop) {groups = [this.getDueGroup()].concat(groups);}
     if (this._showSelectedOnTop)
-      groups = [this.getSelectedGroup()].concat(groups);
+      {groups = [this.getSelectedGroup()].concat(groups);}
     return groups;
   }
 }

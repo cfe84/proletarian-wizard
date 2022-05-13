@@ -7,11 +7,11 @@ import { SubstituteLine } from './SubstituteLine';
 export class MarkTodoAsTodoCommand implements ICommand<string | null> {
   constructor(private deps: IDependencies, context: IContext) {
   }
-  get Id(): string { return "pw.markTodoAsTodo" }
+  get Id(): string { return "pw.markTodoAsTodo"; }
 
   executeAsync = async (): Promise<string | null> => {
-    const lineOperations = new LineOperations(this.deps)
-    SubstituteLine.substitute((line) => lineOperations.setCheckmark(line, " "))
-    return ""
-  }
+    const lineOperations = new LineOperations(this.deps);
+    SubstituteLine.substitute((line) => lineOperations.setCheckmark(line, " "));
+    return "";
+  };
 }

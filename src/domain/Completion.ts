@@ -26,7 +26,7 @@ export class Completion {
     beginning: string
   ) {
     const values = this.context.parsedFolder.attributeValues[attributeName];
-    if (!values) return [];
+    if (!values) {return [];}
     return values.filter((value) => value.startsWith(beginning));
   }
 
